@@ -37,11 +37,11 @@ class UserModel extends Equatable {
   });
 
   /// Empty user model
-  static const empty = UserModel(
+  static final empty = UserModel(
     id: '',
     name: '',
     role: UserRole.student,
-    createdAt: '',
+    createdAt: DateTime.fromMillisecondsSinceEpoch(0),
   );
 
   /// Check if user is empty

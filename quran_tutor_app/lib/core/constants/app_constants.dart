@@ -93,7 +93,7 @@ class AppConstants {
     r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
   );
   static final RegExp phoneRegex = RegExp(
-    r'^(\+966|05|00966)[0-9]{8}$', // Saudi format
+    r'^(\+966|0)5[0-9]{8}$', // Saudi format: +9665XXXXXXXX or 05XXXXXXXX
   );
   static final RegExp arabicNameRegex = RegExp(
     r'^[\u0600-\u06FF\s]+$', // Arabic characters and spaces
@@ -103,7 +103,7 @@ class AppConstants {
     r'^[a-zA-Z\s]+$',
   );
   static final RegExp passwordRegex = RegExp(
-    r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$',
+    r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$',
   );
 }
 

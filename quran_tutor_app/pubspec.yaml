@@ -79,7 +79,7 @@ dependencies:
   # UI Components
   shimmer: ^3.0.0
   flutter_slidable: ^3.0.1
-  pull_to_refresh: ^2.0.0
+  pull_to_refresh_flutter3: ^2.0.2
   flutter_staggered_animations: ^1.1.1
 
   # Utilities

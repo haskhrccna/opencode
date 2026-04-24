@@ -76,9 +76,9 @@ class QuranTutorApp extends StatelessWidget {
         themeMode: ThemeMode.light,
         routerConfig: AppRouter.router,
         builder: (context, child) {
-          // Apply RTL directionality
+          final isRtl = context.locale.languageCode == 'ar';
           return Directionality(
-            textDirection: TextDirection.rtl,
+            textDirection: isRtl ? TextDirection.rtl : TextDirection.ltr,
             child: child!,
           );
         },

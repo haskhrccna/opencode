@@ -132,7 +132,7 @@ extension DateTimeExtensions on DateTime {
     ];
     // Approximate conversion - for exact use hijri_date package
     final hijriMonth = ((month + 2) % 12);
-    return names[hijriMonth];
+    return names[hijriMonth == 0 ? 11 : hijriMonth - 1];
   }
 
   /// Format relative time
@@ -167,7 +167,7 @@ extension DateTimeExtensions on DateTime {
     final now = DateTime.now();
     final startOfCurrentWeek = now.startOfWeek;
     final endOfCurrentWeek = now.endOfWeek;
-    return isAfter(startOfCurrentWeek) && isBefore(endOfCurrentWeek);
+    return !isBefore(startOfCurrentWeek) && !isAfter(endOfCurrentWeek);
   }
 
   /// Check if date is in current month
