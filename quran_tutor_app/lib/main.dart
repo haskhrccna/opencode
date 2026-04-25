@@ -96,7 +96,11 @@ class QuranTutorApp extends StatelessWidget {
             locale: context.locale,
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
-            themeMode: themeState.themeMode,
+            themeMode: themeState.themeMode == ThemeMode.system
+                ? MediaQuery.platformBrightnessOf(context) == Brightness.dark
+                    ? ThemeMode.dark
+                    : ThemeMode.light
+                : themeState.themeMode,
             routerConfig: AppRouter.router,
             builder: (context, child) {
               final isRtl = context.locale.languageCode == 'ar';
