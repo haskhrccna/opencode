@@ -33,7 +33,8 @@
       "forgot_password": "نسيت كلمة المرور؟",
       "submit": "تسجيل الدخول",
       "no_account": "ليس لديك حساب؟",
-      "register": "سجل الآن"
+      "register": "سجل الآن",
+      "remember_me": "تذكرني"
     },
     "signup": {
       "title": "إنشاء حساب جديد",
@@ -47,7 +48,17 @@
       "confirm_password_hint": "أعد إدخال كلمة المرور",
       "submit": "إنشاء حساب",
       "have_account": "لديك حساب بالفعل؟",
-      "login": "تسجيل الدخول"
+      "login": "تسجيل الدخول",
+      "phone_label": "رقم الجوال",
+      "phone_hint": "05XXXXXXXX",
+      "dob_label": "تاريخ الميلاد",
+      "dob_hint": "DD/MM/YYYY",
+      "invite_code_label": "رمز دعوة المعلم (اختياري)",
+      "invite_code_hint": "أدخل رمز الدعوة",
+      "bio_label": "نبذة عنك",
+      "bio_hint": "اكتب نبذة قصيرة عن خبرتك",
+      "website_label": "الموقع الإلكتروني",
+      "website_hint": "https://example.com"
     },
     "errors": {
       "invalid_credentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة",

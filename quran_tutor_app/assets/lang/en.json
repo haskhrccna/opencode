@@ -33,7 +33,8 @@
       "forgot_password": "Forgot password?",
       "submit": "Sign In",
       "no_account": "Don't have an account?",
-      "register": "Register now"
+      "register": "Register now",
+      "remember_me": "Remember me"
     },
     "signup": {
       "title": "Create Account",
@@ -47,7 +48,17 @@
       "confirm_password_hint": "Re-enter your password",
       "submit": "Create Account",
       "have_account": "Already have an account?",
-      "login": "Sign In"
+      "login": "Sign In",
+      "phone_label": "Phone Number",
+      "phone_hint": "05XXXXXXXX",
+      "dob_label": "Date of Birth",
+      "dob_hint": "DD/MM/YYYY",
+      "invite_code_label": "Teacher Invite Code (Optional)",
+      "invite_code_hint": "Enter invite code",
+      "bio_label": "Bio",
+      "bio_hint": "Write a short bio about yourself",
+      "website_label": "Website",
+      "website_hint": "https://example.com"
     },
     "errors": {
       "invalid_credentials": "Invalid email or password",
