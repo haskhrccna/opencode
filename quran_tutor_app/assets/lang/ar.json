@@ -1,0 +1,134 @@
+{
+  "app": {
+    "name": "Quran Tutor",
+    "version": "الإصدار",
+    "loading": "جاري التحميل...",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "confirm": "تأكيد",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "create": "إنشاء",
+    "search": "بحث",
+    "filter": "تصفية",
+    "sort": "ترتيب",
+    "close": "إغلاق",
+    "back": "رجوع",
+    "next": "التالي",
+    "previous": "السابق",
+    "done": "تم",
+    "retry": "إعادة المحاولة",
+    "refresh": "تحديث",
+    "view": "عرض",
+    "more": "المزيد",
+    "logout": "تسجيل الخروج"
+  },
+  "auth": {
+    "login": {
+      "title": "تسجيل الدخول",
+      "email_label": "البريد الإلكتروني",
+      "email_hint": "أدخل بريدك الإلكتروني",
+      "password_label": "كلمة المرور",
+      "password_hint": "أدخل كلمة المرور",
+      "forgot_password": "نسيت كلمة المرور؟",
+      "submit": "تسجيل الدخول",
+      "no_account": "ليس لديك حساب؟",
+      "register": "سجل الآن"
+    },
+    "signup": {
+      "title": "إنشاء حساب جديد",
+      "name_label": "الاسم الكامل",
+      "name_hint": "أدخل اسمك الكامل",
+      "email_label": "البريد الإلكتروني",
+      "email_hint": "أدخل بريدك الإلكتروني",
+      "password_label": "كلمة المرور",
+      "password_hint": "أنشئ كلمة مرور قوية",
+      "confirm_password_label": "تأكيد كلمة المرور",
+      "confirm_password_hint": "أعد إدخال كلمة المرور",
+      "submit": "إنشاء حساب",
+      "have_account": "لديك حساب بالفعل؟",
+      "login": "تسجيل الدخول"
+    },
+    "errors": {
+      "invalid_credentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة",
+      "user_not_found": "لم يتم العثور على المستخدم",
+      "email_in_use": "هذا البريد الإلكتروني مستخدم بالفعل",
+      "weak_password": "كلمة المرور ضعيفة جداً",
+      "account_disabled": "تم تعطيل الحساب",
+      "too_many_attempts": "محاولات كثيرة، يرجى المحاولة لاحقاً",
+      "session_expired": "انتهت الجلسة، يرجى تسجيل الدخول مرة أخرى",
+      "network_error": "فشل الاتصال بالشبكة، يرجى التحقق من الإنترنت",
+      "unknown": "حدث خطأ غير متوقع"
+    }
+  },
+  "validation": {
+    "required": "هذا الحقل مطلوب",
+    "required_field": "{field} مطلوب",
+    "email_invalid": "البريد الإلكتروني غير صحيح",
+    "password_min_length": "يجب أن تكون كلمة المرور {min} أحرف على الأقل",
+    "password_max_length": "يجب أن لا تتجاوز كلمة المرور {max} حرفاً",
+    "password_uppercase": "يجب أن تحتوي على حرف كبير واحد على الأقل",
+    "password_lowercase": "يجب أن تحتوي على حرف صغير واحد على الأقل",
+    "password_number": "يجب أن تحتوي على رقم واحد على الأقل",
+    "password_special_char_recommended": "نصيحة: إضافة رموز خاصة تجعل كلمة المرور أقوى",
+    "password_mismatch": "كلمتا المرور غير متطابقتين",
+    "name_arabic_required": "الاسم مطلوب",
+    "name_arabic_invalid": "الاسم يجب أن يكون بالعربية فقط",
+    "name_arabic_min_length": "الاسم يجب أن يحتوي على {min} أحرف على الأقل",
+    "name_arabic_max_length": "الاسم يجب أن لا يتجاوز {max} حرف",
+    "name_english_required": "الاسم بالإنجليزية مطلوب",
+    "name_english_invalid": "الاسم يجب أن يكون بالإنجليزية فقط",
+    "name_consecutive_spaces": "الاسم يحتوي على مسافات متتالية",
+    "phone_required": "رقم الجوال مطلوب",
+    "phone_invalid": "رقم الجوال غير صحيح",
+    "phone_wrong_prefix": "رقم الجوال يجب أن يبدأ بـ +966 أو 05",
+    "age_required": "العمر مطلوب",
+    "age_invalid": "العمر يجب أن يكون رقماً",
+    "age_min": "العمر يجب أن يكون {min} سنوات على الأقل",
+    "age_max": "العمر يجب أن لا يتجاوز {max} سنة",
+    "invite_code_required": "رمز الدعوة مطلوب",
+    "invite_code_min_length": "رمز الدعوة يجب أن يكون 6 أحرف على الأقل",
+    "invite_code_invalid": "رمز الدعوة يجب أن يحتوي على أحرف وأرقام فقط",
+    "bio_max_length": "النبذة يجب أن لا تتجاوز {max} حرف",
+    "url_invalid": "الرابط غير صحيح",
+    "min_length": "يجب أن يكون {min} أحرف على الأقل",
+    "max_length": "يجب أن لا يتجاوز {max} حرف"
+  },
+  "error": {
+    "title": "حدث خطأ",
+    "network": "فشل الاتصال بالشبكة، يرجى التحقق من الإنترنت",
+    "server": "حدث خطأ في الخادم، يرجى المحاولة لاحقاً",
+    "auth": "خطأ في المصادقة",
+    "cache": "خطأ في الوصول إلى البيانات المحلية",
+    "validation": "خطأ في التحقق من البيانات",
+    "unknown": "حدث خطأ غير متوقع",
+    "go_home": "العودة للرئيسية",
+    "page_not_found": "الصفحة غير موجودة",
+    "retry": "إعادة المحاولة"
+  },
+  "pending": {
+    "title": "طلبك قيد المراجعة",
+    "message": "سيتم إشعارك عند الموافقة على طلبك",
+    "logout": "تسجيل الخروج"
+  },
+  "rejected": {
+    "title": "تم رفض طلبك",
+    "message": "يرجى التواصل مع الإدارة لمزيد من المعلومات",
+    "logout": "تسجيل الخروج"
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "theme": {
+      "title": "المظهر",
+      "light": "فاتح",
+      "dark": "داكن",
+      "system": "حسب النظام",
+      "toggle": "تبديل المظهر"
+    },
+    "language": {
+      "title": "اللغة",
+      "arabic": "العربية",
+      "english": "English"
+    }
+  }
+}

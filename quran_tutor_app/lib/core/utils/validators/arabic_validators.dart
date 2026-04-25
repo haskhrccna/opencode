@@ -1,6 +1,10 @@
+import '../../localization/app_localizations.dart';
 import '../../constants/app_constants.dart';
 
 /// Arabic-specific validators for the Quran Tutor app
+/// 
+/// All validation messages are now localized using translation keys
+/// Format: validation.<field>_<error_type>
 class ArabicValidators {
   ArabicValidators._();
 
@@ -8,27 +12,27 @@ class ArabicValidators {
   /// Allows Arabic characters and spaces only
   static String? validateArabicName(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'الاسم مطلوب';
+      return 'validation.name_arabic_required';
     }
 
     final trimmed = value.trim();
 
     if (trimmed.length < AppConstants.minNameLength) {
-      return 'الاسم يجب أن يحتوي على ${AppConstants.minNameLength} أحرف على الأقل';
+      return 'validation.name_arabic_min_length';
     }
 
     if (trimmed.length > AppConstants.maxNameLength) {
-      return 'الاسم يجب أن لا يتجاوز ${AppConstants.maxNameLength} حرف';
+      return 'validation.name_arabic_max_length';
     }
 
     // Check if contains Arabic characters
     if (!AppConstants.arabicNameRegex.hasMatch(trimmed)) {
-      return 'الاسم يجب أن يكون باللغة العربية فقط';
+      return 'validation.name_arabic_invalid';
     }
 
     // Check for consecutive spaces
     if (trimmed.contains('  ')) {
-      return 'الاسم يحتوي على مسافات متتالية';
+      return 'validation.name_consecutive_spaces';
     }
 
     return null;
@@ -38,25 +42,25 @@ class ArabicValidators {
   /// Allows English letters and spaces only
   static String? validateEnglishName(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'الاسم بالإنجليزية مطلوب';
+      return 'validation.name_english_required';
     }
 
     final trimmed = value.trim();
 
     if (trimmed.length < AppConstants.minNameLength) {
-      return 'الاسم يجب أن يحتوي على ${AppConstants.minNameLength} أحرف على الأقل';
+      return 'validation.name_english_min_length';
     }
 
     if (trimmed.length > AppConstants.maxNameLength) {
-      return 'الاسم يجب أن لا يتجاوز ${AppConstants.maxNameLength} حرف';
+      return 'validation.name_english_max_length';
     }
 
     if (!AppConstants.englishNameRegex.hasMatch(trimmed)) {
-      return 'الاسم يجب أن يكون بالإنجليزية فقط';
+      return 'validation.name_english_invalid';
     }
 
     if (trimmed.contains('  ')) {
-      return 'الاسم يحتوي على مسافات متتالية';
+      return 'validation.name_consecutive_spaces';
     }
 
     return null;
@@ -65,13 +69,13 @@ class ArabicValidators {
   /// Validates email addresses
   static String? validateEmail(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'البريد الإلكتروني مطلوب';
+      return 'validation.required';
     }
 
     final trimmed = value.trim().toLowerCase();
 
     if (!AppConstants.emailRegex.hasMatch(trimmed)) {
-      return 'البريد الإلكتروني غير صحيح';
+      return 'validation.email_invalid';
     }
 
     return null;
@@ -80,7 +84,7 @@ class ArabicValidators {
   /// Validates phone numbers (Saudi format)
   static String? validatePhone(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'رقم الجوال مطلوب';
+      return 'validation.phone_required';
     }
 
     final trimmed = value.trim();
@@ -90,7 +94,7 @@ class ArabicValidators {
 
     // Check if starts with +966 or 05
     if (!cleanPhone.startsWith('+966') && !cleanPhone.startsWith('05') && !cleanPhone.startsWith('00966')) {
-      return 'رقم الجوال يجب أن يبدأ بـ +966 أو 05';
+      return 'validation.phone_wrong_prefix';
     }
 
     // Validate length
@@ -98,7 +102,7 @@ class ArabicValidators {
     if ((cleanPhone.startsWith('+966') && length != 13) ||
         (cleanPhone.startsWith('05') && length != 10) ||
         (cleanPhone.startsWith('00966') && length != 14)) {
-      return 'رقم الجوال غير صحيح';
+      return 'validation.phone_invalid';
     }
 
     return null;
@@ -107,36 +111,35 @@ class ArabicValidators {
   /// Validates password strength
   static String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
-      return 'كلمة المرور مطلوبة';
+      return 'validation.required';
     }
 
     if (value.length < AppConstants.minPasswordLength) {
-      return 'كلمة المرور يجب أن تكون ${AppConstants.minPasswordLength} أحرف على الأقل';
+      return 'validation.password_min_length';
     }
 
     if (value.length > AppConstants.maxPasswordLength) {
-      return 'كلمة المرور يجب أن لا تتجاوز ${AppConstants.maxPasswordLength} حرف';
+      return 'validation.password_max_length';
     }
 
     // Check for at least one uppercase letter
     if (!value.contains(RegExp(r'[A-Z]'))) {
-      return 'يجب أن تحتوي على حرف كبير واحد على الأقل';
+      return 'validation.password_uppercase';
     }
 
     // Check for at least one lowercase letter
     if (!value.contains(RegExp(r'[a-z]'))) {
-      return 'يجب أن تحتوي على حرف صغير واحد على الأقل';
+      return 'validation.password_lowercase';
     }
 
     // Check for at least one digit
     if (!value.contains(RegExp(r'[0-9]'))) {
-      return 'يجب أن تحتوي على رقم واحد على الأقل';
+      return 'validation.password_number';
     }
 
-    // Check for special character (optional but recommended)
-    if (!value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
-      return 'يجب أن تحتوي على رمز خاص واحد على الأقل (!@#$%^&*...)'; // optional
-    }
+    // Special character check - only recommend, don't require
+    // This matches the regex in AppConstants that makes special chars optional
+    // We don't return an error here, UI can show a hint instead
 
     return null;
   }
@@ -144,11 +147,11 @@ class ArabicValidators {
   /// Validates password confirmation
   static String? validatePasswordConfirmation(String? value, String password) {
     if (value == null || value.isEmpty) {
-      return 'تأكيد كلمة المرور مطلوب';
+      return 'validation.required';
     }
 
     if (value != password) {
-      return 'كلمتا المرور غير متطابقتين';
+      return 'validation.password_mismatch';
     }
 
     return null;
@@ -157,45 +160,45 @@ class ArabicValidators {
   /// Validates age
   static String? validateAge(String? value) {
     if (value == null || value.isEmpty) {
-      return 'العمر مطلوب';
+      return 'validation.age_required';
     }
 
     final age = int.tryParse(value);
     if (age == null) {
-      return 'العمر يجب أن يكون رقماً';
+      return 'validation.age_invalid';
     }
 
     if (age < AppConstants.minAge) {
-      return 'العمر يجب أن يكون ${AppConstants.minAge} سنوات على الأقل';
+      return 'validation.age_min';
     }
 
     if (age > AppConstants.maxAge) {
-      return 'العمر يجب أن لا يتجاوز ${AppConstants.maxAge} سنة';
+      return 'validation.age_max';
     }
 
     return null;
   }
 
   /// Validates a required field
-  static String? validateRequired(String? value, {String fieldName = 'هذا الحقل'}) {
+  static String? validateRequired(String? value, {String fieldKey = 'validation.required'}) {
     if (value == null || value.trim().isEmpty) {
-      return '$fieldName مطلوب';
+      return fieldKey;
     }
     return null;
   }
 
   /// Validates minimum length
-  static String? validateMinLength(String? value, int minLength, {String fieldName = 'النص'}) {
+  static String? validateMinLength(String? value, int minLength, {String fieldKey = 'validation.min_length'}) {
     if (value == null || value.length < minLength) {
-      return '$fieldName يجب أن يكون $minLength أحرف على الأقل';
+      return fieldKey;
     }
     return null;
   }
 
   /// Validates maximum length
-  static String? validateMaxLength(String? value, int maxLength, {String fieldName = 'النص'}) {
+  static String? validateMaxLength(String? value, int maxLength, {String fieldKey = 'validation.max_length'}) {
     if (value != null && value.length > maxLength) {
-      return '$fieldName يجب أن لا يتجاوز $maxLength حرف';
+      return fieldKey;
     }
     return null;
   }
@@ -203,18 +206,18 @@ class ArabicValidators {
   /// Validates teacher invite code
   static String? validateInviteCode(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'رمز الدعوة مطلوب';
+      return 'validation.invite_code_required';
     }
 
     final trimmed = value.trim();
 
     if (trimmed.length < 6) {
-      return 'رمز الدعوة يجب أن يكون 6 أحرف على الأقل';
+      return 'validation.invite_code_min_length';
     }
 
     // Invite codes are typically alphanumeric
     if (!RegExp(r'^[a-zA-Z0-9]+$').hasMatch(trimmed)) {
-      return 'رمز الدعوة يجب أن يحتوي على أحرف وأرقام فقط';
+      return 'validation.invite_code_invalid';
     }
 
     return null;
@@ -227,7 +230,7 @@ class ArabicValidators {
     }
 
     if (value.length > AppConstants.maxBioLength) {
-      return 'النبذة يجب أن لا تتجاوز ${AppConstants.maxBioLength} حرف';
+      return 'validation.bio_max_length';
     }
 
     return null;
@@ -247,24 +250,59 @@ class ArabicValidators {
     );
 
     if (!urlPattern.hasMatch(trimmed)) {
-      return 'الرابط غير صحيح';
+      return 'validation.url_invalid';
     }
 
     return null;
+  }
+
+  /// Get localized validation message with arguments
+  /// 
+  /// Usage:
+  /// ```dart
+  /// final localizedError = ArabicValidators.getLocalizedMessage(
+  ///   context,
+  ///   errorKey,
+  ///   args: {'min': '8', 'max': '32'},
+  /// );
+  /// ```
+  static String getLocalizedMessage(
+    context,
+    String key, {
+    Map<String, String>? args,
+  }) {
+    final localizations = AppLocalizations.of(context);
+    return localizations.translate(key, args: args);
   }
 }
 
 /// Form input validation result
 class ValidationResult {
   final bool isValid;
-  final String? errorMessage;
+  final String? errorKey;
+  final Map<String, String>? args;
 
-  const ValidationResult._({required this.isValid, this.errorMessage});
+  const ValidationResult._({
+    required this.isValid,
+    this.errorKey,
+    this.args,
+  });
 
   factory ValidationResult.valid() => const ValidationResult._(isValid: true);
 
-  factory ValidationResult.invalid(String message) =>
-      ValidationResult._(isValid: false, errorMessage: message);
+  factory ValidationResult.invalid(String key, {Map<String, String>? args}) =>
+      ValidationResult._(
+        isValid: false,
+        errorKey: key,
+        args: args,
+      );
+
+  /// Get localized error message
+  String getLocalizedMessage(context) {
+    if (isValid || errorKey == null) return '';
+    final localizations = AppLocalizations.of(context);
+    return localizations.translate(errorKey!, args: args);
+  }
 }
 
 /// Extension methods for string validation
@@ -284,4 +322,8 @@ extension StringValidation on String? {
 
   bool get isValidEnglishName =>
       isNotNullOrEmpty && AppConstants.englishNameRegex.hasMatch(this!);
+
+  /// Check if password meets all requirements
+  bool get isValidPassword =>
+      isNotNullOrEmpty && AppConstants.passwordRegex.hasMatch(this!);
 }

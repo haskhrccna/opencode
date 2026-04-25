@@ -15,7 +15,10 @@ import '../../features/sessions/presentation/screens/sessions_screen.dart';
 import '../../features/sessions/presentation/screens/session_detail_screen.dart';
 import '../../features/grading/presentation/screens/progress_screen.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
+import '../../shared/widgets/error_screen.dart';
 import '../constants/app_constants.dart';
+import '../error/failures.dart';
+import '../localization/app_localizations.dart';
 
 /// Application router configuration
 class AppRouter {
@@ -223,8 +226,13 @@ class AppRouter {
       ),
     ],
 
-    // Error Page
-    errorBuilder: (context, state) => ErrorScreen(error: state.error),
+    // Error Page - Convert Exception to Failure
+    errorBuilder: (context, state) {
+      final failure = state.error is Failure 
+          ? state.error as Failure 
+          : UnknownFailure(message: state.error?.toString() ?? 'Unknown error');
+      return ErrorScreen(failure: failure);
+    },
   );
 
   /// Get home route based on user role
@@ -272,6 +280,8 @@ class PendingApprovalScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    
     return Scaffold(
       body: Center(
         child: Column(
@@ -280,17 +290,17 @@ class PendingApprovalScreen extends StatelessWidget {
             const Icon(Icons.hourglass_top, size: 80, color: Colors.orange),
             const SizedBox(height: 24),
             Text(
-              'طلبك قيد المراجعة',
+              l10n.t('pending.title'),
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             const SizedBox(height: 16),
-            const Text('سيتم إشعارك عند الموافقة على طلبك'),
+            Text(l10n.t('pending.message')),
             const SizedBox(height: 32),
             ElevatedButton(
               onPressed: () {
                 context.read<AuthBloc>().add(SignOutRequested());
               },
-              child: const Text('تسجيل الخروج'),
+              child: Text(l10n.t('pending.logout')),
             ),
           ],
         ),
@@ -304,6 +314,8 @@ class RejectedScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    
     return Scaffold(
       body: Center(
         child: Column(
@@ -312,17 +324,17 @@ class RejectedScreen extends StatelessWidget {
             const Icon(Icons.cancel_outlined, size: 80, color: Colors.red),
             const SizedBox(height: 24),
             Text(
-              'تم رفض طلبك',
+              l10n.t('rejected.title'),
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             const SizedBox(height: 16),
-            const Text('يرجى التواصل مع الإدارة لمزيد من المعلومات'),
+            Text(l10n.t('rejected.message')),
             const SizedBox(height: 32),
             ElevatedButton(
               onPressed: () {
                 context.read<AuthBloc>().add(SignOutRequested());
               },
-              child: const Text('تسجيل الخروج'),
+              child: Text(l10n.t('rejected.logout')),
             ),
           ],
         ),
@@ -376,34 +388,4 @@ class AdminSettingsScreen extends StatelessWidget {
   }
 }
 
-class ErrorScreen extends StatelessWidget {
-  final Exception? error;
 
-  const ErrorScreen({super.key, this.error});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.error_outline, size: 80, color: Colors.red),
-            const SizedBox(height: 24),
-            Text(
-              'حدث خطأ',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const SizedBox(height: 16),
-            Text(error?.toString() ?? 'الصفحة غير موجودة'),
-            const SizedBox(height: 32),
-            ElevatedButton(
-              onPressed: () => context.go('/'),
-              child: const Text('العودة للرئيسية'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}

@@ -3,12 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'core/constants/app_constants.dart';
+import 'core/environment/app_environment.dart';
 import 'core/router/app_router.dart';
 import 'core/services/dependency_injection/injection.dart';
 import 'core/theme/app_theme.dart';
+import 'core/theme/cubit/theme_cubit.dart';
 import 'core/utils/bloc_observer.dart';
+import 'core/utils/logging/app_logger.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
 
 void main() async {
@@ -19,6 +24,14 @@ void main() async {
 
   // Initialize Easy Localization
   await EasyLocalization.ensureInitialized();
+
+  // Initialize HydratedBloc storage
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: await getApplicationDocumentsDirectory(),
+  );
+
+  // Initialize logging
+  final logger = AppLogger();
 
   // Set preferred orientations
   await SystemChrome.setPreferredOrientations([
@@ -42,6 +55,11 @@ void main() async {
   // Set up BLoC observer
   Bloc.observer = AppBlocObserver();
 
+  // Log app start
+  logger.i('🚀 Quran Tutor App Started');
+  logger.i('📦 Environment: ${AppEnvironment.displayName}');
+  logger.i('🌐 API Base URL: ${AppEnvironment.baseUrl}');
+
   runApp(
     EasyLocalization(
       supportedLocales: AppConstants.supportedLocales,
@@ -64,22 +82,29 @@ class QuranTutorApp extends StatelessWidget {
         BlocProvider(
           create: (context) => getIt<AuthBloc>()..add(AppStarted()),
         ),
+        BlocProvider(
+          create: (context) => ThemeCubit(),
+        ),
       ],
-      child: MaterialApp.router(
-        title: 'Quran Tutor',
-        debugShowCheckedModeBanner: false,
-        localizationsDelegates: context.localizationDelegates,
-        supportedLocales: context.supportedLocales,
-        locale: context.locale,
-        theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
-        themeMode: ThemeMode.light,
-        routerConfig: AppRouter.router,
-        builder: (context, child) {
-          final isRtl = context.locale.languageCode == 'ar';
-          return Directionality(
-            textDirection: isRtl ? TextDirection.rtl : TextDirection.ltr,
-            child: child!,
+      child: BlocBuilder<ThemeCubit, ThemeState>(
+        builder: (context, themeState) {
+          return MaterialApp.router(
+            title: 'Quran Tutor',
+            debugShowCheckedModeBanner: false,
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: themeState.themeMode,
+            routerConfig: AppRouter.router,
+            builder: (context, child) {
+              final isRtl = context.locale.languageCode == 'ar';
+              return Directionality(
+                textDirection: isRtl ? TextDirection.rtl : TextDirection.ltr,
+                child: child!,
+              );
+            },
           );
         },
       ),
