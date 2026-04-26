@@ -5,9 +5,8 @@ class SessionsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Sessions')),
-      body: const Center(child: Text('Sessions - To be implemented')),
+    return const Scaffold(
+      body: Center(child: Text('SessionsScreen')),
     );
   }
 }

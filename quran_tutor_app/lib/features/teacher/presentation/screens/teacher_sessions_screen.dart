@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
-class TeacherSessionsScreen extends StatelessWidget {
-  const TeacherSessionsScreen({super.key});
+class CLASSNAME extends StatelessWidget {
+  const CLASSNAME({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('My Sessions')),
-      body: const Center(child: Text('Teacher Sessions - To be implemented')),
+    return const Scaffold(
+      body: Center(child: Text('CLASSNAME')),
     );
   }
 }

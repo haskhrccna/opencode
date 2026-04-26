@@ -1,3 +1,4 @@
+// lib/features/sessions/presentation/screens/session_detail_screen.dart
 import 'package:flutter/material.dart';
 
 class SessionDetailScreen extends StatelessWidget {

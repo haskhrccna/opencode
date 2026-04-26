@@ -5,9 +5,8 @@ class ProgressScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Progress')),
-      body: const Center(child: Text('Progress - To be implemented')),
+    return const Scaffold(
+      body: Center(child: Text('ProgressScreen')),
     );
   }
 }

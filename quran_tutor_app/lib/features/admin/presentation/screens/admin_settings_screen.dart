@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
-class AdminSettingsScreen extends StatelessWidget {
-  const AdminSettingsScreen({super.key});
+class CLASSNAME extends StatelessWidget {
+  const CLASSNAME({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Settings')),
-      body: const Center(child: Text('Admin Settings - To be implemented')),
+    return const Scaffold(
+      body: Center(child: Text('CLASSNAME')),
     );
   }
 }

@@ -1,145 +1,20 @@
 {
-  "app": {
-    "name": "Quran Tutor",
-    "version": "Version",
-    "loading": "Loading...",
-    "save": "Save",
-    "cancel": "Cancel",
-    "confirm": "Confirm",
-    "delete": "Delete",
-    "edit": "Edit",
-    "create": "Create",
-    "search": "Search",
-    "filter": "Filter",
-    "sort": "Sort",
-    "close": "Close",
-    "back": "Back",
-    "next": "Next",
-    "previous": "Previous",
-    "done": "Done",
-    "retry": "Retry",
-    "refresh": "Refresh",
-    "view": "View",
-    "more": "More",
-    "logout": "Sign Out"
-  },
+  "app_name": "Quran Tutor",
   "auth": {
-    "login": {
-      "title": "Sign In",
-      "email_label": "Email",
-      "email_hint": "Enter your email",
-      "password_label": "Password",
-      "password_hint": "Enter your password",
-      "forgot_password": "Forgot password?",
-      "submit": "Sign In",
-      "no_account": "Don't have an account?",
-      "register": "Register now",
-      "remember_me": "Remember me"
-    },
-    "signup": {
-      "title": "Create Account",
-      "name_label": "Full Name",
-      "name_hint": "Enter your full name",
-      "email_label": "Email",
-      "email_hint": "Enter your email",
-      "password_label": "Password",
-      "password_hint": "Create a strong password",
-      "confirm_password_label": "Confirm Password",
-      "confirm_password_hint": "Re-enter your password",
-      "submit": "Create Account",
-      "have_account": "Already have an account?",
-      "login": "Sign In",
-      "phone_label": "Phone Number",
-      "phone_hint": "05XXXXXXXX",
-      "dob_label": "Date of Birth",
-      "dob_hint": "DD/MM/YYYY",
-      "invite_code_label": "Teacher Invite Code (Optional)",
-      "invite_code_hint": "Enter invite code",
-      "bio_label": "Bio",
-      "bio_hint": "Write a short bio about yourself",
-      "website_label": "Website",
-      "website_hint": "https://example.com"
-    },
-    "errors": {
-      "invalid_credentials": "Invalid email or password",
-      "user_not_found": "User not found",
-      "email_in_use": "This email is already in use",
-      "weak_password": "Password is too weak",
-      "account_disabled": "Account has been disabled",
-      "too_many_attempts": "Too many attempts, please try again later",
-      "session_expired": "Session expired, please sign in again",
-      "network_error": "Network connection failed, please check your internet",
-      "unknown": "An unexpected error occurred"
-    }
+    "login": "Login",
+    "signup": "Sign Up",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password"
   },
-  "validation": {
-    "required": "This field is required",
-    "required_field": "{field} is required",
-    "email_invalid": "Invalid email address",
-    "password_min_length": "Password must be at least {min} characters",
-    "password_max_length": "Password must not exceed {max} characters",
-    "password_uppercase": "Must contain at least one uppercase letter",
-    "password_lowercase": "Must contain at least one lowercase letter",
-    "password_number": "Must contain at least one number",
-    "password_special_char_recommended": "Tip: Adding special characters makes your password stronger",
-    "password_mismatch": "Passwords do not match",
-    "name_arabic_required": "Name is required",
-    "name_arabic_invalid": "Name must be in Arabic only",
-    "name_arabic_min_length": "Name must be at least {min} characters",
-    "name_arabic_max_length": "Name must not exceed {max} characters",
-    "name_english_required": "English name is required",
-    "name_english_invalid": "Name must be in English only",
-    "name_consecutive_spaces": "Name contains consecutive spaces",
-    "phone_required": "Phone number is required",
-    "phone_invalid": "Invalid phone number",
-    "phone_wrong_prefix": "Phone number must start with +966 or 05",
-    "age_required": "Age is required",
-    "age_invalid": "Age must be a number",
-    "age_min": "Age must be at least {min} years",
-    "age_max": "Age must not exceed {max} years",
-    "invite_code_required": "Invite code is required",
-    "invite_code_min_length": "Invite code must be at least 6 characters",
-    "invite_code_invalid": "Invite code must contain letters and numbers only",
-    "bio_max_length": "Bio must not exceed {max} characters",
-    "url_invalid": "Invalid URL",
-    "min_length": "Must be at least {min} characters",
-    "max_length": "Must not exceed {max} characters"
+  "status": {
+    "pending": "Pending",
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "suspended": "Suspended"
   },
-  "error": {
-    "title": "An error occurred",
-    "network": "Network connection failed, please check your internet",
-    "server": "Server error, please try again later",
-    "auth": "Authentication error",
-    "cache": "Error accessing local data",
-    "validation": "Data validation error",
-    "unknown": "An unexpected error occurred",
-    "go_home": "Go Home",
-    "page_not_found": "Page not found",
-    "retry": "Retry"
-  },
-  "pending": {
-    "title": "Your request is under review",
-    "message": "You will be notified when your request is approved",
-    "logout": "Sign Out"
-  },
-  "rejected": {
-    "title": "Your request was rejected",
-    "message": "Please contact administration for more information",
-    "logout": "Sign Out"
-  },
-  "settings": {
-    "title": "Settings",
-    "theme": {
-      "title": "Theme",
-      "light": "Light",
-      "dark": "Dark",
-      "system": "System",
-      "toggle": "Toggle Theme"
-    },
-    "language": {
-      "title": "Language",
-      "arabic": "العربية",
-      "english": "English"
-    }
+  "errors": {
+    "general": "An error occurred, please try again",
+    "no_internet": "No internet connection"
   }
 }
