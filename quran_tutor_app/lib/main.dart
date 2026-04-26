@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -56,7 +57,7 @@ void main() async {
   await configureDependencies();
 
   // Set up BLoC observer
-  Bloc.observer = AppBlocObserver();
+  if (kDebugMode) Bloc.observer = AppBlocObserver();
 
   // Log app start
   logger.i('🚀 Quran Tutor App Started');
@@ -97,21 +98,11 @@ class QuranTutorApp extends StatelessWidget {
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: context.locale,
-            theme: AppTheme.lightTheme,
-            darkTheme: AppTheme.darkTheme,
-            themeMode: themeState.themeMode == ThemeMode.system
-                ? MediaQuery.platformBrightnessOf(context) == Brightness.dark
-                    ? ThemeMode.dark
-                    : ThemeMode.light
-                : themeState.themeMode,
-            routerConfig: AppRouter.router,
-            builder: (context, child) {
-              final isRtl = context.locale.languageCode == 'ar';
-              return Directionality(
-                textDirection: isRtl ? TextDirection.rtl : TextDirection.ltr,
-                child: child!,
-              );
-            },
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.system,
+      routerConfig: AppRouter.router,
+      builder: (context, child) => child!,
           );
         },
       ),

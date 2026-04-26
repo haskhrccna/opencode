@@ -44,7 +44,7 @@ class AppBlocObserver extends BlocObserver {
     super.onTransition(bloc, transition);
     // Only log in debug mode - strip verbose BLoC logs in release
     if (kDebugMode) {
-      _logger.v('➡️ Transition: ${bloc.runtimeType}\n'
+      _logger.t('➡️ Transition: ${bloc.runtimeType}\n'
           '  Event: ${transition.event.runtimeType}\n'
           '  Current: ${transition.currentState.runtimeType}\n'
           '  Next: ${transition.nextState.runtimeType}');

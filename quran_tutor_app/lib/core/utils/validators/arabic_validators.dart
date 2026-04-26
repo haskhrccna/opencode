@@ -84,27 +84,13 @@ class ArabicValidators {
   /// Validates phone numbers (Saudi format)
   static String? validatePhone(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'validation.phone_required';
+      return 'رقم الجوال مطلوب';
     }
 
-    final trimmed = value.trim();
-
-    // Remove spaces and dashes
-    final cleanPhone = trimmed.replaceAll(RegExp(r'[\s-]'), '');
-
-    // Check if starts with +966 or 05
-    if (!cleanPhone.startsWith('+966') && !cleanPhone.startsWith('05') && !cleanPhone.startsWith('00966')) {
-      return 'validation.phone_wrong_prefix';
+    final cleanPhone = value.trim().replaceAll(RegExp(r'[\s\-]'), '');
+    if (!AppConstants.phoneRegex.hasMatch(cleanPhone)) {
+      return 'رقم الجوال يجب أن يكون بصيغة +9665XXXXXXXX أو 05XXXXXXXX';
     }
-
-    // Validate length
-    final length = cleanPhone.length;
-    if ((cleanPhone.startsWith('+966') && length != 13) ||
-        (cleanPhone.startsWith('05') && length != 10) ||
-        (cleanPhone.startsWith('00966') && length != 14)) {
-      return 'validation.phone_invalid';
-    }
-
     return null;
   }
 
