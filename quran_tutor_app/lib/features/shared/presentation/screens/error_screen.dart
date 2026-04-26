@@ -22,8 +22,8 @@ class ErrorScreen extends StatelessWidget {
             const SizedBox(height: 16),
             Text(error?.toString() ?? 'الصفحة غير موجودة'),
             const SizedBox(height: 32),
-            ElevatedButton(
-              onPressed: () => context.go('/'),
+            FilledButton(
+              onPressed: () => context.go('/splash'),
               child: const Text('العودة للرئيسية'),
             ),
           ],

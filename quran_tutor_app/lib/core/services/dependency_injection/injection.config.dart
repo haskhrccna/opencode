@@ -12,9 +12,8 @@ GetIt $initGetIt(
 }) {
   final gh = GetItHelper(getIt, environment, environmentFilter);
   final supabaseModule = _$SupabaseModule();
-  gh.singleton<SupabaseClient>(supabaseModule.supabaseClient);
-  gh.singleton<GoTrueClient>(supabaseModule.auth);
-  gh.singleton<SupabaseStorageClient>(supabaseModule.storage);
+gh.singleton<SupabaseClient>(supabaseModule.supabaseClient);
+    gh.singleton<SupabaseStorageClient>(supabaseModule.storage);
   gh.factory<AuthBloc>(() => AuthBloc());
   return getIt;
 }

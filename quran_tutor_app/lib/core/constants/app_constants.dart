@@ -31,6 +31,7 @@ class AppConstants {
   static const String studentsCollection = 'students';
   static const String notificationsCollection = 'notifications';
   static const String auditLogsCollection = 'audit_logs';
+  static const String teacherInvitesTable = 'teacher_invites';
 
   // Storage Keys
   static const String authTokenKey = 'auth_token';

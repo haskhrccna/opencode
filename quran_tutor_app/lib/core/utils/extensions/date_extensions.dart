@@ -53,7 +53,7 @@ extension DateTimeExtensions on DateTime {
 
   /// Get start of week (Saturday for Arabic calendar)
   DateTime get startOfWeek {
-    final diff = weekday % 7;
+    final diff = (weekday + 1) % 7;
     return subtract(Duration(days: diff)).startOfDay;
   }
 

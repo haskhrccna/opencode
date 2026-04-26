@@ -21,10 +21,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize Supabase
-  await Supabase.initialize(
-    url: AppEnvironment.supabaseUrl,
-    anonKey: AppEnvironment.supabaseAnonKey,
-  );
+  const supabaseUrl = AppEnvironment.supabaseUrl;
+  const supabaseAnonKey = AppEnvironment.supabaseAnonKey;
+  assert(supabaseUrl.isNotEmpty, 'SUPABASE_URL must be set via --dart-define');
+  assert(supabaseAnonKey.isNotEmpty, 'SUPABASE_ANON_KEY must be set via --dart-define');
+  await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
 
   // Initialize Easy Localization
   await EasyLocalization.ensureInitialized();
