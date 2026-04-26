@@ -11,7 +11,7 @@ abstract class AppException implements Exception {
   });
 
   @override
-  String toString() => '[$runtimeType] \$message';
+  String toString() => '[$runtimeType] $message';
 }
 
 /// Network-related exceptions
@@ -153,5 +153,39 @@ class AuthException extends AppException {
   factory AuthException.sessionExpired() => const AuthException(
         message: 'Session expired',
         code: 'session_expired',
+      );
+
+  factory AuthException.unauthenticated() => const AuthException(
+        message: 'User not authenticated',
+        code: 'unauthenticated',
+      );
+}
+
+/// Validation-related exceptions
+class ValidationException extends AppException {
+  final Map<String, String>? errors;
+
+  const ValidationException({
+    required String message,
+    String? code,
+    this.errors,
+    StackTrace? stackTrace,
+  }) : super(
+          message: message,
+          code: code ?? 'validation_error',
+          stackTrace: stackTrace,
+        );
+
+  factory ValidationException.invalidInput({String? message, Map<String, String>? errors}) =>
+      ValidationException(
+        message: message ?? 'Invalid input',
+        code: 'invalid_input',
+        errors: errors,
+      );
+
+  factory ValidationException.requiredField(String field) => ValidationException(
+        message: '$field is required',
+        code: 'required_field',
+        errors: {field: 'This field is required'},
       );
 }

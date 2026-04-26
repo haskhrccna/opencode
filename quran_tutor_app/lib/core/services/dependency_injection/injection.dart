@@ -1,9 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'injection.config.dart';
 
@@ -16,18 +13,26 @@ final getIt = GetIt.instance;
 )
 Future<void> configureDependencies() async => $initGetIt(getIt);
 
-// External Modules
+/// Supabase Module - provides Supabase client and services
 @module
-abstract class FirebaseModule {
+abstract class SupabaseModule {
+  /// Get Supabase client instance
   @singleton
-  FirebaseAuth get firebaseAuth => FirebaseAuth.instance;
+  SupabaseClient get supabaseClient => Supabase.instance.client;
 
+  /// Get GoTrue client (Auth)
   @singleton
-  FirebaseFirestore get firestore => FirebaseFirestore.instance;
+  GoTrueClient get auth => Supabase.instance.client.auth;
 
+  /// Get PostgREST client (Database)
   @singleton
-  FirebaseMessaging get messaging => FirebaseMessaging.instance;
+  PostgrestClient get database => Supabase.instance.client.rest;
 
+  /// Get Storage client
   @singleton
-  FirebaseStorage get storage => FirebaseStorage.instance;
+  SupabaseStorageClient get storage => Supabase.instance.client.storage;
+
+  /// Get Realtime client
+  @singleton
+  RealtimeClient get realtime => Supabase.instance.client.realtime;
 }

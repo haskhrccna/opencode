@@ -8,7 +8,7 @@ import '../utils/logging/app_logger.dart';
 import 'failures.dart';
 
 /// Centralized error handler for the application
-/// 
+///
 /// This class handles all application-level errors including:
 /// - Flutter framework errors
 /// - Platform dispatcher errors
@@ -34,9 +34,9 @@ class ErrorHandler {
   /// Handle Flutter framework errors
   static void _handleFlutterError(FlutterErrorDetails details) {
     final failure = _convertFlutterErrorToFailure(details);
-    
+
     _logger.e(
-      'Flutter Error: \${details.exception}',
+      'Flutter Error: ${details.exception}',
       error: details.exception,
       stackTrace: details.stack,
     );
@@ -53,9 +53,9 @@ class ErrorHandler {
   /// Handle platform dispatcher errors (from isolates)
   static bool _handlePlatformError(Object error, StackTrace stack) {
     final failure = _convertToFailure(error, stack);
-    
+
     _logger.e(
-      'Platform Error: \$error',
+      'Platform Error: $error',
       error: error,
       stackTrace: stack,
     );
@@ -119,13 +119,9 @@ class ErrorHandler {
 
   /// Report error to crash analytics
   static void _reportError(Failure failure) {
-    // TODO: Integrate with Firebase Crashlytics or other crash reporting service
+    // TODO: Integrate with analytics service
     if (!kDebugMode) {
-      // FirebaseCrashlytics.instance.recordError(
-      //   failure,
-      //   failure.stackTrace,
-      //   reason: failure.code,
-      // );
+      // Could send to PostHog or other analytics
     }
   }
 
@@ -139,7 +135,7 @@ class ErrorHandler {
     } catch (error, stack) {
       final failure = _convertToFailure(error, stack);
       _logger.e(
-        'Async operation failed: \${operationName ?? 'Unknown'}',
+        'Async operation failed: ${operationName ?? "Unknown"}',
         error: error,
         stackTrace: stack,
       );

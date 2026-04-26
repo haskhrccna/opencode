@@ -6,11 +6,16 @@ import '../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/signup_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
+import '../../features/auth/presentation/screens/pending_approval_screen.dart';
+import '../../features/auth/presentation/screens/rejected_screen.dart';
 import '../../features/student/presentation/screens/student_home_screen.dart';
 import '../../features/teacher/presentation/screens/teacher_home_screen.dart';
+import '../../features/teacher/presentation/screens/teacher_sessions_screen.dart';
+import '../../features/teacher/presentation/screens/teacher_students_screen.dart';
 import '../../features/admin/presentation/screens/admin_dashboard_screen.dart';
-import '../../features/admin/presentation/screens/pending_students_screen.dart';
-import '../../features/admin/presentation/screens/teacher_management_screen.dart';
+import '../../features/admin/presentation/screens/admin_sessions_screen.dart';
+import '../../features/admin/presentation/screens/admin_settings_screen.dart';
+import '../../features/admin/presentation/screens/reports_screen.dart';
 import '../../features/sessions/presentation/screens/sessions_screen.dart';
 import '../../features/sessions/presentation/screens/session_detail_screen.dart';
 import '../../features/grading/presentation/screens/progress_screen.dart';
@@ -249,8 +254,6 @@ class AppRouter {
 
   /// Check if user has access to a specific route
   static bool _hasAccess(UserRole role, String path) {
-    final rolePrefix = '/${role.value}';
-
     // Admin has access to everything
     if (role == UserRole.admin) {
       return true;
@@ -274,118 +277,6 @@ class AppRouter {
   }
 }
 
-// Placeholder screens (to be implemented in respective features)
-class PendingApprovalScreen extends StatelessWidget {
-  const PendingApprovalScreen({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.hourglass_top, size: 80, color: Colors.orange),
-            const SizedBox(height: 24),
-            Text(
-              l10n.t('pending.title'),
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const SizedBox(height: 16),
-            Text(l10n.t('pending.message')),
-            const SizedBox(height: 32),
-            ElevatedButton(
-              onPressed: () {
-                context.read<AuthBloc>().add(SignOutRequested());
-              },
-              child: Text(l10n.t('pending.logout')),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class RejectedScreen extends StatelessWidget {
-  const RejectedScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.cancel_outlined, size: 80, color: Colors.red),
-            const SizedBox(height: 24),
-            Text(
-              l10n.t('rejected.title'),
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const SizedBox(height: 16),
-            Text(l10n.t('rejected.message')),
-            const SizedBox(height: 32),
-            ElevatedButton(
-              onPressed: () {
-                context.read<AuthBloc>().add(SignOutRequested());
-              },
-              child: Text(l10n.t('rejected.logout')),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class TeacherSessionsScreen extends StatelessWidget {
-  const TeacherSessionsScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
-
-class TeacherStudentsScreen extends StatelessWidget {
-  const TeacherStudentsScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
-
-class AdminSessionsScreen extends StatelessWidget {
-  const AdminSessionsScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
-
-class ReportsScreen extends StatelessWidget {
-  const ReportsScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
-
-class AdminSettingsScreen extends StatelessWidget {
-  const AdminSettingsScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
 
 

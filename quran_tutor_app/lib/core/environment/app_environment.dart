@@ -1,8 +1,8 @@
 /// Environment configuration using build-time dart defines
-/// 
+///
 /// Build with:
-/// flutter run --dart-define=API_BASE_URL=https://api.qurantutor.app --dart-define=ENV=prod
-/// 
+/// flutter run --dart-define=SUPABASE_URL=https://your-project.supabase.co --dart-define=SUPABASE_ANON_KEY=your-anon-key
+///
 /// Or use flutter flavors:
 /// flutter run --flavor dev
 /// flutter run --flavor staging
@@ -10,10 +10,28 @@
 class AppEnvironment {
   AppEnvironment._();
 
+  /// Supabase URL - configurable at build time
+  static const String supabaseUrl = String.fromEnvironment(
+    'SUPABASE_URL',
+    defaultValue: 'https://your-project.supabase.co',
+  );
+
+  /// Supabase Anonymous Key - configurable at build time
+  static const String supabaseAnonKey = String.fromEnvironment(
+    'SUPABASE_ANON_KEY',
+    defaultValue: 'your-anon-key',
+  );
+
+  /// OneSignal App ID for push notifications
+  static const String oneSignalAppId = String.fromEnvironment(
+    'ONESIGNAL_APP_ID',
+    defaultValue: 'your-onesignal-app-id',
+  );
+
   /// API Base URL - configurable at build time
   static const String baseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue: 'https://dev-api.qurantutor.app',
+    defaultValue: 'https://your-project.supabase.co/rest/v1',
   );
 
   /// Environment name (dev, staging, prod)
@@ -70,11 +88,11 @@ enum AppFlavor {
   String get baseUrl {
     switch (this) {
       case AppFlavor.dev:
-        return 'https://dev-api.qurantutor.app';
+        return 'https://dev-your-project.supabase.co/rest/v1';
       case AppFlavor.staging:
-        return 'https://staging-api.qurantutor.app';
+        return 'https://staging-your-project.supabase.co/rest/v1';
       case AppFlavor.prod:
-        return 'https://api.qurantutor.app';
+        return 'https://your-project.supabase.co/rest/v1';
     }
   }
 

@@ -1,10 +1,9 @@
+import 'package:supabase_flutter/supabase_flutter.dart';
+
 import '../../../../core/constants/app_constants.dart';
 import '../../domain/entities/auth_user.dart';
 
-/// Data model representing a user from Supabase/Firebase
-///
-/// This model handles serialization/deserialization
-/// and maps to the domain entity AuthUser.
+/// User model for authentication
 class UserModel {
   final String id;
   final String email;
@@ -18,9 +17,8 @@ class UserModel {
   final String? phoneNumber;
   final DateTime? dateOfBirth;
   final String? teacherId;
-  final Map<String, dynamic>? metadata;
 
-  const UserModel({
+  UserModel({
     required this.id,
     required this.email,
     this.displayName,
@@ -33,56 +31,78 @@ class UserModel {
     this.phoneNumber,
     this.dateOfBirth,
     this.teacherId,
-    this.metadata,
   });
 
-  /// Create from Supabase user
-  factory UserModel.fromSupabase(Map<String, dynamic> json) {
+  /// Factory constructor from JSON (snake_case keys from Supabase)
+  factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       id: json['id'] as String,
-      email: json['email'] as String,
-      displayName: json['display_name'] as String?,
+      email: json['email'] as String? ?? '',
+      displayName: json['display_name'] as String? ?? json['name'] as String?,
       arabicName: json['arabic_name'] as String?,
-      photoUrl: json['photo_url'] as String?,
+      photoUrl: json['avatar_url'] as String? ?? json['photo_url'] as String?,
       role: json['role'] as String? ?? 'student',
       status: json['status'] as String? ?? 'pending',
-      createdAt: DateTime.parse(json['created_at'] as String),
+      createdAt: json['created_at'] != null
+          ? DateTime.parse(json['created_at'] as String)
+          : DateTime.now(),
       updatedAt: json['updated_at'] != null
           ? DateTime.parse(json['updated_at'] as String)
           : null,
-      phoneNumber: json['phone_number'] as String?,
+      phoneNumber: json['phone_number'] as String? ?? json['phone'] as String?,
       dateOfBirth: json['date_of_birth'] != null
           ? DateTime.parse(json['date_of_birth'] as String)
           : null,
       teacherId: json['teacher_id'] as String?,
-      metadata: json['metadata'] as Map<String, dynamic>?,
     );
   }
 
-  /// Create from Firebase user document
-  factory UserModel.fromFirebase(String uid, Map<String, dynamic> json) {
+  /// Factory constructor from Supabase user
+  factory UserModel.fromSupabaseUser(User user, Map<String, dynamic>? profileData) {
     return UserModel(
-      id: uid,
-      email: json['email'] as String,
-      displayName: json['displayName'] as String? ?? json['name'] as String?,
-      arabicName: json['arabicName'] as String? ?? json['arabic_name'] as String?,
-      photoUrl: json['photoUrl'] as String? ?? json['photo_url'] as String?,
-      role: json['role'] as String? ?? 'student',
-      status: json['status'] as String? ?? 'pending',
-      createdAt: json['createdAt'] != null
-          ? (json['createdAt'] as dynamic).toDate()
+      id: user.id,
+      email: user.email ?? '',
+      displayName: profileData?['display_name'] as String? ??
+          profileData?['name'] as String? ??
+          user.userMetadata?['name'] as String?,
+      arabicName: profileData?['arabic_name'] as String?,
+      photoUrl: profileData?['avatar_url'] as String? ??
+          user.userMetadata?['avatar_url'] as String?,
+      role: profileData?['role'] as String? ?? 'student',
+      status: profileData?['status'] as String? ?? 'pending',
+      createdAt: user.createdAt != null
+          ? DateTime.parse(user.createdAt!)
           : DateTime.now(),
-      updatedAt: json['updatedAt'] != null
-          ? (json['updatedAt'] as dynamic).toDate()
+      updatedAt: user.updatedAt != null ? DateTime.parse(user.updatedAt!) : null,
+      phoneNumber: profileData?['phone_number'] as String? ??
+          profileData?['phone'] as String?,
+      dateOfBirth: profileData?['date_of_birth'] != null
+          ? DateTime.parse(profileData!['date_of_birth'] as String)
           : null,
-      phoneNumber: json['phoneNumber'] as String? ?? json['phone_number'] as String?,
-      dateOfBirth: json['dateOfBirth'] != null
-          ? (json['dateOfBirth'] as dynamic).toDate()
-          : null,
-      teacherId: json['teacherId'] as String? ?? json['teacher_id'] as String?,
-      metadata: json['metadata'] as Map<String, dynamic>?,
+      teacherId: profileData?['teacher_id'] as String?,
     );
   }
+
+  /// Convert to JSON (snake_case for Supabase)
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'email': email,
+      'display_name': displayName,
+      'arabic_name': arabicName,
+      'avatar_url': photoUrl,
+      'role': role,
+      'status': status,
+      'created_at': createdAt.toIso8601String(),
+      'updated_at': updatedAt?.toIso8601String(),
+      'phone_number': phoneNumber,
+      'date_of_birth': dateOfBirth?.toIso8601String(),
+      'teacher_id': teacherId,
+    };
+  }
+
+  /// Convert to Supabase JSON format (same as toJson)
+  Map<String, dynamic> toSupabaseJson() => toJson();
 
   /// Convert to domain entity
   AuthUser toEntity() {
@@ -120,43 +140,6 @@ class UserModel {
     );
   }
 
-  /// Convert to Supabase JSON
-  Map<String, dynamic> toSupabaseJson() {
-    return {
-      'id': id,
-      'email': email,
-      'display_name': displayName,
-      'arabic_name': arabicName,
-      'photo_url': photoUrl,
-      'role': role,
-      'status': status,
-      'created_at': createdAt.toIso8601String(),
-      'updated_at': updatedAt?.toIso8601String(),
-      'phone_number': phoneNumber,
-      'date_of_birth': dateOfBirth?.toIso8601String(),
-      'teacher_id': teacherId,
-      'metadata': metadata,
-    };
-  }
-
-  /// Convert to Firebase JSON
-  Map<String, dynamic> toFirebaseJson() {
-    return {
-      'email': email,
-      'displayName': displayName,
-      'arabicName': arabicName,
-      'photoUrl': photoUrl,
-      'role': role,
-      'status': status,
-      'createdAt': createdAt,
-      'updatedAt': updatedAt ?? DateTime.now(),
-      'phoneNumber': phoneNumber,
-      'dateOfBirth': dateOfBirth,
-      'teacherId': teacherId,
-      'metadata': metadata,
-    };
-  }
-
   UserModel copyWith({
     String? id,
     String? email,
@@ -170,7 +153,6 @@ class UserModel {
     String? phoneNumber,
     DateTime? dateOfBirth,
     String? teacherId,
-    Map<String, dynamic>? metadata,
   }) {
     return UserModel(
       id: id ?? this.id,
@@ -185,10 +167,6 @@ class UserModel {
       phoneNumber: phoneNumber ?? this.phoneNumber,
       dateOfBirth: dateOfBirth ?? this.dateOfBirth,
       teacherId: teacherId ?? this.teacherId,
-      metadata: metadata ?? this.metadata,
     );
   }
-
-  @override
-  String toString() => 'UserModel(id: $id, email: $email, role: $role)';
 }
