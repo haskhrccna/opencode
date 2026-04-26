@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -20,15 +22,22 @@ import 'features/auth/presentation/bloc/auth_bloc.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+
+  const supabaseUrl = String.fromEnvironment('SUPABASE_URL');
+  const supabaseAnonKey = String.fromEnvironment('SUPABASE_ANON_KEY');
+  assert(supabaseUrl.isNotEmpty, 'SUPABASE_URL must be provided via --dart-define=SUPABASE_URL=...');
+  assert(supabaseAnonKey.isNotEmpty, 'SUPABASE_ANON_KEY must be provided via --dart-define=SUPABASE_ANON_KEY=...');
+
   // Initialize Supabase
   const supabaseUrl = AppEnvironment.supabaseUrl;
   const supabaseAnonKey = AppEnvironment.supabaseAnonKey;
   assert(supabaseUrl.isNotEmpty, 'SUPABASE_URL must be set via --dart-define');
   assert(supabaseAnonKey.isNotEmpty, 'SUPABASE_ANON_KEY must be set via --dart-define');
+
   await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
 
-  // Initialize Easy Localization
   await EasyLocalization.ensureInitialized();
+
 
   // Initialize HydratedBloc storage
   HydratedBloc.storage = await HydratedStorage.build(
@@ -39,12 +48,12 @@ void main() async {
   final logger = AppLogger();
 
   // Set preferred orientations
+
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
 
-  // Set system UI overlay style
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
@@ -54,9 +63,11 @@ void main() async {
     ),
   );
 
-  // Initialize dependency injection
   await configureDependencies();
 
+  if (kDebugMode) {
+    Bloc.observer = AppBlocObserver();
+  }
   // Set up BLoC observer
   if (kDebugMode) Bloc.observer = AppBlocObserver();
 
@@ -86,6 +97,20 @@ class QuranTutorApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => getIt<AuthBloc>()..add(const AppStarted()),
+
+        ),
+      ],
+      child: MaterialApp.router(
+        title: 'Quran Tutor',
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        themeMode: ThemeMode.system,
+        routerConfig: AppRouter.router,
+
         ),
         BlocProvider(
           create: (context) => ThemeCubit(),
@@ -106,6 +131,7 @@ class QuranTutorApp extends StatelessWidget {
       builder: (context, child) => child!,
           );
         },
+>>>>>>> main
       ),
     );
   }

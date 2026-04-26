@@ -71,7 +71,8 @@ class UserModel extends Equatable {
   /// Check if user is an admin
   bool get isAdmin => role == UserRole.admin;
 
-  /// Convert to JSON
+  /// Convert to JSON for Supabase (snake_case keys)
+  /// Note: assigned_students is not a column — query teacher_students table instead
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -79,19 +80,18 @@ class UserModel extends Equatable {
       'email': email,
       'phone': phone,
       'age': age,
-      'photoUrl': photoUrl,
+      'avatar_url': photoUrl,
       'role': role.value,
       'status': status.value,
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt?.toIso8601String(),
-      'preferredLevel': preferredLevel,
+      'created_at': createdAt.toIso8601String(),
+      'updated_at': updatedAt?.toIso8601String(),
+      'preferred_level': preferredLevel,
       'bio': bio,
-      'teacherId': teacherId,
-      'assignedStudents': assignedStudents,
+      'teacher_id': teacherId,
     };
   }
 
-  /// Create from JSON
+  /// Create from a Supabase profiles row (snake_case keys)
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       id: json['id'] as String,
@@ -99,18 +99,18 @@ class UserModel extends Equatable {
       email: json['email'] as String?,
       phone: json['phone'] as String?,
       age: json['age'] as int?,
-      photoUrl: json['photoUrl'] as String?,
+      photoUrl: json['avatar_url'] as String?,
       role: UserRole.fromString(json['role'] as String),
       status: UserStatus.fromString(json['status'] as String),
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: json['updatedAt'] != null
-          ? DateTime.parse(json['updatedAt'] as String)
+      createdAt: DateTime.parse(json['created_at'] as String),
+      updatedAt: json['updated_at'] != null
+          ? DateTime.parse(json['updated_at'] as String)
           : null,
-      preferredLevel: json['preferredLevel'] as String?,
+      preferredLevel: json['preferred_level'] as String?,
       bio: json['bio'] as String?,
-      teacherId: json['teacherId'] as String?,
-      assignedStudents: json['assignedStudents'] != null
-          ? List<String>.from(json['assignedStudents'] as List)
+      teacherId: json['teacher_id'] as String?,
+      assignedStudents: json['assigned_students'] != null
+          ? List<String>.from(json['assigned_students'] as List)
           : null,
     );
   }

@@ -81,7 +81,7 @@ class ArabicValidators {
     return null;
   }
 
-  /// Validates phone numbers (Saudi format)
+  /// Validates phone numbers (Saudi format: +9665XXXXXXXX or 05XXXXXXXX)
   static String? validatePhone(String? value) {
     if (value == null || value.trim().isEmpty) {
       return 'رقم الجوال مطلوب';
