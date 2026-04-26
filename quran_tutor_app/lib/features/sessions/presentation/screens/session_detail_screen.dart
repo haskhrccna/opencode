@@ -13,8 +13,8 @@ class SessionDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('تفاصيل الجلسة')),
-      body: Center(child: Text('جلسة: $sessionId')),
+      appBar: AppBar(title: Text(sessionId)),
+      body: const Center(child: Text('SessionDetailScreen')),
     );
   }
 }

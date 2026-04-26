@@ -5,9 +5,8 @@ class TeacherSessionsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('الجلسات')),
-      body: const Center(child: Text('قائمة الجلسات')),
+    return const Scaffold(
+      body: Center(child: Text('TeacherSessionsScreen')),
     );
   }
 }

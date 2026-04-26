@@ -13,12 +13,26 @@ final getIt = GetIt.instance;
 )
 Future<void> configureDependencies() async => $initGetIt(getIt);
 
-// External Modules
+/// Supabase Module - provides Supabase client and services
 @module
 abstract class SupabaseModule {
+  /// Get Supabase client instance
   @singleton
   SupabaseClient get supabaseClient => Supabase.instance.client;
 
+  /// Get GoTrue client (Auth)
   @singleton
-  SupabaseStorageClient get supabaseStorage => Supabase.instance.client.storage;
+  GoTrueClient get auth => Supabase.instance.client.auth;
+
+  /// Get PostgREST client (Database)
+  @singleton
+  PostgrestClient get database => Supabase.instance.client.rest;
+
+  /// Get Storage client
+  @singleton
+  SupabaseStorageClient get storage => Supabase.instance.client.storage;
+
+  /// Get Realtime client
+  @singleton
+  RealtimeClient get realtime => Supabase.instance.client.realtime;
 }

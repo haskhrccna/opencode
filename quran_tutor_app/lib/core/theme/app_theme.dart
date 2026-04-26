@@ -232,8 +232,8 @@ class AppTheme {
     );
   }
 
-  // Card Theme
-  static CardTheme get _cardTheme {
+// Card Theme
+static CardThemeData get _cardTheme {
     return CardTheme(
       elevation: AppConstants.defaultElevation,
       margin: const EdgeInsets.all(AppConstants.smallPadding),
@@ -400,8 +400,8 @@ class AppTheme {
     );
   }
 
-  // Dialog Theme
-  static DialogTheme get _dialogTheme {
+// Dialog Theme
+static DialogThemeData get _dialogTheme {
     return DialogTheme(
       backgroundColor: AppColors.surface,
       elevation: 6,
@@ -447,8 +447,8 @@ class AppTheme {
     );
   }
 
-  // Tab Bar Theme
-  static TabBarTheme get _tabBarTheme {
+// Tab Bar Theme
+static TabBarThemeData get _tabBarTheme {
     return TabBarTheme(
       labelStyle: _textTheme.titleSmall?.copyWith(
         fontWeight: FontWeight.w600,

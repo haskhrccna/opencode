@@ -69,17 +69,27 @@ class AppColors {
   static const Color backgroundDark = Color(0xFF1A1C18);
   static const Color onBackgroundDark = Color(0xFFE2E3DD);
 
-  // Semantic colors
+  // Semantic status colors — matches UserStatus enum
+  static const Color pending = Color(0xFFFFA000);
+  static const Color approved = Color(0xFF2E7D32);
+  static const Color rejected = Color(0xFFC62828);
+  static const Color suspended = Color(0xFF757575);
+
+  // Semantic UI colors
   static const Color success = Color(0xFF2E7D32);
   static const Color onSuccess = Color(0xFFFFFFFF);
-  static const Color warning = Color(0xFFF57F17);
+  static const Color successContainer = Color(0xFFC8E6C9);
+  static const Color warning = Color(0xFFED8E00);
   static const Color onWarning = Color(0xFFFFFFFF);
-  static const Color info = Color(0xFF0277BD);
+  static const Color warningContainer = Color(0xFFFFDDB4);
+  static const Color info = Color(0xFF00639B);
   static const Color onInfo = Color(0xFFFFFFFF);
+  static const Color infoContainer = Color(0xFFCEE5FF);
+  static const Color scrim = Color(0xFF000000);
 
-  // User status colors
-  static const Color statusPending = Color(0xFFF57F17);
-  static const Color statusApproved = Color(0xFF2E7D32);
-  static const Color statusRejected = Color(0xFFBA1A1A);
-  static const Color statusSuspended = Color(0xFF616161);
+  // Full dark tertiary
+  static const Color tertiaryDark = Color(0xFFA3CDDE);
+  static const Color onTertiaryDark = Color(0xFF053542);
+  static const Color tertiaryContainerDark = Color(0xFF234C5A);
+  static const Color onTertiaryContainerDark = Color(0xFFBFE9FB);
 }

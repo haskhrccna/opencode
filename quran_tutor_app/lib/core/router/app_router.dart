@@ -14,7 +14,12 @@ import '../../features/auth/presentation/screens/pending_approval_screen.dart';
 import '../../features/auth/presentation/screens/rejected_screen.dart';
 import '../../features/auth/presentation/screens/signup_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
-import '../../features/auth/presentation/screens/teacher_signup_screen.dart';
+import '../../features/admin/presentation/screens/admin_dashboard_screen.dart';
+import '../../features/admin/presentation/screens/admin_sessions_screen.dart';
+import '../../features/admin/presentation/screens/admin_settings_screen.dart';
+import '../../features/admin/presentation/screens/pending_students_screen.dart';
+import '../../features/admin/presentation/screens/reports_screen.dart';
+import '../../features/admin/presentation/screens/teacher_management_screen.dart';
 import '../../features/grading/presentation/screens/progress_screen.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
 import '../../features/sessions/presentation/screens/session_detail_screen.dart';
@@ -50,160 +55,101 @@ class AppRouter {
 
       if (authState is Authenticated) {
         final user = authState.user;
-
         if (user.status == UserStatus.pending && user.role != UserRole.admin) {
           return '/pending-approval';
         }
-
         if (user.status == UserStatus.rejected) {
           return '/rejected';
         }
-
         if (isAuthRoute || isSplash) {
           return _getHomeRoute(user.role);
         }
-
         final requestedPath = state.path ?? '/';
         if (!_hasAccess(user.role, requestedPath)) {
           return _getHomeRoute(user.role);
         }
-
         return null;
       }
 
-      if (authState is Unauthenticated || authState is AuthError) {
-        if (!isAuthRoute && !isSplash) {
-          return '/auth/login';
-        }
+      if (authState is Unauthenticated) {
+        if (!isAuthRoute && !isSplash) return '/auth/login';
+        return null;
+      }
+
+      if (authState is AuthError) {
+        if (!isAuthRoute && !isSplash) return '/auth/login';
         return null;
       }
 
       return null;
     },
     routes: [
-      GoRoute(
-        path: '/splash',
-        builder: (context, state) => const SplashScreen(),
-      ),
+      GoRoute(path: '/splash', builder: (_, __) => const SplashScreen()),
       GoRoute(
         path: '/auth',
         redirect: (_, state) => state.path == '/auth' ? '/auth/login' : null,
         routes: [
-          GoRoute(
-            path: 'login',
-            builder: (context, state) => const LoginScreen(),
-          ),
-          GoRoute(
-            path: 'signup',
-            builder: (context, state) => const SignupScreen(),
-          ),
-          GoRoute(
-            path: 'teacher-signup',
-            builder: (context, state) => const TeacherSignupScreen(),
-          ),
+          GoRoute(path: 'login', builder: (_, __) => const LoginScreen()),
+          GoRoute(path: 'signup', builder: (_, __) => const SignupScreen()),
         ],
       ),
-      GoRoute(
-        path: '/pending-approval',
-        builder: (context, state) => const PendingApprovalScreen(),
-      ),
-      GoRoute(
-        path: '/rejected',
-        builder: (context, state) => const RejectedScreen(),
-      ),
+      GoRoute(path: '/pending-approval', builder: (_, __) => const PendingApprovalScreen()),
+      GoRoute(path: '/rejected', builder: (_, __) => const RejectedScreen()),
       GoRoute(
         path: '/student',
         redirect: (_, state) => state.path == '/student' ? '/student/home' : null,
         routes: [
-          GoRoute(
-            path: 'home',
-            builder: (context, state) => const StudentHomeScreen(),
-          ),
+          GoRoute(path: 'home', builder: (_, __) => const StudentHomeScreen()),
           GoRoute(
             path: 'sessions',
-            builder: (context, state) => const SessionsScreen(),
+            builder: (_, __) => const SessionsScreen(),
             routes: [
               GoRoute(
                 path: ':id',
-                builder: (context, state) => SessionDetailScreen(
-                  sessionId: state.pathParameters['id']!,
-                ),
+                builder: (_, state) => SessionDetailScreen(sessionId: state.pathParameters['id']!),
               ),
             ],
           ),
-          GoRoute(
-            path: 'progress',
-            builder: (context, state) => const ProgressScreen(),
-          ),
-          GoRoute(
-            path: 'profile',
-            builder: (context, state) => const ProfileScreen(),
-          ),
+          GoRoute(path: 'progress', builder: (_, __) => const ProgressScreen()),
+          GoRoute(path: 'profile', builder: (_, __) => const ProfileScreen()),
         ],
       ),
       GoRoute(
         path: '/teacher',
         redirect: (_, state) => state.path == '/teacher' ? '/teacher/home' : null,
         routes: [
-          GoRoute(
-            path: 'home',
-            builder: (context, state) => const TeacherHomeScreen(),
-          ),
+          GoRoute(path: 'home', builder: (_, __) => const TeacherHomeScreen()),
           GoRoute(
             path: 'sessions',
-            builder: (context, state) => const TeacherSessionsScreen(),
+            builder: (_, __) => const TeacherSessionsScreen(),
             routes: [
               GoRoute(
                 path: ':id',
-                builder: (context, state) => SessionDetailScreen(
+                builder: (_, state) => SessionDetailScreen(
                   sessionId: state.pathParameters['id']!,
                   isTeacher: true,
                 ),
               ),
             ],
           ),
-          GoRoute(
-            path: 'students',
-            builder: (context, state) => const TeacherStudentsScreen(),
-          ),
-          GoRoute(
-            path: 'profile',
-            builder: (context, state) => const ProfileScreen(),
-          ),
+          GoRoute(path: 'students', builder: (_, __) => const TeacherStudentsScreen()),
+          GoRoute(path: 'profile', builder: (_, __) => const ProfileScreen()),
         ],
       ),
       GoRoute(
         path: '/admin',
         redirect: (_, state) => state.path == '/admin' ? '/admin/dashboard' : null,
         routes: [
-          GoRoute(
-            path: 'dashboard',
-            builder: (context, state) => const AdminDashboardScreen(),
-          ),
-          GoRoute(
-            path: 'pending',
-            builder: (context, state) => const PendingStudentsScreen(),
-          ),
-          GoRoute(
-            path: 'teachers',
-            builder: (context, state) => const TeacherManagementScreen(),
-          ),
-          GoRoute(
-            path: 'sessions',
-            builder: (context, state) => const AdminSessionsScreen(),
-          ),
-          GoRoute(
-            path: 'reports',
-            builder: (context, state) => const ReportsScreen(),
-          ),
-          GoRoute(
-            path: 'settings',
-            builder: (context, state) => const AdminSettingsScreen(),
-          ),
+          GoRoute(path: 'dashboard', builder: (_, __) => const AdminDashboardScreen()),
+          GoRoute(path: 'pending', builder: (_, __) => const PendingStudentsScreen()),
+          GoRoute(path: 'teachers', builder: (_, __) => const TeacherManagementScreen()),
+          GoRoute(path: 'sessions', builder: (_, __) => const AdminSessionsScreen()),
+          GoRoute(path: 'reports', builder: (_, __) => const ReportsScreen()),
+          GoRoute(path: 'settings', builder: (_, __) => const AdminSettingsScreen()),
         ],
       ),
     ],
-    errorBuilder: (context, state) => ErrorScreen(error: state.error),
+    errorBuilder: (_, state) => ErrorScreen(error: state.error),
   );
 
   static String _getHomeRoute(UserRole role) {
@@ -219,11 +165,9 @@ class AppRouter {
 
   static bool _hasAccess(UserRole role, String path) {
     if (role == UserRole.admin) return true;
-
     if (path.startsWith('/student') && role == UserRole.student) return true;
     if (path.startsWith('/teacher') && role == UserRole.teacher) return true;
     if (path.startsWith('/auth') || path == '/splash') return true;
-
     return false;
   }
 }
