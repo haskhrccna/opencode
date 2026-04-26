@@ -1,9 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'injection.config.dart';
 
@@ -18,16 +15,13 @@ Future<void> configureDependencies() async => $initGetIt(getIt);
 
 // External Modules
 @module
-abstract class FirebaseModule {
+abstract class SupabaseModule {
   @singleton
-  FirebaseAuth get firebaseAuth => FirebaseAuth.instance;
+  SupabaseClient get supabaseClient => Supabase.instance.client;
 
   @singleton
-  FirebaseFirestore get firestore => FirebaseFirestore.instance;
+  GoTrueClient get supabaseAuth => Supabase.instance.client.auth;
 
   @singleton
-  FirebaseMessaging get messaging => FirebaseMessaging.instance;
-
-  @singleton
-  FirebaseStorage get storage => FirebaseStorage.instance;
+  SupabaseStorageClient get supabaseStorage => Supabase.instance.client.storage;
 }

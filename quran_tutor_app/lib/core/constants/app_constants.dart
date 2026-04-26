@@ -22,14 +22,18 @@ class AppConstants {
   static const int apiTimeout = 30000; // milliseconds
   static const int apiReceiveTimeout = 30000;
 
-  // Firebase Collections
-  static const String usersCollection = 'users';
-  static const String sessionsCollection = 'sessions';
-  static const String gradesCollection = 'grades';
-  static const String teachersCollection = 'teachers';
-  static const String studentsCollection = 'students';
-  static const String notificationsCollection = 'notifications';
-  static const String auditLogsCollection = 'audit_logs';
+  // Supabase Database Tables
+  static const String profilesTable = 'profiles';
+  static const String sessionsTable = 'sessions';
+  static const String progressRecordsTable = 'progress_records';
+  static const String teacherStudentsTable = 'teacher_students';
+  static const String notificationsTable = 'notifications';
+  static const String auditLogsTable = 'audit_logs';
+
+  // Supabase Storage Buckets
+  static const String avatarsBucket = 'avatars';
+  static const String audioRecordingsBucket = 'audio-recordings';
+  static const String documentsBucket = 'documents';
 
   // Storage Keys
   static const String authTokenKey = 'auth_token';

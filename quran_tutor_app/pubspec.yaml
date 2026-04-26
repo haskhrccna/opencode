@@ -21,13 +21,8 @@ dependencies:
   # Navigation
   go_router: ^12.1.1
 
-  # Firebase
-  firebase_core: ^2.24.0
-  firebase_auth: ^4.16.0
-  cloud_firestore: ^4.14.0
-  firebase_messaging: ^14.7.10
-  firebase_storage: ^11.6.0
-  firebase_analytics: ^10.8.0
+  # Supabase (replaces Firebase)
+  supabase_flutter: ^2.5.0
 
   # Local Storage
   hive: ^2.2.3
