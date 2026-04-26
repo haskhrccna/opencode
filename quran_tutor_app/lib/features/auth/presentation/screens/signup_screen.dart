@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/utils/validators/arabic_validators.dart';
 import '../../../../shared/models/user_model.dart';
 import '../bloc/auth_bloc.dart';
 
@@ -75,7 +76,9 @@ class _SignupScreenState extends State<SignupScreen> {
                       prefixIcon: Icon(Icons.person_outline),
                     ),
                     validator: (v) =>
-                        v == null || v.trim().length < 2 ? 'الاسم يجب أن يكون حرفين على الأقل' : null,
+                        v == null || v.trim().length < 2
+                            ? 'الاسم يجب أن يكون حرفين على الأقل'
+                            : null,
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
@@ -85,8 +88,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       labelText: 'البريد الإلكتروني',
                       prefixIcon: Icon(Icons.email_outlined),
                     ),
-                    validator: (v) =>
-                        v == null || v.isEmpty ? 'يرجى إدخال البريد الإلكتروني' : null,
+                    validator: ArabicValidators.validateEmail,
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
@@ -105,8 +107,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             setState(() => _obscurePassword = !_obscurePassword),
                       ),
                     ),
-                    validator: (v) =>
-                        v == null || v.length < 8 ? 'كلمة المرور 8 أحرف على الأقل' : null,
+                    validator: ArabicValidators.validatePassword,
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
@@ -116,6 +117,10 @@ class _SignupScreenState extends State<SignupScreen> {
                       labelText: 'رقم الهاتف (اختياري)',
                       prefixIcon: Icon(Icons.phone_outlined),
                     ),
+                    validator: (v) =>
+                        v == null || v.trim().isEmpty
+                            ? null
+                            : ArabicValidators.validatePhone(v),
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
@@ -125,13 +130,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       labelText: 'العمر',
                       prefixIcon: Icon(Icons.cake_outlined),
                     ),
-                    validator: (v) {
-                      final age = int.tryParse(v ?? '');
-                      if (age == null || age < 5 || age > 100) {
-                        return 'يرجى إدخال عمر صحيح';
-                      }
-                      return null;
-                    },
+                    validator: ArabicValidators.validateAge,
                   ),
                   const SizedBox(height: 32),
                   BlocBuilder<AuthBloc, AuthState>(

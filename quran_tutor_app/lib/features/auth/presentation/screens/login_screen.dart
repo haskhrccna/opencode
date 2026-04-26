@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/utils/validators/arabic_validators.dart';
 import '../bloc/auth_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -73,8 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         labelText: 'البريد الإلكتروني',
                         prefixIcon: Icon(Icons.email_outlined),
                       ),
-                      validator: (v) =>
-                          v == null || v.isEmpty ? 'يرجى إدخال البريد الإلكتروني' : null,
+                      validator: ArabicValidators.validateEmail,
                     ),
                     const SizedBox(height: 16),
                     TextFormField(

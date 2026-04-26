@@ -150,8 +150,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await _loadAndEmitUser(response.user!.id, emit);
     } on AuthException catch (e) {
       emit(AuthError(e.message));
-    } catch (_) {
-      emit(const AuthError('حدث خطأ غير متوقع'));
+    } catch (e, st) {
+      addError(e, st);
+      emit(const AuthError('تعذر الاتصال بالخادم، تحقق من اتصالك بالإنترنت'));
     }
   }
 
@@ -184,8 +185,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await _loadAndEmitUser(response.user!.id, emit);
     } on AuthException catch (e) {
       emit(AuthError(e.message));
-    } catch (_) {
-      emit(const AuthError('حدث خطأ غير متوقع'));
+    } catch (e, st) {
+      addError(e, st);
+      emit(const AuthError('تعذر إنشاء الحساب، تحقق من اتصالك بالإنترنت'));
     }
   }
 
@@ -196,9 +198,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(const AuthLoading());
     try {
       final r = event.request;
-      // Validate invite code
       final invite = await _supabase
-          .from('teacher_invites')
+          .from(AppConstants.teacherInvitesTable)
           .select()
           .eq('code', r.inviteCode)
           .eq('used', false)
@@ -227,17 +228,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         'status': UserStatus.pending.value,
         'created_at': DateTime.now().toIso8601String(),
       });
-      // Mark invite as used
       await _supabase
-          .from('teacher_invites')
+          .from(AppConstants.teacherInvitesTable)
           .update({'used': true, 'used_by': response.user!.id})
           .eq('code', r.inviteCode);
 
       await _loadAndEmitUser(response.user!.id, emit);
     } on AuthException catch (e) {
       emit(AuthError(e.message));
-    } catch (_) {
-      emit(const AuthError('حدث خطأ غير متوقع'));
+    } catch (e, st) {
+      addError(e, st);
+      emit(const AuthError('تعذر إنشاء الحساب، تحقق من اتصالك بالإنترنت'));
     }
   }
 
@@ -254,7 +255,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           .eq('id', userId)
           .single();
       emit(Authenticated(UserModel.fromJson(data)));
-    } catch (_) {
+    } on PostgrestException catch (e) {
+      emit(AuthError('تعذر تحميل بيانات المستخدم: ${e.message}'));
+    } catch (e, st) {
+      addError(e, st);
       emit(const AuthError('تعذر تحميل بيانات المستخدم'));
     }
   }

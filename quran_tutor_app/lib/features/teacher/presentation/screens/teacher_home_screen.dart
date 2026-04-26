@@ -9,33 +9,40 @@ class TeacherHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = (context.watch<AuthBloc>().state as Authenticated).user;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('مرحباً، ${user.name}'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.person_outline),
-            onPressed: () => context.go('/teacher/profile'),
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        if (state is! Authenticated) {
+          return const Scaffold(body: Center(child: CircularProgressIndicator()));
+        }
+        final user = state.user;
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('مرحباً، ${user.name}'),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.person_outline),
+                onPressed: () => context.go('/teacher/profile'),
+              ),
+            ],
           ),
-        ],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          _NavCard(
-            icon: Icons.event_outlined,
-            label: 'الجلسات',
-            onTap: () => context.go('/teacher/sessions'),
+          body: ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              _NavCard(
+                icon: Icons.event_outlined,
+                label: 'الجلسات',
+                onTap: () => context.go('/teacher/sessions'),
+              ),
+              const SizedBox(height: 12),
+              _NavCard(
+                icon: Icons.people_outline,
+                label: 'طلابي',
+                onTap: () => context.go('/teacher/students'),
+              ),
+            ],
           ),
-          const SizedBox(height: 12),
-          _NavCard(
-            icon: Icons.people_outline,
-            label: 'طلابي',
-            onTap: () => context.go('/teacher/students'),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

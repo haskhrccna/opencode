@@ -29,6 +29,7 @@ class AppConstants {
   static const String teacherStudentsTable = 'teacher_students';
   static const String notificationsTable = 'notifications';
   static const String auditLogsTable = 'audit_logs';
+  static const String teacherInvitesTable = 'teacher_invites';
 
   // Supabase Storage Buckets
   static const String avatarsBucket = 'avatars';

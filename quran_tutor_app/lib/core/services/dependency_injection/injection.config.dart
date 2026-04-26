@@ -27,7 +27,6 @@ Future<_i1.GetIt> $initGetIt(
   );
   final supabaseModule = _$SupabaseModule();
   gh.singleton<_i3.SupabaseClient>(() => supabaseModule.supabaseClient);
-  gh.singleton<_i3.GoTrueClient>(() => supabaseModule.supabaseAuth);
   gh.singleton<_i3.SupabaseStorageClient>(() => supabaseModule.supabaseStorage);
   gh.factory<_i4.AuthBloc>(
     () => _i4.AuthBloc(gh<_i3.SupabaseClient>()),

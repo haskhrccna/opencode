@@ -9,33 +9,40 @@ class StudentHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = (context.watch<AuthBloc>().state as Authenticated).user;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('مرحباً، ${user.name}'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.person_outline),
-            onPressed: () => context.go('/student/profile'),
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        if (state is! Authenticated) {
+          return const Scaffold(body: Center(child: CircularProgressIndicator()));
+        }
+        final user = state.user;
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('مرحباً، ${user.name}'),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.person_outline),
+                onPressed: () => context.go('/student/profile'),
+              ),
+            ],
           ),
-        ],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          _SummaryCard(
-            icon: Icons.book_outlined,
-            label: 'جلساتي',
-            onTap: () => context.go('/student/sessions'),
+          body: ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              _SummaryCard(
+                icon: Icons.book_outlined,
+                label: 'جلساتي',
+                onTap: () => context.go('/student/sessions'),
+              ),
+              const SizedBox(height: 12),
+              _SummaryCard(
+                icon: Icons.bar_chart,
+                label: 'تقدمي',
+                onTap: () => context.go('/student/progress'),
+              ),
+            ],
           ),
-          const SizedBox(height: 12),
-          _SummaryCard(
-            icon: Icons.bar_chart,
-            label: 'تقدمي',
-            onTap: () => context.go('/student/progress'),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

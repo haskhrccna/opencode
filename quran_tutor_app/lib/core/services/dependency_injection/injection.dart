@@ -20,8 +20,5 @@ abstract class SupabaseModule {
   SupabaseClient get supabaseClient => Supabase.instance.client;
 
   @singleton
-  GoTrueClient get supabaseAuth => Supabase.instance.client.auth;
-
-  @singleton
   SupabaseStorageClient get supabaseStorage => Supabase.instance.client.storage;
 }

@@ -52,9 +52,10 @@ extension DateTimeExtensions on DateTime {
   DateTime get endOfDay =>
       DateTime(year, month, day + 1).subtract(const Duration(microseconds: 1));
 
-  /// Get start of week (Saturday for Arabic calendar)
+  /// Get start of week (Saturday for Arabic calendar).
+  /// Dart weekday: Mon=1…Sat=6, Sun=7. (weekday+1)%7 == 0 on Saturday.
   DateTime get startOfWeek {
-    final diff = weekday % 7;
+    final diff = (weekday + 1) % 7;
     return subtract(Duration(days: diff)).startOfDay;
   }
 
