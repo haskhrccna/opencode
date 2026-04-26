@@ -77,28 +77,14 @@ class ArabicValidators {
     return null;
   }
 
-  /// Validates phone numbers (Saudi format)
+  /// Validates phone numbers (Saudi format: +9665XXXXXXXX or 05XXXXXXXX)
   static String? validatePhone(String? value) {
     if (value == null || value.trim().isEmpty) {
       return 'رقم الجوال مطلوب';
     }
 
-    final trimmed = value.trim();
-
-    // Remove spaces and dashes
-    final cleanPhone = trimmed.replaceAll(RegExp(r'[\s-]'), '');
-
-    // Check if starts with +966 or 05
-    if (!cleanPhone.startsWith('+966') && !cleanPhone.startsWith('05') && !cleanPhone.startsWith('00966')) {
-      return 'رقم الجوال يجب أن يبدأ بـ +966 أو 05';
-    }
-
-    // Validate length
-    final length = cleanPhone.length;
-    if ((cleanPhone.startsWith('+966') && length != 13) ||
-        (cleanPhone.startsWith('05') && length != 10) ||
-        (cleanPhone.startsWith('00966') && length != 14)) {
-      return 'رقم الجوال غير صحيح';
+    if (!AppConstants.phoneRegex.hasMatch(value.trim())) {
+      return 'رقم الجوال يجب أن يبدأ بـ +966 أو 05 ويتكون من 10 أرقام';
     }
 
     return null;
@@ -133,9 +119,9 @@ class ArabicValidators {
       return 'يجب أن تحتوي على رقم واحد على الأقل';
     }
 
-    // Check for special character (optional but recommended)
+    // Check for at least one special character
     if (!value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
-      return 'يجب أن تحتوي على رمز خاص واحد على الأقل (!@#$%^&*...)'; // optional
+      return 'يجب أن تحتوي على رمز خاص واحد على الأقل (!@#\$%^&*...)';
     }
 
     return null;

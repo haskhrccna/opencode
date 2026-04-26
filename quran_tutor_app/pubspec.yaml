@@ -111,7 +111,6 @@ dev_dependencies:
   # Testing
   mocktail: ^1.0.2
   bloc_test: ^9.1.6
-  mockito: ^5.4.4
 
   # Code Generation
   build_runner: ^2.4.8
@@ -127,7 +126,6 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  generate: true
 
   assets:
     - assets/lang/

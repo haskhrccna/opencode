@@ -38,7 +38,7 @@ class AppBlocObserver extends BlocObserver {
   @override
   void onTransition(Bloc bloc, Transition transition) {
     super.onTransition(bloc, transition);
-    _logger.v('➡️ Transition: ${bloc.runtimeType}\n'
+    _logger.t('➡️ Transition: ${bloc.runtimeType}\n'
         '  Event: ${transition.event.runtimeType}\n'
         '  Current: ${transition.currentState.runtimeType}\n'
         '  Next: ${transition.nextState.runtimeType}');

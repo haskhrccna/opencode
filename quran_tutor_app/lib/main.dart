@@ -1,7 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'core/constants/app_constants.dart';
@@ -14,22 +15,18 @@ import 'features/auth/presentation/bloc/auth_bloc.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Supabase
   await Supabase.initialize(
     url: const String.fromEnvironment('SUPABASE_URL'),
     anonKey: const String.fromEnvironment('SUPABASE_ANON_KEY'),
   );
 
-  // Initialize Easy Localization
   await EasyLocalization.ensureInitialized();
 
-  // Set preferred orientations
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
 
-  // Set system UI overlay style
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
@@ -39,11 +36,11 @@ void main() async {
     ),
   );
 
-  // Initialize dependency injection
   await configureDependencies();
 
-  // Set up BLoC observer
-  Bloc.observer = AppBlocObserver();
+  if (kDebugMode) {
+    Bloc.observer = AppBlocObserver();
+  }
 
   runApp(
     EasyLocalization(
@@ -65,7 +62,7 @@ class QuranTutorApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => getIt<AuthBloc>()..add(AppStarted()),
+          create: (context) => getIt<AuthBloc>()..add(const AppStarted()),
         ),
       ],
       child: MaterialApp.router(
@@ -76,15 +73,8 @@ class QuranTutorApp extends StatelessWidget {
         locale: context.locale,
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
-        themeMode: ThemeMode.light,
+        themeMode: ThemeMode.system,
         routerConfig: AppRouter.router,
-        builder: (context, child) {
-          final isRtl = context.locale.languageCode == 'ar';
-          return Directionality(
-            textDirection: isRtl ? TextDirection.rtl : TextDirection.ltr,
-            child: child!,
-          );
-        },
       ),
     );
   }

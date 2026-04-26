@@ -68,4 +68,18 @@ class AppColors {
 
   static const Color backgroundDark = Color(0xFF1A1C18);
   static const Color onBackgroundDark = Color(0xFFE2E3DD);
+
+  // Semantic colors
+  static const Color success = Color(0xFF2E7D32);
+  static const Color onSuccess = Color(0xFFFFFFFF);
+  static const Color warning = Color(0xFFF57F17);
+  static const Color onWarning = Color(0xFFFFFFFF);
+  static const Color info = Color(0xFF0277BD);
+  static const Color onInfo = Color(0xFFFFFFFF);
+
+  // User status colors
+  static const Color statusPending = Color(0xFFF57F17);
+  static const Color statusApproved = Color(0xFF2E7D32);
+  static const Color statusRejected = Color(0xFFBA1A1A);
+  static const Color statusSuspended = Color(0xFF616161);
 }

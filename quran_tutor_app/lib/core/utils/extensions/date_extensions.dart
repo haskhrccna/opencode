@@ -49,7 +49,8 @@ extension DateTimeExtensions on DateTime {
   DateTime get startOfDay => DateTime(year, month, day);
 
   /// Get end of day
-  DateTime get endOfDay => DateTime(year, month, day, 23, 59, 59);
+  DateTime get endOfDay =>
+      DateTime(year, month, day + 1).subtract(const Duration(microseconds: 1));
 
   /// Get start of week (Saturday for Arabic calendar)
   DateTime get startOfWeek {
@@ -132,7 +133,7 @@ extension DateTimeExtensions on DateTime {
     ];
     // Approximate conversion - for exact use hijri_date package
     final hijriMonth = ((month + 2) % 12);
-    return names[hijriMonth == 0 ? 11 : hijriMonth - 1];
+    return names[(hijriMonth + 11) % 12];
   }
 
   /// Format relative time
