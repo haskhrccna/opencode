@@ -37,7 +37,6 @@ dependencies:
 
   # HTTP & API
   dio: ^5.4.0
-  retrofit: ^4.0.3
   json_annotation: ^4.8.1
 
   # Localization
@@ -103,25 +102,12 @@ dependencies:
 
 dependency_overrides:
   intl: ^0.18.1
-  analyzer: ^6.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   integration_test:
     sdk: flutter
-
-  # Testing
-  mocktail: ^1.0.2
-  bloc_test: ^9.1.6
-
-  # Code Generation
-  build_runner: ^2.4.8
-  hive_generator: ^2.0.1
-  retrofit_generator: ^9.0.0
-  injectable_generator: ^2.4.1
-  json_serializable: ^6.7.1
-  freezed: ^2.4.6
 
   # Linting
   flutter_lints: ^3.0.1
