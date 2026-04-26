@@ -1,1 +1,17 @@
-include: package:flutter_lints/flutter.yaml
+include: package:very_good_analysis/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "**/injection.config.dart"
+  errors:
+    missing_required_param: error
+    missing_return: error
+    must_be_immutable: error
+
+linter:
+  rules:
+    avoid_print: false
+    use_setters_to_change_properties: false
+    prefer_interpolation_to_compose_strings: false

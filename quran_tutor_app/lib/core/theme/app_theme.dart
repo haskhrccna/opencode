@@ -31,12 +31,10 @@ class AppTheme {
         onErrorContainer: AppColors.onErrorContainer,
         surface: AppColors.surface,
         onSurface: AppColors.onSurface,
-        surfaceVariant: AppColors.surfaceVariant,
+        surfaceContainerHighest: AppColors.surfaceVariant,
         onSurfaceVariant: AppColors.onSurfaceVariant,
         outline: AppColors.outline,
         outlineVariant: AppColors.outlineVariant,
-        background: AppColors.background,
-        onBackground: AppColors.onBackground,
         inverseSurface: AppColors.inverseSurface,
         onInverseSurface: AppColors.onInverseSurface,
         inversePrimary: AppColors.inversePrimary,
@@ -116,10 +114,8 @@ class AppTheme {
         onSecondaryContainer: AppColors.onSecondaryContainerDark,
         surface: AppColors.surfaceDark,
         onSurface: AppColors.onSurfaceDark,
-        surfaceVariant: AppColors.surfaceVariantDark,
+        surfaceContainerHighest: AppColors.surfaceVariantDark,
         onSurfaceVariant: AppColors.onSurfaceVariantDark,
-        background: AppColors.backgroundDark,
-        onBackground: AppColors.onBackgroundDark,
       ),
       scaffoldBackgroundColor: AppColors.backgroundDark,
     );
@@ -475,14 +471,14 @@ class AppTheme {
   // Switch Theme
   static SwitchThemeData get _switchTheme {
     return SwitchThemeData(
-      thumbColor: MaterialStateProperty.resolveWith((states) {
-        if (states.contains(MaterialState.selected)) {
+      thumbColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
           return AppColors.primary;
         }
         return AppColors.outline;
       }),
-      trackColor: MaterialStateProperty.resolveWith((states) {
-        if (states.contains(MaterialState.selected)) {
+      trackColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
           return AppColors.primary.withOpacity(0.5);
         }
         return AppColors.surfaceVariant;
@@ -493,13 +489,13 @@ class AppTheme {
   // Checkbox Theme
   static CheckboxThemeData get _checkboxTheme {
     return CheckboxThemeData(
-      fillColor: MaterialStateProperty.resolveWith((states) {
-        if (states.contains(MaterialState.selected)) {
+      fillColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
           return AppColors.primary;
         }
         return AppColors.surfaceVariant;
       }),
-      checkColor: MaterialStateProperty.all(AppColors.onPrimary),
+      checkColor: WidgetStateProperty.all(AppColors.onPrimary),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(4),
       ),
@@ -509,8 +505,8 @@ class AppTheme {
   // Radio Theme
   static RadioThemeData get _radioTheme {
     return RadioThemeData(
-      fillColor: MaterialStateProperty.resolveWith((states) {
-        if (states.contains(MaterialState.selected)) {
+      fillColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
           return AppColors.primary;
         }
         return AppColors.outline;
