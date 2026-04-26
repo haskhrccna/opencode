@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../core/localization/app_localizations.dart';
 import '../bloc/auth_bloc.dart';
 
 class RejectedScreen extends StatelessWidget {
@@ -9,8 +7,6 @@ class RejectedScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-
     return Scaffold(
       body: Center(
         child: Column(
@@ -19,17 +15,17 @@ class RejectedScreen extends StatelessWidget {
             const Icon(Icons.cancel_outlined, size: 80, color: Colors.red),
             const SizedBox(height: 24),
             Text(
-              l10n.t('rejected.title'),
+              'تم رفض طلبك',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             const SizedBox(height: 16),
-            Text(l10n.t('rejected.message')),
+            const Text('يرجى التواصل مع الإدارة لمزيد من المعلومات'),
             const SizedBox(height: 32),
             ElevatedButton(
               onPressed: () {
-                context.read<AuthBloc>().add(const SignOutRequested());
+                context.read<AuthBloc>().add(SignOutRequested());
               },
-              child: Text(l10n.t('rejected.logout')),
+              child: const Text('تسجيل الخروج'),
             ),
           ],
         ),

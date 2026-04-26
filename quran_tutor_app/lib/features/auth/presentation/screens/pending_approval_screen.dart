@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../core/localization/app_localizations.dart';
 import '../bloc/auth_bloc.dart';
 
 class PendingApprovalScreen extends StatelessWidget {
@@ -9,8 +7,6 @@ class PendingApprovalScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-
     return Scaffold(
       body: Center(
         child: Column(
@@ -19,17 +15,17 @@ class PendingApprovalScreen extends StatelessWidget {
             const Icon(Icons.hourglass_top, size: 80, color: Colors.orange),
             const SizedBox(height: 24),
             Text(
-              l10n.t('pending.title'),
+              'طلبك قيد المراجعة',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             const SizedBox(height: 16),
-            Text(l10n.t('pending.message')),
+            const Text('سيتم إشعارك عند الموافقة على طلبك'),
             const SizedBox(height: 32),
             ElevatedButton(
               onPressed: () {
-                context.read<AuthBloc>().add(const SignOutRequested());
+                context.read<AuthBloc>().add(SignOutRequested());
               },
-              child: Text(l10n.t('pending.logout')),
+              child: const Text('تسجيل الخروج'),
             ),
           ],
         ),
