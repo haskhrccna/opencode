@@ -180,7 +180,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         'role': UserRole.student.value,
         'status': UserStatus.pending.value,
         'preferred_level': r.preferredLevel,
-        'created_at': DateTime.now().toIso8601String(),
       });
       await _loadAndEmitUser(response.user!.id, emit);
     } on AuthException catch (e) {
@@ -226,7 +225,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         'bio': r.bio,
         'role': UserRole.teacher.value,
         'status': UserStatus.pending.value,
-        'created_at': DateTime.now().toIso8601String(),
       });
       await _supabase
           .from(AppConstants.teacherInvitesTable)

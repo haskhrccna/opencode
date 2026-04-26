@@ -6,20 +6,21 @@ import '../../../../core/utils/validators/arabic_validators.dart';
 import '../../../../shared/models/user_model.dart';
 import '../bloc/auth_bloc.dart';
 
-class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key});
+class TeacherSignupScreen extends StatefulWidget {
+  const TeacherSignupScreen({super.key});
 
   @override
-  State<SignupScreen> createState() => _SignupScreenState();
+  State<TeacherSignupScreen> createState() => _TeacherSignupScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen> {
+class _TeacherSignupScreenState extends State<TeacherSignupScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _phoneController = TextEditingController();
-  final _ageController = TextEditingController();
+  final _bioController = TextEditingController();
+  final _inviteCodeController = TextEditingController();
   bool _obscurePassword = true;
 
   @override
@@ -28,22 +29,26 @@ class _SignupScreenState extends State<SignupScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     _phoneController.dispose();
-    _ageController.dispose();
+    _bioController.dispose();
+    _inviteCodeController.dispose();
     super.dispose();
   }
 
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
     context.read<AuthBloc>().add(
-          StudentSignUpRequested(
-            StudentSignupRequest(
+          TeacherSignUpRequested(
+            TeacherSignupRequest(
               name: _nameController.text.trim(),
               email: _emailController.text.trim(),
               password: _passwordController.text,
+              inviteCode: _inviteCodeController.text.trim(),
               phone: _phoneController.text.trim().isEmpty
                   ? null
                   : _phoneController.text.trim(),
-              age: int.tryParse(_ageController.text.trim()) ?? 0,
+              bio: _bioController.text.trim().isEmpty
+                  ? null
+                  : _bioController.text.trim(),
             ),
           ),
         );
@@ -52,7 +57,7 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('إنشاء حساب')),
+      appBar: AppBar(title: const Text('تسجيل معلم')),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthError) {
@@ -111,6 +116,15 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
+                    controller: _inviteCodeController,
+                    decoration: const InputDecoration(
+                      labelText: 'رمز الدعوة',
+                      prefixIcon: Icon(Icons.vpn_key_outlined),
+                    ),
+                    validator: ArabicValidators.validateInviteCode,
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
                     controller: _phoneController,
                     keyboardType: TextInputType.phone,
                     decoration: const InputDecoration(
@@ -124,13 +138,14 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
-                    controller: _ageController,
-                    keyboardType: TextInputType.number,
+                    controller: _bioController,
+                    maxLines: 3,
                     decoration: const InputDecoration(
-                      labelText: 'العمر',
-                      prefixIcon: Icon(Icons.cake_outlined),
+                      labelText: 'نبذة تعريفية (اختياري)',
+                      prefixIcon: Icon(Icons.info_outline),
+                      alignLabelWithHint: true,
                     ),
-                    validator: ArabicValidators.validateAge,
+                    validator: ArabicValidators.validateBio,
                   ),
                   const SizedBox(height: 32),
                   BlocBuilder<AuthBloc, AuthState>(
@@ -143,7 +158,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                 width: 20,
                                 child: CircularProgressIndicator(strokeWidth: 2),
                               )
-                            : const Text('إنشاء الحساب'),
+                            : const Text('إنشاء حساب المعلم'),
                       );
                     },
                   ),
@@ -151,10 +166,6 @@ class _SignupScreenState extends State<SignupScreen> {
                   TextButton(
                     onPressed: () => context.go('/auth/login'),
                     child: const Text('لديك حساب؟ سجّل الدخول'),
-                  ),
-                  TextButton(
-                    onPressed: () => context.go('/auth/teacher-signup'),
-                    child: const Text('تسجيل كمعلم؟ استخدم رمز الدعوة'),
                   ),
                 ],
               ),

@@ -14,6 +14,7 @@ import '../../features/auth/presentation/screens/pending_approval_screen.dart';
 import '../../features/auth/presentation/screens/rejected_screen.dart';
 import '../../features/auth/presentation/screens/signup_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
+import '../../features/auth/presentation/screens/teacher_signup_screen.dart';
 import '../../features/grading/presentation/screens/progress_screen.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
 import '../../features/sessions/presentation/screens/session_detail_screen.dart';
@@ -95,6 +96,10 @@ class AppRouter {
           GoRoute(
             path: 'signup',
             builder: (context, state) => const SignupScreen(),
+          ),
+          GoRoute(
+            path: 'teacher-signup',
+            builder: (context, state) => const TeacherSignupScreen(),
           ),
         ],
       ),
