@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../environment/app_environment.dart';
 
 /// App-wide constants
 class AppConstants {
@@ -17,10 +18,10 @@ class AppConstants {
   ];
   static const String translationsPath = 'assets/lang';
 
-  // API Endpoints
-  static const String baseUrl = 'https://api.qurantutor.app';
-  static const int apiTimeout = 30000; // milliseconds
-  static const int apiReceiveTimeout = 30000;
+  // API Endpoints - Now configured via AppEnvironment
+  static String get baseUrl => AppEnvironment.baseUrl;
+  static int get apiTimeout => AppEnvironment.apiTimeout;
+  static int get apiReceiveTimeout => AppEnvironment.apiReceiveTimeout;
 
   // Supabase Database Tables
   static const String profilesTable = 'profiles';
@@ -106,9 +107,42 @@ class AppConstants {
   static final RegExp englishNameRegex = RegExp(
     r'^[a-zA-Z\s]+$',
   );
+  
+  /// Password requirements:
+  /// - At least 8 characters
+  /// - At least one uppercase letter
+  /// - At least one lowercase letter
+  /// - At least one number
+  /// - Special characters are RECOMMENDED but optional
+  ///
+  /// This allows passwords like:
+  /// - Password123 (letters + numbers only)
+  /// - Password123! (with special characters)
+  /// - MyPass1 (minimum 8, mixed case + number)
   static final RegExp passwordRegex = RegExp(
-    r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$',
+    r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$',
   );
+
+  /// Check if password has at least one special character
+  static final RegExp passwordSpecialCharRegex = RegExp(
+    r'[!@#$%^&*(),.?":{}|<>]',
+  );
+
+  /// Password validation messages
+  static const String passwordMinLengthMessage = 
+      'Password must be at least 8 characters';
+  static const String passwordMaxLengthMessage = 
+      'Password must not exceed 32 characters';
+  static const String passwordUppercaseMessage = 
+      'Password must contain at least one uppercase letter';
+  static const String passwordLowercaseMessage = 
+      'Password must contain at least one lowercase letter';
+  static const String passwordNumberMessage = 
+      'Password must contain at least one number';
+  static const String passwordSpecialCharRecommendedMessage = 
+      'Tip: Adding special characters makes your password stronger';
+  static const String passwordHint = 
+      'Use at least 8 characters with uppercase, lowercase, and numbers';
 }
 
 /// User roles in the application

@@ -1,0 +1,101 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isUser(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && 
+        request.auth.token.admin == true;
+    }
+    
+    function isTeacher() {
+      return isAuthenticated() && 
+        request.auth.token.role == 'teacher';
+    }
+    
+    function isStudent() {
+      return isAuthenticated() && 
+        request.auth.token.role == 'student';
+    }
+    
+    // Users collection
+    match /users/{userId} {
+      // Allow read/write of own user document
+      allow read, write: if isUser(userId);
+      
+      // Allow admin to read/write any user
+      allow read, write: if isAdmin();
+      
+      // Allow teacher to read assigned students
+      allow read: if isTeacher() && 
+        resource.data.teacherId == request.auth.uid;
+    }
+    
+    // Sessions collection
+    match /sessions/{sessionId} {
+      // Allow teacher to create sessions they own
+      allow create: if isTeacher() && 
+        request.resource.data.teacherId == request.auth.uid;
+      
+      // Allow teacher to update their own sessions
+      allow update: if isTeacher() && 
+        resource.data.teacherId == request.auth.uid;
+      
+      // Allow teacher to read sessions they created
+      allow read: if isTeacher() && 
+        resource.data.teacherId == request.auth.uid;
+      
+      // Allow student to read their assigned sessions
+      allow read: if isStudent() && 
+        resource.data.studentId == request.auth.uid;
+      
+      // Allow admin to read all sessions
+      allow read: if isAdmin();
+    }
+    
+    // Grades collection
+    match /grades/{gradeId} {
+      // Allow teacher to create grades for their sessions
+      allow create: if isTeacher() && 
+        request.resource.data.teacherId == request.auth.uid;
+      
+      // Allow teacher to update their grades
+      allow update: if isTeacher() && 
+        resource.data.teacherId == request.auth.uid;
+      
+      // Allow teacher to read grades they created
+      allow read: if isTeacher() && 
+        resource.data.teacherId == request.auth.uid;
+      
+      // Allow student to read their own grades
+      allow read: if isStudent() && 
+        resource.data.studentId == request.auth.uid;
+      
+      // Allow admin to read all grades
+      allow read: if isAdmin();
+    }
+    
+    // Admin notifications
+    match /admin_notifications/{notificationId} {
+      // Only admin can read/write
+      allow read, write: if isAdmin();
+    }
+    
+    // System settings
+    match /system_settings/{settingId} {
+      // Admin can read/write
+      allow read, write: if isAdmin();
+      
+      // Others can only read
+      allow read: if isAuthenticated();
+    }
+  }
+}
