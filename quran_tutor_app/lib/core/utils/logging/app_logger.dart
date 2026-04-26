@@ -37,6 +37,13 @@ class AppLogger {
     );
   }
 
+  /// Log a verbose/trace message
+  void t(dynamic message, {dynamic error, StackTrace? stackTrace}) {
+    if (_enableDetailedLogging) {
+      _logger.t(message, error: error, stackTrace: stackTrace);
+    }
+  }
+
   /// Log a verbose message
   void v(dynamic message, {dynamic error, StackTrace? stackTrace}) {
     if (_enableDetailedLogging) {

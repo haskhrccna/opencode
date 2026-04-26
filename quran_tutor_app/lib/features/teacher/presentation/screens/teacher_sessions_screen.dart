@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class CLASSNAME extends StatelessWidget {
-  const CLASSNAME({super.key});
+class TeacherSessionsScreen extends StatelessWidget {
+  const TeacherSessionsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(child: Text('CLASSNAME')),
+      body: Center(child: Text('TeacherSessionsScreen')),
     );
   }
 }

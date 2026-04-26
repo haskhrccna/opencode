@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/localization/app_localizations.dart';
 import '../bloc/auth_bloc.dart';
-import '../bloc/auth_event.dart';
 
 class PendingApprovalScreen extends StatelessWidget {
   const PendingApprovalScreen({super.key});
