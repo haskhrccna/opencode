@@ -1,4 +1,4 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide AuthUser;
 
 import '../../../../core/constants/app_constants.dart';
 import '../../domain/entities/auth_user.dart';

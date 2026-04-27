@@ -1,56 +1,172 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:equatable/equatable.dart';
 
+import '../../../../core/constants/app_constants.dart';
+import '../../domain/entities/progress_grade.dart';
 import '../../domain/repositories/grading_repository.dart';
 
-part 'grading_event.freezed.dart';
+abstract class GradingEvent extends Equatable {
+  const GradingEvent();
 
-@freezed
-class GradingEvent with _$GradingEvent {
-  const factory GradingEvent.loadGrades({String? studentId}) = LoadGrades;
+  @override
+  List<Object?> get props => [];
+}
 
-  const factory GradingEvent.loadGradesBySession(String sessionId) = LoadGradesBySession;
+class LoadGrades extends GradingEvent {
+  final String? studentId;
 
-  const factory GradingEvent.loadGradesByTeacher(String teacherId) = LoadGradesByTeacher;
+  const LoadGrades({this.studentId});
 
-  const factory GradingEvent.getGrade(String gradeId) = GetGrade;
+  @override
+  List<Object?> get props => [studentId];
+}
 
-  const factory GradingEvent.createGrade({
-    required String sessionId,
-    required String studentId,
-    required String teacherId,
-    required GradingCategory category,
-    required int grade,
-    String? notes,
-    List<String>? surahs,
-    String? verses,
-    int? pagesMemorized,
-  }) = CreateGrade;
+class LoadGradesBySession extends GradingEvent {
+  final String sessionId;
 
-  const factory GradingEvent.updateGrade({
-    required String gradeId,
-    int? grade,
-    String? notes,
-    List<String>? surahs,
-    String? verses,
-    int? pagesMemorized,
-  }) = UpdateGrade;
+  const LoadGradesBySession(this.sessionId);
 
-  const factory GradingEvent.deleteGrade(String gradeId) = DeleteGrade;
+  @override
+  List<Object?> get props => [sessionId];
+}
 
-  const factory GradingEvent.loadStudentProgress(String studentId) = LoadStudentProgress;
+class LoadGradesByTeacher extends GradingEvent {
+  final String teacherId;
 
-  const factory GradingEvent.loadProgressTimeline({
-    required String studentId,
-    required DateTime startDate,
-    required DateTime endDate,
-  }) = LoadProgressTimeline;
+  const LoadGradesByTeacher(this.teacherId);
 
-  const factory GradingEvent.loadClassProgress(String teacherId) = LoadClassProgress;
+  @override
+  List<Object?> get props => [teacherId];
+}
 
-  const factory GradingEvent.uploadAudioFeedback({
-    required String gradeId,
-    required String audioFilePath,
-  }) = UploadAudioFeedback;
+class GetGrade extends GradingEvent {
+  final String gradeId;
 
-  const factory GradingEvent.refreshGrades() = RefreshGrades;
+  const GetGrade(this.gradeId);
+
+  @override
+  List<Object?> get props => [gradeId];
+}
+
+class CreateGrade extends GradingEvent {
+  final String sessionId;
+  final String studentId;
+  final String teacherId;
+  final GradingCategory category;
+  final int grade;
+  final String? notes;
+  final List<String>? surahs;
+  final String? verses;
+  final int? pagesMemorized;
+
+  const CreateGrade({
+    required this.sessionId,
+    required this.studentId,
+    required this.teacherId,
+    required this.category,
+    required this.grade,
+    this.notes,
+    this.surahs,
+    this.verses,
+    this.pagesMemorized,
+  });
+
+  @override
+  List<Object?> get props => [
+        sessionId,
+        studentId,
+        teacherId,
+        category,
+        grade,
+        notes,
+        surahs,
+        verses,
+        pagesMemorized,
+      ];
+}
+
+class UpdateGrade extends GradingEvent {
+  final String gradeId;
+  final int? grade;
+  final String? notes;
+  final List<String>? surahs;
+  final String? verses;
+  final int? pagesMemorized;
+
+  const UpdateGrade({
+    required this.gradeId,
+    this.grade,
+    this.notes,
+    this.surahs,
+    this.verses,
+    this.pagesMemorized,
+  });
+
+  @override
+  List<Object?> get props => [
+        gradeId,
+        grade,
+        notes,
+        surahs,
+        verses,
+        pagesMemorized,
+      ];
+}
+
+class DeleteGrade extends GradingEvent {
+  final String gradeId;
+
+  const DeleteGrade(this.gradeId);
+
+  @override
+  List<Object?> get props => [gradeId];
+}
+
+class LoadStudentProgress extends GradingEvent {
+  final String studentId;
+
+  const LoadStudentProgress(this.studentId);
+
+  @override
+  List<Object?> get props => [studentId];
+}
+
+class LoadProgressTimeline extends GradingEvent {
+  final String studentId;
+  final DateTime startDate;
+  final DateTime endDate;
+
+  const LoadProgressTimeline({
+    required this.studentId,
+    required this.startDate,
+    required this.endDate,
+  });
+
+  @override
+  List<Object?> get props => [studentId, startDate, endDate];
+}
+
+class LoadClassProgress extends GradingEvent {
+  final String teacherId;
+
+  const LoadClassProgress(this.teacherId);
+
+  @override
+  List<Object?> get props => [teacherId];
+}
+
+class UploadAudioFeedback extends GradingEvent {
+  final String gradeId;
+  final String audioFilePath;
+
+  const UploadAudioFeedback({
+    required this.gradeId,
+    required this.audioFilePath,
+  });
+
+  @override
+  List<Object?> get props => [gradeId, audioFilePath];
+}
+
+class RefreshGrades extends GradingEvent {
+  const RefreshGrades();
 }

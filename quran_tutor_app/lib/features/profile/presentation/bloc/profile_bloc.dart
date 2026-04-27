@@ -85,7 +85,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     // Create updated profile
     final updatedProfile = currentProfile.copyWith(
       arabicName: event.arabicName,
-      englishName: event.englishName,
+      displayName: event.englishName,
       phoneNumber: event.phoneNumber,
       bio: event.bio,
       websiteUrl: event.websiteUrl,

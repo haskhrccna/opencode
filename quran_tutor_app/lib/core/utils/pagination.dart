@@ -77,7 +77,7 @@ class CursorPagination<T> {
     String? cursor,
   }) fetchPage;
 
-  PaginationState<T> _state = const PaginationState<T>();
+  PaginationState<T> _state = PaginationState<T>();
   bool _isFetching = false;
 
   CursorPagination({
@@ -163,7 +163,7 @@ class CursorPagination<T> {
 
   /// Refresh (reload from first page)
   Future<void> refresh() async {
-    _state = const PaginationState<T>();
+    _state = PaginationState<T>();
     await loadInitial();
   }
 
@@ -187,5 +187,3 @@ class PaginatedResult<T> {
     this.totalCount = 0,
   });
 }
-
-import 'dart:async';

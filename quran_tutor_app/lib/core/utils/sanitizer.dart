@@ -32,7 +32,7 @@ class Sanitizer {
     if (input.isEmpty) return input;
     // Simplified pattern to remove event handlers like onClick, onLoad, etc.
     return input.replaceAll(
-      RegExp(r"\s+(on\w+)\s*=\s*['\"][^'\"]*['\"]", caseSensitive: false),
+      RegExp(r'''\s+(on\w+)\s*=\s*["'][^"']*["']''', caseSensitive: false),
       '',
     );
   }
@@ -365,7 +365,7 @@ class Sanitizer {
     final xssPatterns = [
       RegExp(r'<script[^>]*>', caseSensitive: false),
       RegExp(r'javascript:', caseSensitive: false),
-      RegExp(r"on\w+\s*=\s*['\"]", caseSensitive: false),
+      RegExp(r'''on\w+\s*=\s*["']''', caseSensitive: false),
       RegExp(r'<iframe', caseSensitive: false),
       RegExp(r'expression\(', caseSensitive: false),
     ];

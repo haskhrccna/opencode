@@ -4,7 +4,7 @@ import 'package:injectable/injectable.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import '../../../features/auth/domain/entities/auth_user.dart';
-import '../../constants/app_constants.dart';
+import '../../../core/constants/app_constants.dart';
 
 /// Service for handling push notifications via OneSignal
 @singleton
@@ -13,20 +13,18 @@ class NotificationService {
   bool _initialized = false;
 
   // Stream controllers for notification events
-  final _notificationReceivedController =
-      StreamController<OSNotification>.broadcast();
-  final _notificationOpenedController =
-      StreamController<OSNotificationOpenedResult>.broadcast();
+  final _notificationReceivedController = StreamController<dynamic>.broadcast();
+  final _notificationOpenedController = StreamController<dynamic>.broadcast();
 
-  NotificationService({String? appId})
-      : _appId = appId ?? const String.fromEnvironment('ONESIGNAL_APP_ID');
+  NotificationService()
+      : _appId = const String.fromEnvironment('ONESIGNAL_APP_ID');
 
   /// Stream for received notifications
-  Stream<OSNotification> get notificationReceived =>
+  Stream<dynamic> get notificationReceived =>
       _notificationReceivedController.stream;
 
   /// Stream for opened notifications
-  Stream<OSNotificationOpenedResult> get notificationOpened =>
+  Stream<dynamic> get notificationOpened =>
       _notificationOpenedController.stream;
 
   /// Initialize OneSignal

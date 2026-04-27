@@ -73,14 +73,14 @@ class _SignupScreenState extends State<SignupScreen> {
                   controller: _arabicNameController,
                   decoration:
                       const InputDecoration(labelText: 'الاسم بالعربية'),
-                  validator: ArabicValidators.validateName,
+                  validator: ArabicValidators.validateArabicName,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _englishNameController,
                   decoration:
                       const InputDecoration(labelText: 'الاسم بالإنجليزية'),
-                  validator: ArabicValidators.validateName,
+                  validator: ArabicValidators.validateEnglishName,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(

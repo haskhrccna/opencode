@@ -6,6 +6,8 @@ import 'package:mocktail/mocktail.dart';
 import 'package:quran_tutor_app/core/constants/app_constants.dart';
 import 'package:quran_tutor_app/features/auth/domain/entities/auth_user.dart';
 import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_event.dart';
+import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_state.dart';
 import 'package:quran_tutor_app/features/student/presentation/screens/student_home_screen.dart';
 
 class MockAuthBloc extends Mock implements AuthBloc {}
@@ -48,6 +50,7 @@ void main() {
         arabicName: 'طالب تجريبي',
         role: UserRole.student,
         status: UserStatus.approved,
+        createdAt: DateTime.now(),
       );
       final state = AuthState(
         status: AuthStatus.authenticated,
@@ -71,6 +74,7 @@ void main() {
         arabicName: 'طالب تجريبي',
         role: UserRole.student,
         status: UserStatus.approved,
+        createdAt: DateTime.now(),
       );
       final state = AuthState(
         status: AuthStatus.authenticated,
@@ -95,6 +99,7 @@ void main() {
         arabicName: 'طالب تجريبي',
         role: UserRole.student,
         status: UserStatus.approved,
+        createdAt: DateTime.now(),
       );
       final state = AuthState(
         status: AuthStatus.authenticated,

@@ -1,22 +1,31 @@
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mocktail/mocktail.dart';
 
 import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_event.dart';
+import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_state.dart';
 import 'package:quran_tutor_app/features/auth/presentation/screens/login_screen.dart';
 
 class MockAuthBloc extends Mock implements AuthBloc {}
 
+class FakeAuthEvent extends Fake implements AuthEvent {}
+
 void main() {
   late MockAuthBloc mockAuthBloc;
 
+  setUpAll(() {
+    registerFallbackValue(FakeAuthEvent());
+  });
+
   setUp(() {
     mockAuthBloc = MockAuthBloc();
-    when(() => mockAuthBloc.state).thenReturn(AuthState.initial());
+    when(() => mockAuthBloc.state).thenReturn(const AuthState.initial());
     when(() => mockAuthBloc.stream)
-        .thenAnswer((_) => Stream.value(AuthState.initial()));
+        .thenAnswer((_) => Stream.value(const AuthState.initial()));
   });
 
   Widget createWidgetUnderTest() {
@@ -82,7 +91,7 @@ void main() {
 
       // assert
       verify(() => mockAuthBloc.add(
-        SignInRequested(
+        const SignInRequested(
           email: 'test@example.com',
           password: 'Password123',
         ),

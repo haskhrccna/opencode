@@ -233,8 +233,8 @@ class AppTheme {
   }
 
 // Card Theme
-static CardThemeData get _cardTheme {
-    return CardTheme(
+  static CardThemeData get _cardTheme {
+    return CardThemeData(
       elevation: AppConstants.defaultElevation,
       margin: const EdgeInsets.all(AppConstants.smallPadding),
       shape: RoundedRectangleBorder(
@@ -401,8 +401,8 @@ static CardThemeData get _cardTheme {
   }
 
 // Dialog Theme
-static DialogThemeData get _dialogTheme {
-    return DialogTheme(
+  static DialogThemeData get _dialogTheme {
+    return DialogThemeData(
       backgroundColor: AppColors.surface,
       elevation: 6,
       shape: RoundedRectangleBorder(
@@ -448,8 +448,8 @@ static DialogThemeData get _dialogTheme {
   }
 
 // Tab Bar Theme
-static TabBarThemeData get _tabBarTheme {
-    return TabBarTheme(
+  static TabBarThemeData get _tabBarTheme {
+    return TabBarThemeData(
       labelStyle: _textTheme.titleSmall?.copyWith(
         fontWeight: FontWeight.w600,
       ),

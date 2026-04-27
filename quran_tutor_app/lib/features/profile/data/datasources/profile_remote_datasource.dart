@@ -117,7 +117,7 @@ class SupabaseProfileDataSource implements ProfileRemoteDataSource {
           .eq('status', 'approved');
 
       return (response as List)
-          .map((e) => ProfileModel.fromSupabase(e))
+          .map((e) => ProfileModel.fromSupabase(e as Map<String, dynamic>))
           .toList();
     } catch (e) {
       throw ServerException.internalError();
@@ -134,7 +134,7 @@ class SupabaseProfileDataSource implements ProfileRemoteDataSource {
           .eq('teacher_id', teacherId);
 
       return (response as List)
-          .map((e) => ProfileModel.fromSupabase(e))
+          .map((e) => ProfileModel.fromSupabase(e as Map<String, dynamic>))
           .toList();
     } catch (e) {
       throw ServerException.internalError();
@@ -160,130 +160,6 @@ class SupabaseProfileDataSource implements ProfileRemoteDataSource {
           .from('users')
           .update({'teacher_id': null})
           .eq('id', studentId);
-    } catch (e) {
-      throw ServerException.internalError();
-    }
-  }
-}
-  }
-}
-
-/// Firebase implementation (fallback)
-class FirebaseProfileDataSource implements ProfileRemoteDataSource {
-  final FirebaseFirestore _firestore;
-  final FirebaseStorage _storage;
-
-  FirebaseProfileDataSource({
-    FirebaseFirestore? firestore,
-    FirebaseStorage? storage,
-  })  : _firestore = firestore ?? FirebaseFirestore.instance,
-        _storage = storage ?? FirebaseStorage.instance;
-
-  @override
-  Future<ProfileModel?> getProfile(String userId) async {
-    try {
-      final doc = await _firestore.collection('users').doc(userId).get();
-      if (!doc.exists) return null;
-      return ProfileModel.fromFirestore(doc);
-    } catch (e) {
-      throw ServerException.internalError();
-    }
-  }
-
-  @override
-  Future<ProfileModel?> getCurrentProfile() async {
-    // Get from Firebase Auth current user
-    // Implementation depends on Firebase Auth
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<ProfileModel> updateProfile(ProfileModel profile) async {
-    try {
-      await _firestore
-          .collection('users')
-          .doc(profile.id)
-          .update(profile.toFirestore());
-      return profile;
-    } catch (e) {
-      throw ServerException.internalError();
-    }
-  }
-
-  @override
-  Future<String> uploadAvatar(String userId, File imageFile) async {
-    try {
-      final ref = _storage.ref().child('avatars/$userId.jpg');
-      await ref.putFile(imageFile);
-      return await ref.getDownloadURL();
-    } catch (e) {
-      throw ServerException.internalError();
-    }
-  }
-
-  @override
-  Future<void> deleteAvatar(String userId) async {
-    try {
-      final ref = _storage.ref().child('avatars/$userId.jpg');
-      await ref.delete();
-    } catch (e) {
-      throw ServerException.internalError();
-    }
-  }
-
-  @override
-  Future<List<ProfileModel>> getTeachers() async {
-    try {
-      final snapshot = await _firestore
-          .collection('users')
-          .where('role', isEqualTo: 'teacher')
-          .where('status', isEqualTo: 'approved')
-          .get();
-
-      return snapshot.docs
-          .map((doc) => ProfileModel.fromFirestore(doc))
-          .toList();
-    } catch (e) {
-      throw ServerException.internalError();
-    }
-  }
-
-  @override
-  Future<List<ProfileModel>> getStudentsByTeacher(String teacherId) async {
-    try {
-      final snapshot = await _firestore
-          .collection('users')
-          .where('role', isEqualTo: 'student')
-          .where('teacherId', isEqualTo: teacherId)
-          .get();
-
-      return snapshot.docs
-          .map((doc) => ProfileModel.fromFirestore(doc))
-          .toList();
-    } catch (e) {
-      throw ServerException.internalError();
-    }
-  }
-
-  @override
-  Future<void> linkStudentToTeacher(String studentId, String teacherId) async {
-    try {
-      await _firestore
-          .collection('users')
-          .doc(studentId)
-          .update({'teacherId': teacherId});
-    } catch (e) {
-      throw ServerException.internalError();
-    }
-  }
-
-  @override
-  Future<void> unlinkStudentFromTeacher(String studentId) async {
-    try {
-      await _firestore
-          .collection('users')
-          .doc(studentId)
-          .update({'teacherId': FieldValue.delete()});
     } catch (e) {
       throw ServerException.internalError();
     }

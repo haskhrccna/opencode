@@ -1,8 +1,6 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:equatable/equatable.dart';
 
 import '../../domain/entities/session.dart';
-
-part 'sessions_state.freezed.dart';
 
 enum SessionsStatus {
   initial,
@@ -14,17 +12,47 @@ enum SessionsStatus {
   error,
 }
 
-@freezed
-class SessionsState with _$SessionsState {
-  const factory SessionsState({
-    required SessionsStatus status,
-    List<Session>? sessions,
-    Session? selectedSession,
-    String? errorMessage,
-    DateTime? lastUpdated,
-  }) = _SessionsState;
+class SessionsState extends Equatable {
+  final SessionsStatus status;
+  final List<Session>? sessions;
+  final Session? selectedSession;
+  final String? errorMessage;
+  final DateTime? lastUpdated;
+
+  const SessionsState({
+    required this.status,
+    this.sessions,
+    this.selectedSession,
+    this.errorMessage,
+    this.lastUpdated,
+  });
 
   factory SessionsState.initial() => const SessionsState(
         status: SessionsStatus.initial,
       );
+
+  SessionsState copyWith({
+    SessionsStatus? status,
+    List<Session>? sessions,
+    Session? selectedSession,
+    String? errorMessage,
+    DateTime? lastUpdated,
+  }) {
+    return SessionsState(
+      status: status ?? this.status,
+      sessions: sessions ?? this.sessions,
+      selectedSession: selectedSession ?? this.selectedSession,
+      errorMessage: errorMessage ?? this.errorMessage,
+      lastUpdated: lastUpdated ?? this.lastUpdated,
+    );
+  }
+
+  @override
+  List<Object?> get props => [
+        status,
+        sessions,
+        selectedSession,
+        errorMessage,
+        lastUpdated,
+      ];
 }

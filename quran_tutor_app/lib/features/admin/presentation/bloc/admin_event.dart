@@ -1,53 +1,125 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:equatable/equatable.dart';
 
-import '../../auth/domain/entities/auth_user.dart';
+import '../../../../core/constants/app_constants.dart';
+import '../../../auth/domain/entities/auth_user.dart';
 import '../../domain/repositories/admin_repository.dart';
 
-part 'admin_event.freezed.dart';
+abstract class AdminEvent extends Equatable {
+  const AdminEvent();
 
-@freezed
-class AdminEvent with _$AdminEvent {
-  const factory AdminEvent.loadDashboard() = LoadDashboard;
+  @override
+  List<Object?> get props => [];
+}
 
-  const factory AdminEvent.loadPendingUsers() = LoadPendingUsers;
+class LoadDashboard extends AdminEvent {
+  const LoadDashboard();
+}
 
-  const factory AdminEvent.loadRejectedUsers() = LoadRejectedUsers;
+class LoadPendingUsers extends AdminEvent {
+  const LoadPendingUsers();
+}
 
-  const factory AdminEvent.loadAllUsers() = LoadAllUsers;
+class LoadRejectedUsers extends AdminEvent {
+  const LoadRejectedUsers();
+}
 
-  const factory AdminEvent.loadUsersByRole(UserRole role) = LoadUsersByRole;
+class LoadAllUsers extends AdminEvent {
+  const LoadAllUsers();
+}
 
-  const factory AdminEvent.approveUser(String userId) = ApproveUser;
+class LoadUsersByRole extends AdminEvent {
+  final UserRole role;
 
-  const factory AdminEvent.rejectUser({
-    required String userId,
-    String? reason,
-  }) = RejectUser;
+  const LoadUsersByRole(this.role);
 
-  const factory AdminEvent.suspendUser({
-    required String userId,
-    String? reason,
-  }) = SuspendUser;
+  @override
+  List<Object?> get props => [role];
+}
 
-  const factory AdminEvent.reactivateUser(String userId) = ReactivateUser;
+class ApproveUser extends AdminEvent {
+  final String userId;
 
-  const factory AdminEvent.assignTeacher({
-    required String studentId,
-    required String teacherId,
-  }) = AssignTeacher;
+  const ApproveUser(this.userId);
 
-  const factory AdminEvent.removeTeacher(String studentId) = RemoveTeacher;
+  @override
+  List<Object?> get props => [userId];
+}
 
-  const factory AdminEvent.loadSystemStats() = LoadSystemStats;
+class RejectUser extends AdminEvent {
+  final String userId;
+  final String? reason;
 
-  const factory AdminEvent.loadReportData({
-    required DateTime startDate,
-    required DateTime endDate,
-  }) = LoadReportData;
+  const RejectUser({required this.userId, this.reason});
 
-  const factory AdminEvent.loadSystemSettings() = LoadSystemSettings;
+  @override
+  List<Object?> get props => [userId, reason];
+}
 
-  const factory AdminEvent.updateSystemSettings(SystemSettings settings) = UpdateSystemSettings;
+class SuspendUser extends AdminEvent {
+  final String userId;
+  final String? reason;
 
-  const factory AdminEvent.refreshAdmin() = RefreshAdmin;
+  const SuspendUser({required this.userId, this.reason});
+
+  @override
+  List<Object?> get props => [userId, reason];
+}
+
+class ReactivateUser extends AdminEvent {
+  final String userId;
+
+  const ReactivateUser(this.userId);
+
+  @override
+  List<Object?> get props => [userId];
+}
+
+class AssignTeacher extends AdminEvent {
+  final String studentId;
+  final String teacherId;
+
+  const AssignTeacher({required this.studentId, required this.teacherId});
+
+  @override
+  List<Object?> get props => [studentId, teacherId];
+}
+
+class RemoveTeacher extends AdminEvent {
+  final String studentId;
+
+  const RemoveTeacher(this.studentId);
+
+  @override
+  List<Object?> get props => [studentId];
+}
+
+class LoadSystemStats extends AdminEvent {
+  const LoadSystemStats();
+}
+
+class LoadReportData extends AdminEvent {
+  final DateTime startDate;
+  final DateTime endDate;
+
+  const LoadReportData({required this.startDate, required this.endDate});
+
+  @override
+  List<Object?> get props => [startDate, endDate];
+}
+
+class LoadSystemSettings extends AdminEvent {
+  const LoadSystemSettings();
+}
+
+class UpdateSystemSettings extends AdminEvent {
+  final SystemSettings settings;
+
+  const UpdateSystemSettings(this.settings);
+
+  @override
+  List<Object?> get props => [settings];
+}
+
+class RefreshAdmin extends AdminEvent {
+  const RefreshAdmin();
 }

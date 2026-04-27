@@ -1,8 +1,6 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:equatable/equatable.dart';
 
 import '../../domain/entities/user_profile.dart';
-
-part 'profile_state.freezed.dart';
 
 enum ProfileStatus {
   initial,
@@ -13,18 +11,52 @@ enum ProfileStatus {
   error,
 }
 
-@freezed
-class ProfileState with _$ProfileState {
-  const factory ProfileState({
-    required ProfileStatus status,
+class ProfileState extends Equatable {
+  final ProfileStatus status;
+  final UserProfile? profile;
+  final List<UserProfile>? teachers;
+  final List<UserProfile>? students;
+  final String? errorMessage;
+  final DateTime? lastUpdated;
+
+  const ProfileState({
+    required this.status,
+    this.profile,
+    this.teachers,
+    this.students,
+    this.errorMessage,
+    this.lastUpdated,
+  });
+
+  factory ProfileState.initial() => const ProfileState(
+        status: ProfileStatus.initial,
+      );
+
+  ProfileState copyWith({
+    ProfileStatus? status,
     UserProfile? profile,
     List<UserProfile>? teachers,
     List<UserProfile>? students,
     String? errorMessage,
     DateTime? lastUpdated,
-  }) = _ProfileState;
+  }) {
+    return ProfileState(
+      status: status ?? this.status,
+      profile: profile ?? this.profile,
+      teachers: teachers ?? this.teachers,
+      students: students ?? this.students,
+      errorMessage: errorMessage ?? this.errorMessage,
+      lastUpdated: lastUpdated ?? this.lastUpdated,
+    );
+  }
 
-  factory ProfileState.initial() => const ProfileState(
-        status: ProfileStatus.initial,
-      );
+  @override
+  List<Object?> get props => [
+        status,
+        profile,
+        teachers,
+        students,
+        errorMessage,
+        lastUpdated,
+      ];
 }

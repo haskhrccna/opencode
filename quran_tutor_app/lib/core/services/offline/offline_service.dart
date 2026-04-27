@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/constants/app_constants.dart';
 import '../../../features/grading/data/datasources/grading_remote_datasource.dart';
 import '../../../features/grading/data/models/grade_model.dart';
 import '../../../features/sessions/data/datasources/sessions_remote_datasource.dart';
@@ -97,7 +98,7 @@ class OfflineService {
         sessionId: g.sessionId,
         studentId: g.studentId,
         teacherId: g.teacherId,
-        category: g.category.name,
+        category: g.category,
         grade: g.grade,
         notes: g.notes,
         createdAt: g.createdAt,
@@ -213,7 +214,7 @@ class OfflineService {
             sessionId: grade.sessionId,
             studentId: grade.studentId,
             teacherId: grade.teacherId,
-            category: grade.category,
+            category: GradingCategory.values.byName(grade.category),
             grade: grade.grade,
             notes: grade.notes,
             surahs: grade.surahs,

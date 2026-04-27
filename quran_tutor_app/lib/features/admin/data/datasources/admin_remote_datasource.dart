@@ -70,7 +70,7 @@ class SupabaseAdminDataSource implements AdminRemoteDataSource {
           .order('created_at', ascending: false);
 
       return (response as List)
-          .map((e) => UserModel.fromSupabase(e))
+          .map((e) => UserModel.fromJson(e as Map<String, dynamic>))
           .toList();
     } catch (e) {
       throw ServerException.internalError();
@@ -87,7 +87,7 @@ class SupabaseAdminDataSource implements AdminRemoteDataSource {
           .order('created_at', ascending: false);
 
       return (response as List)
-          .map((e) => UserModel.fromSupabase(e))
+          .map((e) => UserModel.fromJson(e as Map<String, dynamic>))
           .toList();
     } catch (e) {
       throw ServerException.internalError();
@@ -103,7 +103,7 @@ class SupabaseAdminDataSource implements AdminRemoteDataSource {
           .order('created_at', ascending: false);
 
       return (response as List)
-          .map((e) => UserModel.fromSupabase(e))
+          .map((e) => UserModel.fromJson(e as Map<String, dynamic>))
           .toList();
     } catch (e) {
       throw ServerException.internalError();
@@ -120,7 +120,7 @@ class SupabaseAdminDataSource implements AdminRemoteDataSource {
           .order('created_at', ascending: false);
 
       return (response as List)
-          .map((e) => UserModel.fromSupabase(e))
+          .map((e) => UserModel.fromJson(e as Map<String, dynamic>))
           .toList();
     } catch (e) {
       throw ServerException.internalError();
@@ -225,18 +225,18 @@ class SupabaseAdminDataSource implements AdminRemoteDataSource {
       final response = await _supabase.rpc('get_system_stats');
 
       return SystemStats(
-        totalUsers: response['total_users'] ?? 0,
-        totalStudents: response['total_students'] ?? 0,
-        totalTeachers: response['total_teachers'] ?? 0,
-        totalAdmins: response['total_admins'] ?? 0,
-        pendingApprovals: response['pending_approvals'] ?? 0,
-        totalSessions: response['total_sessions'] ?? 0,
-        completedSessions: response['completed_sessions'] ?? 0,
-        cancelledSessions: response['cancelled_sessions'] ?? 0,
-        averageSessionDuration: (response['average_session_duration'] ?? 0).toDouble(),
-        averageGrade: (response['average_grade'] ?? 0).toDouble(),
-        newUsersThisWeek: response['new_users_this_week'] ?? 0,
-        activeUsersToday: response['active_users_today'] ?? 0,
+        totalUsers: (response['total_users'] as num?)?.toInt() ?? 0,
+        totalStudents: (response['total_students'] as num?)?.toInt() ?? 0,
+        totalTeachers: (response['total_teachers'] as num?)?.toInt() ?? 0,
+        totalAdmins: (response['total_admins'] as num?)?.toInt() ?? 0,
+        pendingApprovals: (response['pending_approvals'] as num?)?.toInt() ?? 0,
+        totalSessions: (response['total_sessions'] as num?)?.toInt() ?? 0,
+        completedSessions: (response['completed_sessions'] as num?)?.toInt() ?? 0,
+        cancelledSessions: (response['cancelled_sessions'] as num?)?.toInt() ?? 0,
+        averageSessionDuration: (response['average_session_duration'] as num?)?.toDouble() ?? 0.0,
+        averageGrade: (response['average_grade'] as num?)?.toDouble() ?? 0.0,
+        newUsersThisWeek: (response['new_users_this_week'] as num?)?.toInt() ?? 0,
+        activeUsersToday: (response['active_users_today'] as num?)?.toInt() ?? 0,
       );
     } catch (e) {
       throw ServerException.internalError();
@@ -255,28 +255,28 @@ class SupabaseAdminDataSource implements AdminRemoteDataSource {
       });
 
       return ReportData(
-        title: response['title'] ?? 'Report',
+        title: (response['title'] as String?) ?? 'Report',
         startDate: startDate,
         endDate: endDate,
         sections: (response['sections'] as List? ?? [])
             .map((e) => ReportSection(
-                  title: e['title'],
-                  content: e['content'],
+                  title: (e as Map<String, dynamic>)['title'] as String? ?? '',
+                  content: e['content'] as String? ?? '',
                 ))
             .toList(),
         charts: (response['charts'] as List? ?? [])
             .map((e) => ReportChart(
-                  title: e['title'],
-                  type: ChartType.values.byName(e['type']),
-                  data: e['data'],
+                  title: (e as Map<String, dynamic>)['title'] as String? ?? '',
+                  type: ChartType.values.byName((e['type'] as String?) ?? 'bar'),
+                  data: (e['data'] as Map<String, dynamic>?) ?? {},
                 ))
             .toList(),
         tables: (response['tables'] as List? ?? [])
             .map((e) => ReportTable(
-                  title: e['title'],
-                  headers: List<String>.from(e['headers']),
-                  rows: (e['rows'] as List)
-                      .map((r) => List<String>.from(r))
+                  title: (e as Map<String, dynamic>)['title'] as String? ?? '',
+                  headers: List<String>.from((e['headers'] as List?) ?? []),
+                  rows: ((e['rows'] as List?) ?? [])
+                      .map((r) => List<String>.from(r as List))
                       .toList(),
                 ))
             .toList(),
@@ -295,11 +295,11 @@ class SupabaseAdminDataSource implements AdminRemoteDataSource {
           .single();
 
       return SystemSettings(
-        allowSelfRegistration: response['allow_self_registration'] ?? true,
-        requireApproval: response['require_approval'] ?? true,
-        defaultSessionDuration: response['default_session_duration'] ?? 60,
-        systemNotice: response['system_notice'],
-        customSettings: response['custom_settings'],
+        allowSelfRegistration: (response['allow_self_registration'] as bool?) ?? true,
+        requireApproval: (response['require_approval'] as bool?) ?? true,
+        defaultSessionDuration: (response['default_session_duration'] as num?)?.toInt() ?? 60,
+        systemNotice: response['system_notice'] as String?,
+        customSettings: response['custom_settings'] as Map<String, dynamic>?,
       );
     } catch (e) {
       // Return default settings if not found

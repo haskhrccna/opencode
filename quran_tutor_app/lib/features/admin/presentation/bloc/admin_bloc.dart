@@ -231,8 +231,8 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     emit(state.copyWith(status: AdminStatus.assigning));
 
     final failure = await _repository.assignTeacher(
-      event.studentId,
-      event.teacherId,
+      studentId: event.studentId,
+      teacherId: event.teacherId,
     );
 
     if (failure != null) {

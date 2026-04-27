@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
@@ -10,7 +11,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository _authRepository;
 
   AuthBloc(this._authRepository) : super(AuthState.initial()) {
-    on<AuthStarted>(_onAppStarted);
+    on<AppStarted>(_onAppStarted);
     on<SignInRequested>(_onSignInRequested);
     on<SignUpStudentRequested>(_onSignUpStudentRequested);
     on<SignUpTeacherRequested>(_onSignUpTeacherRequested);
@@ -21,7 +22,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _onAppStarted(
-    AuthStarted event,
+    AppStarted event,
     Emitter<AuthState> emit,
   ) async {
     emit(state.copyWith(status: AuthStatus.loading));
@@ -45,10 +46,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(state.copyWith(status: AuthStatus.loading));
+    debugPrint('🔐 AuthBloc: signing in ${event.email}');
     final (user, failure) = await _authRepository.signIn(
       email: event.email,
       password: event.password,
     );
+    debugPrint('🔐 AuthBloc: result user=${user != null}, failure=${failure?.message}');
     if (user != null && failure == null) {
       emit(state.copyWith(
         status: AuthStatus.authenticated,

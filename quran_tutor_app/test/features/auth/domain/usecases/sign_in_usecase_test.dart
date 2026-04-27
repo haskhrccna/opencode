@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:quran_tutor_app/core/constants/app_constants.dart';
 import 'package:quran_tutor_app/core/error/failures.dart';
 import 'package:quran_tutor_app/features/auth/domain/entities/auth_user.dart';
 import 'package:quran_tutor_app/features/auth/domain/repositories/auth_repository.dart';
