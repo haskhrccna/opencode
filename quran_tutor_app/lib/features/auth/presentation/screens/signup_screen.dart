@@ -4,9 +4,13 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/utils/validators/arabic_validators.dart';
 import '../bloc/auth_bloc.dart';
+import '../bloc/auth_event.dart';
+import '../bloc/auth_state.dart';
 
 class SignupScreen extends StatelessWidget {
-  const SignupScreen({super.key});
+  final String? teacherInviteCode;
+
+  const SignupScreen({super.key, this.teacherInviteCode});
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +37,20 @@ class SignupScreen extends StatelessWidget {
                 const SizedBox(height: 16),
                 Text('إنشاء حساب',
                     style: Theme.of(context).textTheme.headlineMedium),
+                if (teacherInviteCode != null) ...[
+                  const SizedBox(height: 8),
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.green.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      'كود المعلم: $teacherInviteCode',
+                      style: const TextStyle(color: Colors.green),
+                    ),
+                  ),
+                ],
                 const SizedBox(height: 32),
                 TextFormField(
                   controller: arabicNameController,
@@ -108,15 +126,15 @@ class SignupScreen extends StatelessWidget {
                 const SizedBox(height: 24),
                 BlocConsumer<AuthBloc, AuthState>(
                   listener: (context, state) {
-                    if (state is AuthError) {
+                    if (state.status == AuthStatus.error) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(state.message)),
+                        SnackBar(content: Text(state.errorMessage ?? 'Error')),
                       );
                     }
                   },
                   builder: (context, state) {
                     return ElevatedButton(
-                      onPressed: state is AuthLoading
+                      onPressed: state.status == AuthStatus.loading
                           ? null
                           : () {
                               if (formKey.currentState!.validate() &&
@@ -132,16 +150,16 @@ class SignupScreen extends StatelessWidget {
                                         dateOfBirth: selectedDob!,
                                         phoneNumber:
                                             phoneController.text.trim(),
+                                        teacherInviteCode: teacherInviteCode,
                                       ),
                                     );
                               }
                             },
-                      child: state is AuthLoading
+                      child: state.status == AuthStatus.loading
                           ? const SizedBox(
                               width: 20,
                               height: 20,
-                              child: CircularProgressIndicator(
-                                  strokeWidth: 2))
+                              child: CircularProgressIndicator(strokeWidth: 2))
                           : const Text('تسجيل'),
                     );
                   },

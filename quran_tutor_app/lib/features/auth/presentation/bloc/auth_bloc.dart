@@ -1,19 +1,16 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../domain/entities/auth_user.dart';
 import '../../domain/repositories/auth_repository.dart';
-
-part 'auth_event.dart';
-part 'auth_state.dart';
+import 'auth_event.dart';
+import 'auth_state.dart';
 
 @injectable
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository _authRepository;
 
-  AuthBloc(this._authRepository) : super(const AuthState.initial()) {
-    on<AppStarted>(_onAppStarted);
+  AuthBloc(this._authRepository) : super(AuthState.initial()) {
+    on<AuthStarted>(_onAppStarted);
     on<SignInRequested>(_onSignInRequested);
     on<SignUpStudentRequested>(_onSignUpStudentRequested);
     on<SignUpTeacherRequested>(_onSignUpTeacherRequested);
@@ -24,7 +21,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _onAppStarted(
-    AppStarted event,
+    AuthStarted event,
     Emitter<AuthState> emit,
   ) async {
     emit(state.copyWith(status: AuthStatus.loading));
