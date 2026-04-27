@@ -2,13 +2,24 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/constants/app_constants.dart';
 import '../bloc/grading_bloc.dart';
 import '../bloc/grading_event.dart';
 import '../bloc/grading_state.dart';
 
-class ProgressScreen extends StatelessWidget {
+class ProgressScreen extends StatefulWidget {
   const ProgressScreen({super.key});
+
+  @override
+  State<ProgressScreen> createState() => _ProgressScreenState();
+}
+
+class _ProgressScreenState extends State<ProgressScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Trigger loading grades when screen opens
+    context.read<GradingBloc>().add(const LoadGrades());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +34,35 @@ class ProgressScreen extends StatelessWidget {
           }
 
           if (state.status == GradingStatus.error) {
-            return Center(child: Text('خطأ: ${state.errorMessage}'));
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('خطأ: ${state.errorMessage}'),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      context.read<GradingBloc>().add(const LoadGrades());
+                    },
+                    child: const Text('إعادة المحاولة'),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          final chartData = state.chartData;
+          final hasData = chartData != null &&
+              (chartData.weeklySessionsSpots.isNotEmpty ||
+                  chartData.gradeDistribution.isNotEmpty);
+
+          if (!hasData) {
+            return const Center(
+              child: Text(
+                'لا توجد بيانات كافية لعرض التقدم',
+                style: TextStyle(fontSize: 16),
+              ),
+            );
           }
 
           return SingleChildScrollView(
@@ -33,17 +72,20 @@ class ProgressScreen extends StatelessWidget {
               children: [
                 // Sessions per week chart
                 _buildSectionTitle('الجلسات الأسبوعية'),
-                _buildLineChart(),
+                _buildLineChart(chartData!.weeklySessionsSpots),
                 const SizedBox(height: 24),
 
                 // Grade distribution chart
                 _buildSectionTitle('توزيع التقييمات'),
-                _buildBarChart(),
+                _buildBarChart(chartData.gradeDistribution),
                 const SizedBox(height: 24),
 
                 // Surah completion progress
                 _buildSectionTitle('تقدم حفظ السور'),
-                _buildRadialChart(),
+                _buildRadialChart(
+                  chartData.surahCompletionPercentage,
+                  chartData.completedSurahs,
+                ),
               ],
             ),
           );
@@ -65,7 +107,14 @@ class ProgressScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildLineChart() {
+  Widget _buildLineChart(List<FlSpot> spots) {
+    if (spots.isEmpty) {
+      return const SizedBox(
+        height: 200,
+        child: Center(child: Text('لا توجد بيانات')),
+      );
+    }
+
     return SizedBox(
       height: 200,
       child: LineChart(
@@ -76,21 +125,33 @@ class ProgressScreen extends StatelessWidget {
               sideTitles: SideTitles(showTitles: true),
             ),
             bottomTitles: AxisTitles(
-              sideTitles: SideTitles(showTitles: true),
+              sideTitles: SideTitles(
+                showTitles: true,
+                getTitlesWidget: (value, meta) {
+                  final weekLabels = [
+                    'أسبوع 1',
+                    'أسبوع 2',
+                    'أسبوع 3',
+                    'أسبوع 4',
+                    'أسبوع 5',
+                    'أسبوع 6',
+                    'الحالي'
+                  ];
+                  if (value >= 0 && value < weekLabels.length) {
+                    return Text(
+                      weekLabels[value.toInt()],
+                      style: const TextStyle(fontSize: 10),
+                    );
+                  }
+                  return const Text('');
+                },
+              ),
             ),
           ),
           borderData: FlBorderData(show: true),
           lineBarsData: [
             LineChartBarData(
-              spots: const [
-                FlSpot(0, 3),
-                FlSpot(1, 4),
-                FlSpot(2, 3),
-                FlSpot(3, 5),
-                FlSpot(4, 4),
-                FlSpot(5, 6),
-                FlSpot(6, 5),
-              ],
+              spots: spots,
               isCurved: true,
               color: Colors.green,
               barWidth: 3,
@@ -102,53 +163,65 @@ class ProgressScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBarChart() {
+  Widget _buildBarChart(Map<int, int> distribution) {
+    if (distribution.isEmpty) {
+      return const SizedBox(
+        height: 200,
+        child: Center(child: Text('لا توجد بيانات')),
+      );
+    }
+
+    final maxCount = distribution.values.reduce((a, b) => a > b ? a : b);
+
+    final barGroups = distribution.entries.map((entry) {
+      final colors = [
+        Colors.red,
+        Colors.orange,
+        Colors.yellow,
+        Colors.lightGreen,
+        Colors.green,
+      ];
+      final color = entry.key >= 1 && entry.key <= 5
+          ? colors[entry.key - 1]
+          : Colors.grey;
+
+      return BarChartGroupData(
+        x: entry.key,
+        barRods: [
+          BarChartRodData(
+            toY: entry.value.toDouble(),
+            color: color,
+            width: 20,
+          ),
+        ],
+      );
+    }).toList();
+
     return SizedBox(
       height: 200,
       child: BarChart(
         BarChartData(
           alignment: BarChartAlignment.spaceAround,
-          maxY: 20,
-          barGroups: [
-            BarChartGroupData(
-              x: 0,
-              barRods: [
-                BarChartRodData(toY: 8, color: Colors.red),
-              ],
-            ),
-            BarChartGroupData(
-              x: 1,
-              barRods: [
-                BarChartRodData(toY: 12, color: Colors.orange),
-              ],
-            ),
-            BarChartGroupData(
-              x: 2,
-              barRods: [
-                BarChartRodData(toY: 15, color: Colors.yellow),
-              ],
-            ),
-            BarChartGroupData(
-              x: 3,
-              barRods: [
-                BarChartRodData(toY: 10, color: Colors.lightGreen),
-              ],
-            ),
-            BarChartGroupData(
-              x: 4,
-              barRods: [
-                BarChartRodData(toY: 18, color: Colors.green),
-              ],
-            ),
-          ],
+          maxY: (maxCount + 1).toDouble(),
+          barGroups: barGroups,
           titlesData: FlTitlesData(
             bottomTitles: AxisTitles(
               sideTitles: SideTitles(
                 showTitles: true,
                 getTitlesWidget: (value, meta) {
-                  final labels = ['ضعيف', 'مقبول', 'جيد', 'جيد جدا', 'ممتاز'];
-                  if (value >= 0 && value < labels.length) {
-                    return Text(labels[value.toInt()]);
+                  final labels = {
+                    1: 'ضعيف',
+                    2: 'مقبول',
+                    3: 'جيد',
+                    4: 'جيد جدا',
+                    5: 'ممتاز',
+                  };
+                  final label = labels[value.toInt()];
+                  if (label != null) {
+                    return Text(
+                      label,
+                      style: const TextStyle(fontSize: 10),
+                    );
                   }
                   return const Text('');
                 },
@@ -160,27 +233,50 @@ class ProgressScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildRadialChart() {
+  Widget _buildRadialChart(double percentage, List<String> completedSurahs) {
+    final completedPercent = (percentage * 100).clamp(0, 100);
+    final remainingPercent = 100 - completedPercent;
+
     return SizedBox(
       height: 200,
-      child: PieChart(
-        PieChartData(
-          sections: [
-            PieChartSectionData(
-              value: 30,
-              title: '30%',
-              color: Colors.green,
-              radius: 80,
+      child: Column(
+        children: [
+          Expanded(
+            child: PieChart(
+              PieChartData(
+                sections: [
+                  PieChartSectionData(
+                    value: completedPercent,
+                    title: '${completedPercent.toStringAsFixed(1)}%',
+                    color: Colors.green,
+                    radius: 80,
+                    titleStyle: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  PieChartSectionData(
+                    value: remainingPercent,
+                    title: '',
+                    color: Colors.grey.shade300,
+                    radius: 80,
+                  ),
+                ],
+                centerSpaceRadius: 40,
+                sectionsSpace: 2,
+              ),
             ),
-            PieChartSectionData(
-              value: 70,
-              title: '70%',
-              color: Colors.grey.shade300,
-              radius: 80,
+          ),
+          if (completedSurahs.isNotEmpty) ...[
+            const SizedBox(height: 8),
+            Text(
+              'السور المحفوظة: ${completedSurahs.take(5).join(", ")}${completedSurahs.length > 5 ? '...' : ''}',
+              style: const TextStyle(fontSize: 12),
+              textAlign: TextAlign.center,
             ),
           ],
-          centerSpaceRadius: 40,
-        ),
+        ],
       ),
     );
   }

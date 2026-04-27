@@ -7,29 +7,46 @@ import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
 
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends StatefulWidget {
   final String? teacherInviteCode;
 
   const SignupScreen({super.key, this.teacherInviteCode});
 
   @override
-  Widget build(BuildContext context) {
-    final formKey = GlobalKey<FormState>();
-    final arabicNameController = TextEditingController();
-    final englishNameController = TextEditingController();
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
-    final confirmPasswordController = TextEditingController();
-    final phoneController = TextEditingController();
-    final dobController = TextEditingController();
-    DateTime? selectedDob;
+  State<SignupScreen> createState() => _SignupScreenState();
+}
 
+class _SignupScreenState extends State<SignupScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _arabicNameController = TextEditingController();
+  final _englishNameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _dobController = TextEditingController();
+  DateTime? _selectedDob;
+
+  @override
+  void dispose() {
+    _arabicNameController.dispose();
+    _englishNameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    _phoneController.dispose();
+    _dobController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Form(
-            key: formKey,
+            key: _formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -37,7 +54,7 @@ class SignupScreen extends StatelessWidget {
                 const SizedBox(height: 16),
                 Text('إنشاء حساب',
                     style: Theme.of(context).textTheme.headlineMedium),
-                if (teacherInviteCode != null) ...[
+                if (widget.teacherInviteCode != null) ...[
                   const SizedBox(height: 8),
                   Container(
                     padding: const EdgeInsets.all(8),
@@ -46,28 +63,28 @@ class SignupScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
-                      'كود المعلم: $teacherInviteCode',
+                      'كود المعلم: ${widget.teacherInviteCode}',
                       style: const TextStyle(color: Colors.green),
                     ),
                   ),
                 ],
                 const SizedBox(height: 32),
                 TextFormField(
-                  controller: arabicNameController,
+                  controller: _arabicNameController,
                   decoration:
                       const InputDecoration(labelText: 'الاسم بالعربية'),
                   validator: ArabicValidators.validateName,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
-                  controller: englishNameController,
+                  controller: _englishNameController,
                   decoration:
                       const InputDecoration(labelText: 'الاسم بالإنجليزية'),
                   validator: ArabicValidators.validateName,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
-                  controller: emailController,
+                  controller: _emailController,
                   decoration:
                       const InputDecoration(labelText: 'البريد الإلكتروني'),
                   keyboardType: TextInputType.emailAddress,
@@ -75,7 +92,7 @@ class SignupScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
-                  controller: phoneController,
+                  controller: _phoneController,
                   decoration:
                       const InputDecoration(labelText: 'رقم الهاتف'),
                   keyboardType: TextInputType.phone,
@@ -83,7 +100,7 @@ class SignupScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
-                  controller: dobController,
+                  controller: _dobController,
                   decoration: const InputDecoration(
                     labelText: 'تاريخ الميلاد',
                     suffixIcon: Icon(Icons.calendar_today),
@@ -97,17 +114,19 @@ class SignupScreen extends StatelessWidget {
                       lastDate: DateTime.now(),
                     );
                     if (picked != null) {
-                      selectedDob = picked;
-                      dobController.text =
+                      setState(() {
+                        _selectedDob = picked;
+                      });
+                      _dobController.text =
                           '${picked.day}/${picked.month}/${picked.year}';
                     }
                   },
                   validator: (v) =>
-                      selectedDob == null ? 'يرجى اختيار تاريخ الميلاد' : null,
+                      _selectedDob == null ? 'يرجى اختيار تاريخ الميلاد' : null,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
-                  controller: passwordController,
+                  controller: _passwordController,
                   decoration:
                       const InputDecoration(labelText: 'كلمة المرور'),
                   obscureText: true,
@@ -115,13 +134,13 @@ class SignupScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
-                  controller: confirmPasswordController,
+                  controller: _confirmPasswordController,
                   decoration:
                       const InputDecoration(labelText: 'تأكيد كلمة المرور'),
                   obscureText: true,
                   validator: (v) =>
                       ArabicValidators.validatePasswordConfirmation(
-                          v, passwordController.text),
+                          v, _passwordController.text),
                 ),
                 const SizedBox(height: 24),
                 BlocConsumer<AuthBloc, AuthState>(
@@ -137,20 +156,20 @@ class SignupScreen extends StatelessWidget {
                       onPressed: state.status == AuthStatus.loading
                           ? null
                           : () {
-                              if (formKey.currentState!.validate() &&
-                                  selectedDob != null) {
+                              if (_formKey.currentState!.validate() &&
+                                  _selectedDob != null) {
                                 context.read<AuthBloc>().add(
                                       SignUpStudentRequested(
-                                        email: emailController.text.trim(),
-                                        password: passwordController.text,
+                                        email: _emailController.text.trim(),
+                                        password: _passwordController.text,
                                         arabicName:
-                                            arabicNameController.text.trim(),
+                                            _arabicNameController.text.trim(),
                                         englishName:
-                                            englishNameController.text.trim(),
-                                        dateOfBirth: selectedDob!,
+                                            _englishNameController.text.trim(),
+                                        dateOfBirth: _selectedDob!,
                                         phoneNumber:
-                                            phoneController.text.trim(),
-                                        teacherInviteCode: teacherInviteCode,
+                                            _phoneController.text.trim(),
+                                        teacherInviteCode: widget.teacherInviteCode,
                                       ),
                                     );
                               }

@@ -46,9 +46,11 @@ class GradingBloc extends Bloc<GradingEvent, GradingState> {
         errorMessage: failure.message,
       ));
     } else {
+      final chartData = grades != null ? ChartData.fromGrades(grades) : null;
       emit(state.copyWith(
         status: GradingStatus.loaded,
         grades: grades,
+        chartData: chartData,
         lastUpdated: DateTime.now(),
       ));
     }
@@ -168,12 +170,29 @@ class GradingBloc extends Bloc<GradingEvent, GradingState> {
       return;
     }
 
-    // Repository doesn't have updateGrade method, using create pattern
-    // This would need to be implemented in the repository
-    emit(state.copyWith(
-      status: GradingStatus.loaded,
-      lastUpdated: DateTime.now(),
-    ));
+    // Update with new values
+    final updatedGrade = currentGrade.copyWith(
+      grade: event.grade,
+      notes: event.notes,
+      surahs: event.surahs,
+      verses: event.verses,
+      pagesMemorized: event.pagesMemorized,
+    );
+
+    final (grade, failure) = await _repository.updateGrade(updatedGrade);
+
+    if (failure != null) {
+      emit(state.copyWith(
+        status: GradingStatus.error,
+        errorMessage: failure.message,
+      ));
+    } else {
+      emit(state.copyWith(
+        status: GradingStatus.loaded,
+        selectedGrade: grade,
+        lastUpdated: DateTime.now(),
+      ));
+    }
   }
 
   Future<void> _onDeleteGrade(

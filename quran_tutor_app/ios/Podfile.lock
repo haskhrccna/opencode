@@ -75,7 +75,7 @@ PODS:
   - posthog_flutter (0.0.1):
     - Flutter
     - FlutterMacOS
-    - PostHog (< 4.0.0, >= 3.50.0)
+    - PostHog (< 4.0.0, >= 3.56.0)
   - printing (1.0.0):
     - Flutter
   - record_ios (1.2.0):
@@ -172,7 +172,7 @@ SPEC CHECKSUMS:
   OneSignalXCFramework: 943852e7d70d719f73e9669d48620aeec1b93022
   package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499
   PostHog: 74dca2dd7cc545225b1d53bf072cc36e0f0beac6
-  posthog_flutter: 7d1eca9c14e96d1fb31cf35d75a32c31fbc776c5
+  posthog_flutter: 03b15ff7a78e2a4162baaf11f8db37b079412106
   printing: 54ff03f28fe9ba3aa93358afb80a8595a071dd07
   record_ios: 412daca2350b228e698fffcd08f1f94ceb1e3844
   share_plus: 50da8cb520a8f0f65671c6c6a99b3617ed10a58a
