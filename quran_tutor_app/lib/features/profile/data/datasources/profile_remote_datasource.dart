@@ -1,9 +1,6 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
 import '../../../../core/error/exceptions.dart';
 import '../models/profile_model.dart';
 
@@ -166,6 +163,8 @@ class SupabaseProfileDataSource implements ProfileRemoteDataSource {
     } catch (e) {
       throw ServerException.internalError();
     }
+  }
+}
   }
 }
 

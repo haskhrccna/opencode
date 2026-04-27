@@ -23,7 +23,7 @@ class AppConstants {
   static int get apiTimeout => AppEnvironment.apiTimeout;
   static int get apiReceiveTimeout => AppEnvironment.apiReceiveTimeout;
 
-  // Firebase Collections
+  // Supabase Tables
   static const String usersCollection = 'users';
   static const String sessionsCollection = 'sessions';
   static const String gradesCollection = 'grades';

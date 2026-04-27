@@ -1,18 +1,18 @@
 PODS:
-  - app_links (6.4.1):
+  - app_links (7.0.0):
     - Flutter
   - audio_session (0.0.1):
     - Flutter
   - connectivity_plus (0.0.1):
     - Flutter
-    - ReachabilitySwift
   - device_info_plus (0.0.1):
     - Flutter
   - Flutter (1.0.0)
   - flutter_local_notifications (0.0.1):
     - Flutter
-  - flutter_secure_storage (6.0.0):
+  - flutter_secure_storage_darwin (10.0.0):
     - Flutter
+    - FlutterMacOS
   - image_picker_ios (0.0.1):
     - Flutter
   - integration_test (0.0.1):
@@ -75,11 +75,10 @@ PODS:
   - posthog_flutter (0.0.1):
     - Flutter
     - FlutterMacOS
-    - PostHog (~> 3.22)
+    - PostHog (< 4.0.0, >= 3.50.0)
   - printing (1.0.0):
     - Flutter
-  - ReachabilitySwift (5.2.4)
-  - record_darwin (1.0.0):
+  - record_ios (1.2.0):
     - Flutter
   - share_plus (0.0.1):
     - Flutter
@@ -99,15 +98,15 @@ DEPENDENCIES:
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - Flutter (from `Flutter`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
-  - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
+  - flutter_secure_storage_darwin (from `.symlinks/plugins/flutter_secure_storage_darwin/darwin`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
   - just_audio (from `.symlinks/plugins/just_audio/darwin`)
   - onesignal_flutter (from `.symlinks/plugins/onesignal_flutter/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
-  - posthog_flutter (from `.symlinks/plugins/posthog_flutter/ios`)
+  - posthog_flutter (from `.symlinks/plugins/posthog_flutter/darwin`)
   - printing (from `.symlinks/plugins/printing/ios`)
-  - record_darwin (from `.symlinks/plugins/record_darwin/ios`)
+  - record_ios (from `.symlinks/plugins/record_ios/ios`)
   - share_plus (from `.symlinks/plugins/share_plus/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - sqflite_darwin (from `.symlinks/plugins/sqflite_darwin/darwin`)
@@ -117,7 +116,6 @@ SPEC REPOS:
   trunk:
     - OneSignalXCFramework
     - PostHog
-    - ReachabilitySwift
 
 EXTERNAL SOURCES:
   app_links:
@@ -132,8 +130,8 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_local_notifications:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
-  flutter_secure_storage:
-    :path: ".symlinks/plugins/flutter_secure_storage/ios"
+  flutter_secure_storage_darwin:
+    :path: ".symlinks/plugins/flutter_secure_storage_darwin/darwin"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
   integration_test:
@@ -145,11 +143,11 @@ EXTERNAL SOURCES:
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
   posthog_flutter:
-    :path: ".symlinks/plugins/posthog_flutter/ios"
+    :path: ".symlinks/plugins/posthog_flutter/darwin"
   printing:
     :path: ".symlinks/plugins/printing/ios"
-  record_darwin:
-    :path: ".symlinks/plugins/record_darwin/ios"
+  record_ios:
+    :path: ".symlinks/plugins/record_ios/ios"
   share_plus:
     :path: ".symlinks/plugins/share_plus/ios"
   shared_preferences_foundation:
@@ -160,25 +158,24 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
-  app_links: 3dbc685f76b1693c66a6d9dd1e9ab6f73d97dc0a
+  app_links: a754cbec3c255bd4bbb4d236ecc06f28cd9a7ce8
   audio_session: 9bb7f6c970f21241b19f5a3658097ae459681ba0
-  connectivity_plus: 481668c94744c30c53b8895afb39159d1e619bdf
-  device_info_plus: 335f3ce08d2e174b9fdc3db3db0f4e3b1f66bd89
+  connectivity_plus: cb623214f4e1f6ef8fe7403d580fdad517d2f7dd
+  device_info_plus: 21fcca2080fbcd348be798aa36c3e5ed849eefbe
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
-  flutter_local_notifications: ad39620c743ea4c15127860f4b5641649a988100
-  flutter_secure_storage: 1ed9476fba7e7a782b22888f956cce43e2c62f13
+  flutter_local_notifications: 643a3eda1ce1c0599413ca31672536d423dee214
+  flutter_secure_storage_darwin: acdb3f316ed05a3e68f856e0353b133eec373a23
   image_picker_ios: e0ece4aa2a75771a7de3fa735d26d90817041326
   integration_test: 4a889634ef21a45d28d50d622cf412dc6d9f586e
   just_audio: 4e391f57b79cad2b0674030a00453ca5ce817eed
   onesignal_flutter: e2e682f7c4b0604ddba445d4f8ea6e79c77dabe1
   OneSignalXCFramework: 943852e7d70d719f73e9669d48620aeec1b93022
-  package_info_plus: 566e1b7a2f3900e4b0020914ad3fc051dcc95596
+  package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499
   PostHog: 74dca2dd7cc545225b1d53bf072cc36e0f0beac6
-  posthog_flutter: 631ab870f7daf1ed190deeb2414eb3e347445f37
+  posthog_flutter: 7d1eca9c14e96d1fb31cf35d75a32c31fbc776c5
   printing: 54ff03f28fe9ba3aa93358afb80a8595a071dd07
-  ReachabilitySwift: 32793e867593cfc1177f5d16491e3a197d2fccda
-  record_darwin: fb1f375f1d9603714f55b8708a903bbb91ffdb0a
-  share_plus: de6030e33b4e106470e09322d87cf2a4258d2d1d
+  record_ios: 412daca2350b228e698fffcd08f1f94ceb1e3844
+  share_plus: 50da8cb520a8f0f65671c6c6a99b3617ed10a58a
   shared_preferences_foundation: 7036424c3d8ec98dfe75ff1667cb0cd531ec82bb
   sqflite_darwin: 20b2a3a3b70e43edae938624ce550a3cbf66a3d0
   url_launcher_ios: 7a95fa5b60cc718a708b8f2966718e93db0cef1b

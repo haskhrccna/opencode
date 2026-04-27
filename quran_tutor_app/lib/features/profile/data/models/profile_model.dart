@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '../../../../core/constants/app_constants.dart';
 import '../../domain/entities/user_profile.dart';
 
@@ -47,35 +45,6 @@ class ProfileModel {
     this.sessionsScheduled,
   });
 
-  factory ProfileModel.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
-    return ProfileModel(
-      id: doc.id,
-      email: data['email'] ?? '',
-      displayName: data['displayName'],
-      arabicName: data['arabicName'],
-      photoUrl: data['photoUrl'],
-      role: data['role'] ?? 'student',
-      status: data['status'] ?? 'pending',
-      createdAt: (data['createdAt'] as Timestamp).toDate(),
-      updatedAt: data['updatedAt'] != null
-          ? (data['updatedAt'] as Timestamp).toDate()
-          : null,
-      phoneNumber: data['phoneNumber'],
-      dateOfBirth: data['dateOfBirth'] != null
-          ? (data['dateOfBirth'] as Timestamp).toDate()
-          : null,
-      teacherId: data['teacherId'],
-      bio: data['bio'],
-      websiteUrl: data['websiteUrl'],
-      address: data['address'],
-      emergencyContact: data['emergencyContact'],
-      preferences: data['preferences'] as Map<String, dynamic>?,
-      sessionsCompleted: data['sessionsCompleted'],
-      sessionsScheduled: data['sessionsScheduled'],
-    );
-  }
-
   factory ProfileModel.fromSupabase(Map<String, dynamic> data) {
     return ProfileModel(
       id: data['id'] ?? '',
@@ -102,29 +71,6 @@ class ProfileModel {
       sessionsCompleted: data['sessions_completed'],
       sessionsScheduled: data['sessions_scheduled'],
     );
-  }
-
-  Map<String, dynamic> toFirestore() {
-    return {
-      'email': email,
-      'displayName': displayName,
-      'arabicName': arabicName,
-      'photoUrl': photoUrl,
-      'role': role,
-      'status': status,
-      'createdAt': Timestamp.fromDate(createdAt),
-      'updatedAt': updatedAt != null ? Timestamp.fromDate(updatedAt!) : null,
-      'phoneNumber': phoneNumber,
-      'dateOfBirth': dateOfBirth != null ? Timestamp.fromDate(dateOfBirth!) : null,
-      'teacherId': teacherId,
-      'bio': bio,
-      'websiteUrl': websiteUrl,
-      'address': address,
-      'emergencyContact': emergencyContact,
-      'preferences': preferences,
-      'sessionsCompleted': sessionsCompleted,
-      'sessionsScheduled': sessionsScheduled,
-    };
   }
 
   Map<String, dynamic> toSupabase() {

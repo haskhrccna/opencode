@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '../../../../core/constants/app_constants.dart';
 import '../../domain/entities/progress_grade.dart';
 
@@ -37,30 +35,6 @@ class GradeModel {
     this.metadata,
   });
 
-  factory GradeModel.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
-    return GradeModel(
-      id: doc.id,
-      sessionId: data['sessionId'] ?? '',
-      studentId: data['studentId'] ?? '',
-      teacherId: data['teacherId'] ?? '',
-      category: data['category'] ?? 'memorization',
-      grade: data['grade'] ?? 1,
-      notes: data['notes'],
-      audioFeedbackUrl: data['audioFeedbackUrl'],
-      createdAt: (data['createdAt'] as Timestamp).toDate(),
-      updatedAt: data['updatedAt'] != null
-          ? (data['updatedAt'] as Timestamp).toDate()
-          : null,
-      surahs: data['surahs'] != null
-          ? List<String>.from(data['surahs'])
-          : null,
-      verses: data['verses'],
-      pagesMemorized: data['pagesMemorized'],
-      metadata: data['metadata'] as Map<String, dynamic>?,
-    );
-  }
-
   factory GradeModel.fromSupabase(Map<String, dynamic> data) {
     return GradeModel(
       id: data['id'] ?? '',
@@ -82,24 +56,6 @@ class GradeModel {
       pagesMemorized: data['pages_memorized'],
       metadata: data['metadata'],
     );
-  }
-
-  Map<String, dynamic> toFirestore() {
-    return {
-      'sessionId': sessionId,
-      'studentId': studentId,
-      'teacherId': teacherId,
-      'category': category,
-      'grade': grade,
-      'notes': notes,
-      'audioFeedbackUrl': audioFeedbackUrl,
-      'createdAt': Timestamp.fromDate(createdAt),
-      'updatedAt': updatedAt != null ? Timestamp.fromDate(updatedAt!) : null,
-      'surahs': surahs,
-      'verses': verses,
-      'pagesMemorized': pagesMemorized,
-      'metadata': metadata,
-    };
   }
 
   Map<String, dynamic> toSupabase() {
