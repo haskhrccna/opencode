@@ -1,14 +1,11 @@
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
-import '../../domain/entities/user.dart';
+import '../../domain/entities/auth_user.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../datasources/auth_local_datasource.dart';
 import '../datasources/auth_remote_datasource.dart';
 import '../models/user_model.dart';
 
-/// Implementation of AuthRepository
-///
-/// Handles data operations and maps exceptions to Failures
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;
   final AuthLocalDataSource localDataSource;
@@ -19,40 +16,29 @@ class AuthRepositoryImpl implements AuthRepository {
   });
 
   @override
-  Future<User> getCurrentUser() async {
-    // First try to get from local cache for instant load
+  Future<AuthUser> getCurrentUser() async {
     final cachedUser = await localDataSource.getUserData();
     if (cachedUser != null) {
       try {
         return UserModel.fromJson(cachedUser).toEntity();
-      } catch (e) {
-        // If parsing fails, continue to remote
-      }
+      } catch (_) {}
     }
-
-    // Try to get from remote
     final remoteUser = await remoteDataSource.getCurrentUser();
     if (remoteUser != null) {
-      // Cache user data
       await localDataSource.cacheUserData(remoteUser.toJson());
       return remoteUser.toEntity();
     }
-
-    // Return empty user if not authenticated
-    return User.empty();
+    return AuthUser.empty();
   }
 
   @override
-  Future<(User?, Failure?)> signIn({
+  Future<(AuthUser?, Failure?)> signIn({
     required String email,
     required String password,
   }) async {
     try {
       final userModel = await remoteDataSource.signIn(email, password);
-
-      // Cache user data
       await localDataSource.cacheUserData(userModel.toJson());
-
       return (userModel.toEntity(), null);
     } on ServerException catch (e) {
       return (null, _mapServerExceptionToFailure(e));
@@ -64,27 +50,26 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<(User?, Failure?)> signUpStudent({
+  Future<(AuthUser?, Failure?)> signUpStudent({
     required String email,
     required String password,
-    required String name,
-    required String phone,
-    int? age,
+    required String arabicName,
+    required String englishName,
+    required DateTime dateOfBirth,
+    required String phoneNumber,
     String? teacherInviteCode,
   }) async {
     try {
       final userModel = await remoteDataSource.signUpStudent(
         email: email,
         password: password,
-        name: name,
-        phone: phone,
-        age: age,
+        arabicName: arabicName,
+        englishName: englishName,
+        dateOfBirth: dateOfBirth,
+        phoneNumber: phoneNumber,
         teacherInviteCode: teacherInviteCode,
       );
-
-      // Cache user data
       await localDataSource.cacheUserData(userModel.toJson());
-
       return (userModel.toEntity(), null);
     } on ServerException catch (e) {
       return (null, _mapServerExceptionToFailure(e));
@@ -96,29 +81,26 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<(User?, Failure?)> signUpTeacher({
+  Future<(AuthUser?, Failure?)> signUpTeacher({
     required String email,
     required String password,
-    required String name,
-    required String phone,
+    required String arabicName,
+    required String englishName,
+    required String phoneNumber,
     String? bio,
     String? websiteUrl,
-    required String inviteCode,
   }) async {
     try {
       final userModel = await remoteDataSource.signUpTeacher(
         email: email,
         password: password,
-        name: name,
-        phone: phone,
+        arabicName: arabicName,
+        englishName: englishName,
+        phoneNumber: phoneNumber,
         bio: bio,
         websiteUrl: websiteUrl,
-        inviteCode: inviteCode,
       );
-
-      // Cache user data
       await localDataSource.cacheUserData(userModel.toJson());
-
       return (userModel.toEntity(), null);
     } on ServerException catch (e) {
       return (null, _mapServerExceptionToFailure(e));
@@ -151,10 +133,11 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Failure?> updatePassword({
+    required String currentPassword,
     required String newPassword,
   }) async {
     try {
-      await remoteDataSource.updatePassword(newPassword);
+      await remoteDataSource.updatePassword(currentPassword, newPassword);
       return null;
     } on ServerException catch (e) {
       return _mapServerExceptionToFailure(e);
@@ -180,34 +163,31 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Stream<User> get authStateChanges {
+  Stream<AuthUser> get authStateChanges {
     return remoteDataSource.authStateChanges.map((userModel) {
       if (userModel != null) {
-        // Cache user data on auth state change
         localDataSource.cacheUserData(userModel.toJson());
         return userModel.toEntity();
       }
-      // Clear cache on sign out
       localDataSource.clearAll();
-      return User.empty();
+      return AuthUser.empty();
     });
   }
 
   @override
-  Future<(User?, Failure?)> refreshUser() async {
+  Future<(AuthUser?, Failure?)> refreshUser() async {
     final currentUser = await remoteDataSource.getCurrentUser();
     if (currentUser == null) {
-      return (User.empty(), null);
+      return (AuthUser.empty(), null);
     }
-
     try {
-      final refreshedUser = await remoteDataSource.refreshUser(currentUser.id);
+      final refreshedUser =
+          await remoteDataSource.refreshUser(currentUser.id);
       if (refreshedUser != null) {
-        // Update cache
         await localDataSource.cacheUserData(refreshedUser.toJson());
         return (refreshedUser.toEntity(), null);
       }
-      return (User.empty(), null);
+      return (AuthUser.empty(), null);
     } on ServerException catch (e) {
       return (null, _mapServerExceptionToFailure(e));
     } on NetworkException catch (e) {
@@ -217,7 +197,6 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
-  // Exception mapping helpers
   Failure _mapServerExceptionToFailure(ServerException e) {
     switch (e.code) {
       case 'bad_request':

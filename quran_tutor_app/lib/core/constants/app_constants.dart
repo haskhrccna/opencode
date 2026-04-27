@@ -23,11 +23,18 @@ class AppConstants {
   static int get apiTimeout => AppEnvironment.apiTimeout;
   static int get apiReceiveTimeout => AppEnvironment.apiReceiveTimeout;
 
-  // Firebase Collections
-  static const String usersCollection = 'users';
-  static const String sessionsCollection = 'sessions';
-  static const String gradesCollection = 'grades';
-  static const String teachersCollection = 'teachers';
+  // Supabase Tables
+  static const String usersTable = 'users';
+  static const String teachersTable = 'teachers';
+  static const String adminNotificationsTable = 'admin_notifications';
+  static const String sessionsTable = 'sessions';
+  static const String gradesTable = 'grades';
+
+  // Legacy table names (for backwards compatibility)
+  static const String usersCollection = usersTable;
+  static const String sessionsCollection = sessionsTable;
+  static const String gradesCollection = gradesTable;
+  static const String teachersCollection = teachersTable;
   static const String studentsCollection = 'students';
   static const String notificationsCollection = 'notifications';
   static const String auditLogsCollection = 'audit_logs';

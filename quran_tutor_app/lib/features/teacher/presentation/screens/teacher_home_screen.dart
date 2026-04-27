@@ -11,13 +11,13 @@ class TeacherHomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-        if (state is! Authenticated) {
+        if (state.user == null) {
           return const Scaffold(body: Center(child: CircularProgressIndicator()));
         }
-        final user = state.user;
+        final user = state.user!;
         return Scaffold(
           appBar: AppBar(
-            title: Text('مرحباً، ${user.name}'),
+            title: Text('مرحباً، ${user.arabicName ?? user.displayName ?? ''}'),
             actions: [
               IconButton(
                 icon: const Icon(Icons.person_outline),
@@ -38,6 +38,12 @@ class TeacherHomeScreen extends StatelessWidget {
                 icon: Icons.people_outline,
                 label: 'طلابي',
                 onTap: () => context.go('/teacher/students'),
+              ),
+              const SizedBox(height: 12),
+              _NavCard(
+                icon: Icons.logout,
+                label: 'تسجيل الخروج',
+                onTap: () => context.read<AuthBloc>().add(const SignOutRequested()),
               ),
             ],
           ),

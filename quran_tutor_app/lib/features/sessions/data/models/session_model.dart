@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '../../../../core/constants/app_constants.dart';
 import '../../domain/entities/session.dart';
 
@@ -8,14 +6,14 @@ class SessionModel {
   final String id;
   final String teacherId;
   final String? studentId;
-  final DateTime scheduledAt; // Stored in UTC
+  final DateTime scheduledAt;
   final int durationMinutes;
   final String? topic;
   final String? notes;
   final String status;
-  final DateTime createdAt; // Stored in UTC
-  final DateTime? updatedAt; // Stored in UTC
-  final DateTime? completedAt; // Stored in UTC
+  final DateTime createdAt;
+  final DateTime? updatedAt;
+  final DateTime? completedAt;
   final String? recordingUrl;
   final String? meetingLink;
   final String? location;
@@ -43,33 +41,6 @@ class SessionModel {
     this.metadata,
   });
 
-  factory SessionModel.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
-    return SessionModel(
-      id: doc.id,
-      teacherId: data['teacherId'] ?? '',
-      studentId: data['studentId'],
-      scheduledAt: (data['scheduledAt'] as Timestamp).toDate(),
-      durationMinutes: data['durationMinutes'] ?? 60,
-      topic: data['topic'],
-      notes: data['notes'],
-      status: data['status'] ?? 'scheduled',
-      createdAt: (data['createdAt'] as Timestamp).toDate(),
-      updatedAt: data['updatedAt'] != null
-          ? (data['updatedAt'] as Timestamp).toDate()
-          : null,
-      completedAt: data['completedAt'] != null
-          ? (data['completedAt'] as Timestamp).toDate()
-          : null,
-      recordingUrl: data['recordingUrl'],
-      meetingLink: data['meetingLink'],
-      location: data['location'],
-      isOnline: data['isOnline'] ?? true,
-      cancellationReason: data['cancellationReason'],
-      metadata: data['metadata'] as Map<String, dynamic>?,
-    );
-  }
-
   factory SessionModel.fromSupabase(Map<String, dynamic> data) {
     return SessionModel(
       id: data['id'] ?? '',
@@ -94,27 +65,6 @@ class SessionModel {
       cancellationReason: data['cancellation_reason'],
       metadata: data['metadata'] as Map<String, dynamic>?,
     );
-  }
-
-  Map<String, dynamic> toFirestore() {
-    return {
-      'teacherId': teacherId,
-      'studentId': studentId,
-      'scheduledAt': Timestamp.fromDate(scheduledAt),
-      'durationMinutes': durationMinutes,
-      'topic': topic,
-      'notes': notes,
-      'status': status,
-      'createdAt': Timestamp.fromDate(createdAt),
-      'updatedAt': updatedAt != null ? Timestamp.fromDate(updatedAt!) : null,
-      'completedAt': completedAt != null ? Timestamp.fromDate(completedAt!) : null,
-      'recordingUrl': recordingUrl,
-      'meetingLink': meetingLink,
-      'location': location,
-      'isOnline': isOnline,
-      'cancellationReason': cancellationReason,
-      'metadata': metadata,
-    };
   }
 
   Map<String, dynamic> toSupabase() {

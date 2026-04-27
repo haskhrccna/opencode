@@ -25,32 +25,58 @@ class LoginScreen extends StatelessWidget {
               children: [
                 const Icon(Icons.menu_book, size: 64, color: Colors.green),
                 const SizedBox(height: 16),
-                Text('تسجيل الدخول', style: Theme.of(context).textTheme.headlineMedium),
+                Text('تسجيل الدخول',
+                    style: Theme.of(context).textTheme.headlineMedium),
                 const SizedBox(height: 32),
                 TextFormField(
                   controller: emailController,
-                  decoration: const InputDecoration(labelText: 'البريد الإلكتروني'),
+                  decoration:
+                      const InputDecoration(labelText: 'البريد الإلكتروني'),
                   keyboardType: TextInputType.emailAddress,
                   validator: ArabicValidators.validateEmail,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: passwordController,
-                  decoration: const InputDecoration(labelText: 'كلمة المرور'),
+                  decoration:
+                      const InputDecoration(labelText: 'كلمة المرور'),
                   obscureText: true,
                   validator: ArabicValidators.validatePassword,
                 ),
                 const SizedBox(height: 24),
-                ElevatedButton(
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      context.read<AuthBloc>().add(SignInRequested(
-                            email: emailController.text.trim(),
-                            password: passwordController.text,
-                          ));
+                BlocConsumer<AuthBloc, AuthState>(
+                  listener: (context, state) {
+                    if (state.status == AuthStatus.error) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                            content:
+                                Text(state.errorMessage ?? 'Login failed')),
+                      );
                     }
                   },
-                  child: const Text('دخول'),
+                  builder: (context, state) {
+                    return ElevatedButton(
+                      onPressed: state.status == AuthStatus.loading
+                          ? null
+                          : () {
+                              if (formKey.currentState!.validate()) {
+                                context.read<AuthBloc>().add(
+                                      SignInRequested(
+                                        email: emailController.text.trim(),
+                                        password: passwordController.text,
+                                      ),
+                                    );
+                              }
+                            },
+                      child: state.status == AuthStatus.loading
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                  strokeWidth: 2))
+                          : const Text('دخول'),
+                    );
+                  },
                 ),
                 TextButton(
                   onPressed: () => context.go('/auth/signup'),

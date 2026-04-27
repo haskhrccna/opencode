@@ -1,9 +1,6 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/error/exceptions.dart';
 import '../../domain/repositories/grading_repository.dart';
