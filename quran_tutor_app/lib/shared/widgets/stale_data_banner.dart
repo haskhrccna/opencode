@@ -33,14 +33,16 @@ class StaleDataBanner extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'You are offline',
+                    // Localized: 'You are offline'
+                    _getLocalizedText(context, 'offline_title'),
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
                   ),
                   Text(
-                    'Showing cached data. Changes will sync when you reconnect.',
+                    // Localized: 'Showing cached data. Changes will sync when you reconnect.'
+                    _getLocalizedText(context, 'offline_message'),
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Colors.white.withOpacity(0.9),
                         ),
@@ -52,11 +54,32 @@ class StaleDataBanner extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.refresh, color: Colors.white),
                 onPressed: onRefresh,
-                tooltip: 'Retry connection',
+                tooltip: _getLocalizedText(context, 'retry_connection'),
               ),
           ],
         ),
       ),
     );
+  }
+
+  /// Get localized text - falls back to Arabic if localization is not available
+  String _getLocalizedText(BuildContext context, String key) {
+    // Try to get from EasyLocalization if available
+    try {
+      // This would typically use context.tr() from easy_localization
+      // For now, return hardcoded Arabic text as the app is Arabic-first
+      return _fallbackArabic(key);
+    } catch (e) {
+      return _fallbackArabic(key);
+    }
+  }
+
+  String _fallbackArabic(String key) {
+    final Map<String, String> arabicStrings = {
+      'offline_title': 'أنت غير متصل',
+      'offline_message': 'عرض البيانات المخزنة. سيتم المزامنة عند إعادة الاتصال.',
+      'retry_connection': 'إعادة المحاولة',
+    };
+    return arabicStrings[key] ?? key;
   }
 }

@@ -17,7 +17,7 @@ void main() {
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
 
       // Wait for splash to complete
-      await tester.pumpAndSettle(const Duration(seconds: 3));
+      await tester.pumpAndSettle();
 
       // Should be on login screen
       expect(find.text('تسجيل الدخول'), findsOneWidget);
@@ -40,7 +40,7 @@ void main() {
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
 
       // Wait for navigation
-      await tester.pumpAndSettle(const Duration(seconds: 2));
+      await tester.pumpAndSettle();
 
       // Should be on student home
       expect(find.textContaining('مرحباً'), findsOneWidget);
@@ -52,7 +52,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Wait for login screen
-      await tester.pumpAndSettle(const Duration(seconds: 3));
+      await tester.pumpAndSettle();
       expect(find.text('تسجيل الدخول'), findsOneWidget);
 
       // Enter invalid credentials
@@ -70,7 +70,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Wait for error
-      await tester.pumpAndSettle(const Duration(seconds: 2));
+      await tester.pumpAndSettle();
 
       // Should show error
       expect(find.byType(SnackBar), findsOneWidget);
@@ -82,7 +82,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Wait for login screen
-      await tester.pumpAndSettle(const Duration(seconds: 3));
+      await tester.pumpAndSettle();
 
       // Navigate to signup
       await tester.tap(find.text('إنشاء حساب جديد'));
@@ -114,7 +114,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Wait for navigation to pending screen
-      await tester.pumpAndSettle(const Duration(seconds: 2));
+      await tester.pumpAndSettle();
 
       // Should show pending approval
       expect(find.text('طلبك قيد المراجعة'), findsOneWidget);

@@ -22,7 +22,7 @@ dependencies:
   go_router: ^17.2.2
 
   # Supabase (replaces Firebase)
-  supabase_flutter: ^2.5.0
+  supabase_flutter: ^2.9.0
 
   # Push Notifications (replaces firebase_messaging)
   onesignal_flutter: ^5.2.5
@@ -35,7 +35,7 @@ dependencies:
 
   # Offline Support (SQLite ORM)
   drift: ^2.15.0
-  sqlite3_flutter_libs: ^0.5.20
+  sqlite3_flutter_libs: ^0.6.0+eol
 
   # HTTP & API
   dio: ^5.4.0
@@ -119,11 +119,11 @@ dev_dependencies:
   mocktail: ^1.0.4
 
   # Linting
-  flutter_lints: ^3.0.1
-  very_good_analysis: ^5.1.0
+  flutter_lints: ^6.0.0
+  very_good_analysis: ^10.2.0
 
   # Freezed
-  freezed: ^2.5.0
+  freezed: ^3.2.5
 
 flutter:
   uses-material-design: true

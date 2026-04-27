@@ -63,6 +63,12 @@ class PdfService {
                 SizedBox(height: 20),
                 ...tables.map((table) => _buildTable(context, table)),
               ],
+              // Charts rendered as text summary tables
+              // Note: Full chart rendering requires custom PDF painting
+              if (charts != null && charts.isNotEmpty) ...[
+                SizedBox(height: 20),
+                ...charts.map((chart) => _buildChartAsTable(context, chart)),
+              ],
             ],
           );
         },
@@ -142,6 +148,46 @@ class PdfService {
   Future<void> previewPdf(Uint8List pdfData) async {
     await Printing.layoutPdf(
       onLayout: (PdfPageFormat format) async => pdfData,
+    );
+  }
+
+  /// Build a chart as a text summary table
+  /// 
+  /// Note: Full graphical chart rendering requires complex custom PDF painting.
+  /// For now, charts are rendered as data tables.
+  Widget _buildChartAsTable(Context context, ReportChart chart) {
+    final data = chart.data;
+    final rows = <List<String>>[];
+
+    // Convert chart data to table rows
+    data.forEach((key, value) {
+      rows.add([key.toString(), value.toString()]);
+    });
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '${chart.title} (${chart.type.name})',
+          style: Theme.of(context).header3,
+        ),
+        SizedBox(height: 8),
+        if (rows.isNotEmpty)
+          TableHelper.fromTextArray(
+            context: context,
+            data: <List<String>>[
+              ['Item', 'Value'],
+              ...rows,
+            ],
+            headerStyle: Theme.of(context)
+                .defaultTextStyle
+                .copyWith(fontWeight: FontWeight.bold),
+            headerDecoration: const BoxDecoration(
+              color: PdfColors.grey300,
+            ),
+          ),
+        SizedBox(height: 20),
+      ],
     );
   }
 }
