@@ -37,24 +37,24 @@ class GradeModel {
 
   factory GradeModel.fromSupabase(Map<String, dynamic> data) {
     return GradeModel(
-      id: data['id'] ?? '',
-      sessionId: data['session_id'] ?? '',
-      studentId: data['student_id'] ?? '',
-      teacherId: data['teacher_id'] ?? '',
-      category: data['category'] ?? 'memorization',
-      grade: data['grade'] ?? 1,
-      notes: data['notes'],
-      audioFeedbackUrl: data['audio_feedback_url'],
-      createdAt: DateTime.parse(data['created_at']),
+      id: (data['id'] as String?) ?? '',
+      sessionId: (data['session_id'] as String?) ?? '',
+      studentId: (data['student_id'] as String?) ?? '',
+      teacherId: (data['teacher_id'] as String?) ?? '',
+      category: (data['category'] as String?) ?? 'memorization',
+      grade: (data['grade'] as num?)?.toInt() ?? 1,
+      notes: data['notes'] as String?,
+      audioFeedbackUrl: data['audio_feedback_url'] as String?,
+      createdAt: DateTime.parse(data['created_at'] as String),
       updatedAt: data['updated_at'] != null
-          ? DateTime.parse(data['updated_at'])
+          ? DateTime.parse(data['updated_at'] as String)
           : null,
       surahs: data['surahs'] != null
-          ? List<String>.from(data['surahs'])
+          ? List<String>.from(data['surahs'] as List)
           : null,
-      verses: data['verses'],
-      pagesMemorized: data['pages_memorized'],
-      metadata: data['metadata'],
+      verses: data['verses'] as String?,
+      pagesMemorized: (data['pages_memorized'] as num?)?.toInt(),
+      metadata: data['metadata'] as Map<String, dynamic>?,
     );
   }
 
@@ -83,7 +83,10 @@ class GradeModel {
       sessionId: sessionId,
       studentId: studentId,
       teacherId: teacherId,
-      category: GradingCategory.fromString(category),
+      category: GradingCategory.values.firstWhere(
+        (c) => c.value == category,
+        orElse: () => GradingCategory.memorization,
+      ),
       grade: grade,
       notes: notes,
       audioFeedbackUrl: audioFeedbackUrl,

@@ -293,9 +293,9 @@ class GradingBloc extends Bloc<GradingEvent, GradingState> {
   ) async {
     emit(state.copyWith(status: GradingStatus.updating));
 
-    final (url, failure) = await _repository.uploadAudioFeedback(
-      event.gradeId,
-      event.audioFilePath,
+    final (grade, failure) = await _repository.uploadAudioFeedback(
+      gradeId: event.gradeId,
+      audioFilePath: event.audioFilePath,
     );
 
     if (failure != null) {

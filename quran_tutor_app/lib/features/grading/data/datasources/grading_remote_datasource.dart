@@ -92,7 +92,7 @@ class SupabaseGradingDataSource implements GradingRemoteDataSource {
           .order('created_at', ascending: false);
 
       return (response as List)
-          .map((e) => GradeModel.fromSupabase(e))
+          .map((e) => GradeModel.fromSupabase(e as Map<String, dynamic>))
           .toList();
     } catch (e) {
       throw ServerException.internalError();
@@ -109,7 +109,7 @@ class SupabaseGradingDataSource implements GradingRemoteDataSource {
           .order('created_at', ascending: false);
 
       return (response as List)
-          .map((e) => GradeModel.fromSupabase(e))
+          .map((e) => GradeModel.fromSupabase(e as Map<String, dynamic>))
           .toList();
     } catch (e) {
       throw ServerException.internalError();
@@ -126,7 +126,7 @@ class SupabaseGradingDataSource implements GradingRemoteDataSource {
           .order('created_at', ascending: false);
 
       return (response as List)
-          .map((e) => GradeModel.fromSupabase(e))
+          .map((e) => GradeModel.fromSupabase(e as Map<String, dynamic>))
           .toList();
     } catch (e) {
       throw ServerException.internalError();
@@ -254,17 +254,17 @@ class SupabaseGradingDataSource implements GradingRemoteDataSource {
 
       return ProgressSummary(
         studentId: studentId,
-        totalSessions: response['total_sessions'] ?? 0,
-        sessionsGraded: response['sessions_graded'] ?? 0,
-        averageGrade: (response['average_grade'] ?? 0).toDouble(),
+        totalSessions: (response['total_sessions'] as num?)?.toInt() ?? 0,
+        sessionsGraded: (response['sessions_graded'] as num?)?.toInt() ?? 0,
+        averageGrade: (response['average_grade'] as num?)?.toDouble() ?? 0.0,
         categoryAverages: {},
-        currentStreak: response['current_streak'] ?? 0,
-        longestStreak: response['longest_streak'] ?? 0,
+        currentStreak: (response['current_streak'] as num?)?.toInt() ?? 0,
+        longestStreak: (response['longest_streak'] as num?)?.toInt() ?? 0,
         lastSessionDate: response['last_session_date'] != null
-            ? DateTime.parse(response['last_session_date'])
+            ? DateTime.parse(response['last_session_date'] as String)
             : null,
-        totalPagesMemorized: response['total_pages_memorized'] ?? 0,
-        surahsMemorized: List<String>.from(response['surahs_memorized'] ?? []),
+        totalPagesMemorized: (response['total_pages_memorized'] as num?)?.toInt() ?? 0,
+        surahsMemorized: List<String>.from((response['surahs_memorized'] as List?) ?? []),
       );
     } catch (e) {
       throw ServerException.internalError();
@@ -287,9 +287,9 @@ class SupabaseGradingDataSource implements GradingRemoteDataSource {
 
       final points = (response as List)
           .map((e) => ProgressPoint(
-                date: DateTime.parse(e['date']),
-                averageGrade: (e['average_grade'] ?? 0).toDouble(),
-                sessionsCount: e['sessions_count'] ?? 0,
+                date: DateTime.parse((e as Map<String, dynamic>)['date'] as String),
+                averageGrade: (e['average_grade'] as num?)?.toDouble() ?? 0.0,
+                sessionsCount: (e['sessions_count'] as num?)?.toInt() ?? 0,
               ))
           .toList();
 
@@ -312,15 +312,15 @@ class SupabaseGradingDataSource implements GradingRemoteDataSource {
 
       return (response as List)
           .map((e) => StudentProgress(
-                studentId: e['student_id'],
-                studentName: e['student_name'],
-                averageGrade: (e['average_grade'] ?? 0).toDouble(),
-                sessionsAttended: e['sessions_attended'] ?? 0,
-                sessionsTotal: e['sessions_total'] ?? 0,
+                studentId: (e as Map<String, dynamic>)['student_id'] as String,
+                studentName: e['student_name'] as String? ?? '',
+                averageGrade: (e['average_grade'] as num?)?.toDouble() ?? 0.0,
+                sessionsAttended: (e['sessions_attended'] as num?)?.toInt() ?? 0,
+                sessionsTotal: (e['sessions_total'] as num?)?.toInt() ?? 0,
                 lastSession: e['last_session'] != null
-                    ? DateTime.parse(e['last_session'])
+                    ? DateTime.parse(e['last_session'] as String)
                     : null,
-                isOnTrack: e['is_on_track'] ?? true,
+                isOnTrack: (e['is_on_track'] as bool?) ?? true,
               ))
           .toList();
     } catch (e) {

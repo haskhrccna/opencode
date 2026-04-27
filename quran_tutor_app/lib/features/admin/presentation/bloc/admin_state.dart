@@ -1,9 +1,8 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:equatable/equatable.dart';
 
-import '../../auth/domain/entities/auth_user.dart';
+import '../../../../core/constants/app_constants.dart';
+import '../../../auth/domain/entities/auth_user.dart';
 import '../../domain/repositories/admin_repository.dart';
-
-part 'admin_state.freezed.dart';
 
 enum AdminStatus {
   initial,
@@ -18,10 +17,37 @@ enum AdminStatus {
   error,
 }
 
-@freezed
-class AdminState with _$AdminState {
-  const factory AdminState({
-    required AdminStatus status,
+class AdminState extends Equatable {
+  final AdminStatus status;
+  final List<AuthUser>? pendingUsers;
+  final List<AuthUser>? rejectedUsers;
+  final List<AuthUser>? allUsers;
+  final List<AuthUser>? usersByRole;
+  final SystemStats? systemStats;
+  final ReportData? reportData;
+  final SystemSettings? systemSettings;
+  final String? errorMessage;
+  final DateTime? lastUpdated;
+
+  const AdminState({
+    required this.status,
+    this.pendingUsers,
+    this.rejectedUsers,
+    this.allUsers,
+    this.usersByRole,
+    this.systemStats,
+    this.reportData,
+    this.systemSettings,
+    this.errorMessage,
+    this.lastUpdated,
+  });
+
+  factory AdminState.initial() => const AdminState(
+        status: AdminStatus.initial,
+      );
+
+  AdminState copyWith({
+    AdminStatus? status,
     List<AuthUser>? pendingUsers,
     List<AuthUser>? rejectedUsers,
     List<AuthUser>? allUsers,
@@ -31,9 +57,32 @@ class AdminState with _$AdminState {
     SystemSettings? systemSettings,
     String? errorMessage,
     DateTime? lastUpdated,
-  }) = _AdminState;
+  }) {
+    return AdminState(
+      status: status ?? this.status,
+      pendingUsers: pendingUsers ?? this.pendingUsers,
+      rejectedUsers: rejectedUsers ?? this.rejectedUsers,
+      allUsers: allUsers ?? this.allUsers,
+      usersByRole: usersByRole ?? this.usersByRole,
+      systemStats: systemStats ?? this.systemStats,
+      reportData: reportData ?? this.reportData,
+      systemSettings: systemSettings ?? this.systemSettings,
+      errorMessage: errorMessage ?? this.errorMessage,
+      lastUpdated: lastUpdated ?? this.lastUpdated,
+    );
+  }
 
-  factory AdminState.initial() => const AdminState(
-        status: AdminStatus.initial,
-      );
+  @override
+  List<Object?> get props => [
+        status,
+        pendingUsers,
+        rejectedUsers,
+        allUsers,
+        usersByRole,
+        systemStats,
+        reportData,
+        systemSettings,
+        errorMessage,
+        lastUpdated,
+      ];
 }

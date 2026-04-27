@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import '../../localization/app_localizations.dart';
 import '../../constants/app_constants.dart';
 
@@ -253,7 +255,7 @@ class ArabicValidators {
   /// );
   /// ```
   static String getLocalizedMessage(
-    context,
+    BuildContext context,
     String key, {
     Map<String, String>? args,
   }) {
@@ -284,7 +286,7 @@ class ValidationResult {
       );
 
   /// Get localized error message
-  String getLocalizedMessage(context) {
+  String getLocalizedMessage(BuildContext context) {
     if (isValid || errorKey == null) return '';
     final localizations = AppLocalizations.of(context);
     return localizations.translate(errorKey!, args: args);

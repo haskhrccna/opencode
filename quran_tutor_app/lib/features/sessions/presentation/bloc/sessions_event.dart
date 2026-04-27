@@ -1,69 +1,213 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:equatable/equatable.dart';
 
-part 'sessions_event.freezed.dart';
+abstract class SessionsEvent extends Equatable {
+  const SessionsEvent();
 
-@freezed
-class SessionsEvent with _$SessionsEvent {
-  const factory SessionsEvent.loadSessions({String? userId}) = LoadSessions;
+  @override
+  List<Object?> get props => [];
+}
 
-  const factory SessionsEvent.loadTeacherSessions(String teacherId) = LoadTeacherSessions;
+class LoadSessions extends SessionsEvent {
+  final String? userId;
 
-  const factory SessionsEvent.loadStudentSessions(String studentId) = LoadStudentSessions;
+  const LoadSessions({this.userId});
 
-  const factory SessionsEvent.loadAllSessions() = LoadAllSessions;
+  @override
+  List<Object?> get props => [userId];
+}
 
-  const factory SessionsEvent.loadUpcomingSessions({String? userId}) = LoadUpcomingSessions;
+class LoadTeacherSessions extends SessionsEvent {
+  final String teacherId;
 
-  const factory SessionsEvent.loadPastSessions({String? userId}) = LoadPastSessions;
+  const LoadTeacherSessions(this.teacherId);
 
-  const factory SessionsEvent.getSession(String sessionId) = GetSession;
+  @override
+  List<Object?> get props => [teacherId];
+}
 
-  const factory SessionsEvent.createSession({
-    required String teacherId,
-    required DateTime scheduledAt,
-    int durationMinutes,
-    String? topic,
-    String? notes,
-    String? location,
-    bool isOnline,
-  }) = CreateSession;
+class LoadStudentSessions extends SessionsEvent {
+  final String studentId;
 
-  const factory SessionsEvent.assignStudent({
-    required String sessionId,
-    required String studentId,
-  }) = AssignStudent;
+  const LoadStudentSessions(this.studentId);
 
-  const factory SessionsEvent.unassignStudent(String sessionId) = UnassignStudent;
+  @override
+  List<Object?> get props => [studentId];
+}
 
-  const factory SessionsEvent.updateSession({
-    required String sessionId,
-    DateTime? scheduledAt,
-    int? durationMinutes,
-    String? topic,
-    String? notes,
-    String? location,
-    bool? isOnline,
-  }) = UpdateSession;
+class LoadAllSessions extends SessionsEvent {
+  const LoadAllSessions();
+}
 
-  const factory SessionsEvent.cancelSession({
-    required String sessionId,
-    String? reason,
-  }) = CancelSession;
+class LoadUpcomingSessions extends SessionsEvent {
+  final String? userId;
 
-  const factory SessionsEvent.rescheduleSession({
-    required String sessionId,
-    required DateTime newScheduledAt,
-  }) = RescheduleSession;
+  const LoadUpcomingSessions({this.userId});
 
-  const factory SessionsEvent.startSession(String sessionId) = StartSession;
+  @override
+  List<Object?> get props => [userId];
+}
 
-  const factory SessionsEvent.completeSession(String sessionId) = CompleteSession;
+class LoadPastSessions extends SessionsEvent {
+  final String? userId;
 
-  const factory SessionsEvent.loadSessionsInRange({
-    required DateTime start,
-    required DateTime end,
-    String? userId,
-  }) = LoadSessionsInRange;
+  const LoadPastSessions({this.userId});
 
-  const factory SessionsEvent.refreshSessions() = RefreshSessions;
+  @override
+  List<Object?> get props => [userId];
+}
+
+class GetSession extends SessionsEvent {
+  final String sessionId;
+
+  const GetSession(this.sessionId);
+
+  @override
+  List<Object?> get props => [sessionId];
+}
+
+class CreateSession extends SessionsEvent {
+  final String teacherId;
+  final DateTime scheduledAt;
+  final int durationMinutes;
+  final String? topic;
+  final String? notes;
+  final String? location;
+  final bool isOnline;
+
+  const CreateSession({
+    required this.teacherId,
+    required this.scheduledAt,
+    this.durationMinutes = 60,
+    this.topic,
+    this.notes,
+    this.location,
+    this.isOnline = true,
+  });
+
+  @override
+  List<Object?> get props => [
+        teacherId,
+        scheduledAt,
+        durationMinutes,
+        topic,
+        notes,
+        location,
+        isOnline,
+      ];
+}
+
+class AssignStudent extends SessionsEvent {
+  final String sessionId;
+  final String studentId;
+
+  const AssignStudent({
+    required this.sessionId,
+    required this.studentId,
+  });
+
+  @override
+  List<Object?> get props => [sessionId, studentId];
+}
+
+class UnassignStudent extends SessionsEvent {
+  final String sessionId;
+
+  const UnassignStudent(this.sessionId);
+
+  @override
+  List<Object?> get props => [sessionId];
+}
+
+class UpdateSession extends SessionsEvent {
+  final String sessionId;
+  final DateTime? scheduledAt;
+  final int? durationMinutes;
+  final String? topic;
+  final String? notes;
+  final String? location;
+  final bool? isOnline;
+
+  const UpdateSession({
+    required this.sessionId,
+    this.scheduledAt,
+    this.durationMinutes,
+    this.topic,
+    this.notes,
+    this.location,
+    this.isOnline,
+  });
+
+  @override
+  List<Object?> get props => [
+        sessionId,
+        scheduledAt,
+        durationMinutes,
+        topic,
+        notes,
+        location,
+        isOnline,
+      ];
+}
+
+class CancelSession extends SessionsEvent {
+  final String sessionId;
+  final String? reason;
+
+  const CancelSession({
+    required this.sessionId,
+    this.reason,
+  });
+
+  @override
+  List<Object?> get props => [sessionId, reason];
+}
+
+class RescheduleSession extends SessionsEvent {
+  final String sessionId;
+  final DateTime newScheduledAt;
+
+  const RescheduleSession({
+    required this.sessionId,
+    required this.newScheduledAt,
+  });
+
+  @override
+  List<Object?> get props => [sessionId, newScheduledAt];
+}
+
+class StartSession extends SessionsEvent {
+  final String sessionId;
+
+  const StartSession(this.sessionId);
+
+  @override
+  List<Object?> get props => [sessionId];
+}
+
+class CompleteSession extends SessionsEvent {
+  final String sessionId;
+
+  const CompleteSession(this.sessionId);
+
+  @override
+  List<Object?> get props => [sessionId];
+}
+
+class LoadSessionsInRange extends SessionsEvent {
+  final DateTime start;
+  final DateTime end;
+  final String? userId;
+
+  const LoadSessionsInRange({
+    required this.start,
+    required this.end,
+    this.userId,
+  });
+
+  @override
+  List<Object?> get props => [start, end, userId];
+}
+
+class RefreshSessions extends SessionsEvent {
+  const RefreshSessions();
 }

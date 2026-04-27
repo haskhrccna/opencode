@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/utils/validators/arabic_validators.dart';
 import '../../../../shared/models/user_model.dart';
 import '../bloc/auth_bloc.dart';
+import '../bloc/auth_event.dart';
+import '../bloc/auth_state.dart';
 
 class TeacherSignupScreen extends StatefulWidget {
   const TeacherSignupScreen({super.key});
@@ -37,19 +39,16 @@ class _TeacherSignupScreenState extends State<TeacherSignupScreen> {
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
     context.read<AuthBloc>().add(
-          TeacherSignUpRequested(
-            TeacherSignupRequest(
-              name: _nameController.text.trim(),
-              email: _emailController.text.trim(),
-              password: _passwordController.text,
-              inviteCode: _inviteCodeController.text.trim(),
-              phone: _phoneController.text.trim().isEmpty
-                  ? null
-                  : _phoneController.text.trim(),
-              bio: _bioController.text.trim().isEmpty
-                  ? null
-                  : _bioController.text.trim(),
-            ),
+          SignUpTeacherRequested(
+            email: _emailController.text.trim(),
+            password: _passwordController.text,
+            arabicName: _nameController.text.trim(),
+            englishName: '',
+            phoneNumber: _phoneController.text.trim(),
+            bio: _bioController.text.trim().isEmpty
+                ? null
+                : _bioController.text.trim(),
+            websiteUrl: null,
           ),
         );
   }
@@ -60,9 +59,9 @@ class _TeacherSignupScreenState extends State<TeacherSignupScreen> {
       appBar: AppBar(title: const Text('تسجيل معلم')),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is AuthError) {
+          if (state.status == AuthStatus.error) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message), backgroundColor: Colors.red),
+              SnackBar(content: Text(state.errorMessage ?? 'حدث خطأ'), backgroundColor: Colors.red),
             );
           }
         },
@@ -151,8 +150,8 @@ class _TeacherSignupScreenState extends State<TeacherSignupScreen> {
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       return FilledButton(
-                        onPressed: state is AuthLoading ? null : _submit,
-                        child: state is AuthLoading
+                        onPressed: state.status == AuthStatus.loading ? null : _submit,
+                        child: state.status == AuthStatus.loading
                             ? const SizedBox(
                                 height: 20,
                                 width: 20,

@@ -32,6 +32,9 @@ class AppRouter {
 
   static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
+  /// Notifies go_router to re-evaluate redirects when auth state changes
+  static final ValueNotifier<AuthStatus> authRefreshNotifier = ValueNotifier<AuthStatus>(AuthStatus.initial);
+
   static GoRouter get router => _router;
 
   static final _router = GoRouter(
@@ -39,6 +42,7 @@ class AppRouter {
     initialLocation: '/splash',
     debugLogDiagnostics: kDebugMode,
     redirect: _redirect,
+    refreshListenable: authRefreshNotifier,
     routes: _routes,
     errorBuilder: (_, state) => ErrorScreen(customMessage: state.error?.toString()),
   );

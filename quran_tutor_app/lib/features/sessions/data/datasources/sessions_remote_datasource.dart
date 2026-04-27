@@ -85,7 +85,7 @@ class SupabaseSessionsDataSource implements SessionsRemoteDataSource {
           .order('scheduled_at', ascending: true);
 
       return (response as List)
-          .map((e) => SessionModel.fromSupabase(e))
+          .map((e) => SessionModel.fromSupabase(e as Map<String, dynamic>))
           .toList();
     } catch (e) {
       throw ServerException.internalError();
@@ -102,7 +102,7 @@ class SupabaseSessionsDataSource implements SessionsRemoteDataSource {
           .order('scheduled_at', ascending: true);
 
       return (response as List)
-          .map((e) => SessionModel.fromSupabase(e))
+          .map((e) => SessionModel.fromSupabase(e as Map<String, dynamic>))
           .toList();
     } catch (e) {
       throw ServerException.internalError();
@@ -118,7 +118,7 @@ class SupabaseSessionsDataSource implements SessionsRemoteDataSource {
           .order('scheduled_at', ascending: true);
 
       return (response as List)
-          .map((e) => SessionModel.fromSupabase(e))
+          .map((e) => SessionModel.fromSupabase(e as Map<String, dynamic>))
           .toList();
     } catch (e) {
       throw ServerException.internalError();
@@ -281,7 +281,7 @@ class SupabaseSessionsDataSource implements SessionsRemoteDataSource {
       final response = await query.order('scheduled_at', ascending: true);
 
       return (response as List)
-          .map((e) => SessionModel.fromSupabase(e))
+          .map((e) => SessionModel.fromSupabase(e as Map<String, dynamic>))
           .toList();
     } catch (e) {
       throw ServerException.internalError();

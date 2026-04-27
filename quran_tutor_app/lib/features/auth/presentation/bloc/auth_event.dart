@@ -1,46 +1,114 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:equatable/equatable.dart';
 
-part 'auth_event.freezed.dart';
+abstract class AuthEvent extends Equatable {
+  const AuthEvent();
 
-@freezed
-class AuthEvent with _$AuthEvent {
-  const factory AuthEvent.started() = AuthStarted;
+  @override
+  List<Object?> get props => [];
+}
 
-  const factory AuthEvent.signInRequested({
-    required String email,
-    required String password,
-  }) = SignInRequested;
+class AppStarted extends AuthEvent {
+  const AppStarted();
+}
 
-  const factory AuthEvent.signUpStudentRequested({
-    required String email,
-    required String password,
-    required String arabicName,
-    required String englishName,
-    required DateTime dateOfBirth,
-    required String phoneNumber,
-    String? teacherInviteCode,
-  }) = SignUpStudentRequested;
+class SignInRequested extends AuthEvent {
+  final String email;
+  final String password;
 
-  const factory AuthEvent.signUpTeacherRequested({
-    required String email,
-    required String password,
-    required String arabicName,
-    required String englishName,
-    required String phoneNumber,
-    String? bio,
-    String? websiteUrl,
-  }) = SignUpTeacherRequested;
+  const SignInRequested({required this.email, required this.password});
 
-  const factory AuthEvent.signOutRequested() = SignOutRequested;
+  @override
+  List<Object?> get props => [email, password];
+}
 
-  const factory AuthEvent.refreshUserRequested() = RefreshUserRequested;
+class SignUpStudentRequested extends AuthEvent {
+  final String email;
+  final String password;
+  final String arabicName;
+  final String englishName;
+  final DateTime dateOfBirth;
+  final String phoneNumber;
+  final String? teacherInviteCode;
 
-  const factory AuthEvent.resetPasswordRequested({
-    required String email,
-  }) = ResetPasswordRequested;
+  const SignUpStudentRequested({
+    required this.email,
+    required this.password,
+    required this.arabicName,
+    required this.englishName,
+    required this.dateOfBirth,
+    required this.phoneNumber,
+    this.teacherInviteCode,
+  });
 
-  const factory AuthEvent.updatePasswordRequested({
-    required String currentPassword,
-    required String newPassword,
-  }) = UpdatePasswordRequested;
+  @override
+  List<Object?> get props => [
+        email,
+        password,
+        arabicName,
+        englishName,
+        dateOfBirth,
+        phoneNumber,
+        teacherInviteCode,
+      ];
+}
+
+class SignUpTeacherRequested extends AuthEvent {
+  final String email;
+  final String password;
+  final String arabicName;
+  final String englishName;
+  final String phoneNumber;
+  final String? bio;
+  final String? websiteUrl;
+
+  const SignUpTeacherRequested({
+    required this.email,
+    required this.password,
+    required this.arabicName,
+    required this.englishName,
+    required this.phoneNumber,
+    this.bio,
+    this.websiteUrl,
+  });
+
+  @override
+  List<Object?> get props => [
+        email,
+        password,
+        arabicName,
+        englishName,
+        phoneNumber,
+        bio,
+        websiteUrl,
+      ];
+}
+
+class SignOutRequested extends AuthEvent {
+  const SignOutRequested();
+}
+
+class RefreshUserRequested extends AuthEvent {
+  const RefreshUserRequested();
+}
+
+class ResetPasswordRequested extends AuthEvent {
+  final String email;
+
+  const ResetPasswordRequested({required this.email});
+
+  @override
+  List<Object?> get props => [email];
+}
+
+class UpdatePasswordRequested extends AuthEvent {
+  final String currentPassword;
+  final String newPassword;
+
+  const UpdatePasswordRequested({
+    required this.currentPassword,
+    required this.newPassword,
+  });
+
+  @override
+  List<Object?> get props => [currentPassword, newPassword];
 }

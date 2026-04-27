@@ -47,29 +47,29 @@ class ProfileModel {
 
   factory ProfileModel.fromSupabase(Map<String, dynamic> data) {
     return ProfileModel(
-      id: data['id'] ?? '',
-      email: data['email'] ?? '',
-      displayName: data['display_name'],
-      arabicName: data['arabic_name'],
-      photoUrl: data['photo_url'],
-      role: data['role'] ?? 'student',
-      status: data['status'] ?? 'pending',
-      createdAt: DateTime.parse(data['created_at']),
+      id: (data['id'] as String?) ?? '',
+      email: (data['email'] as String?) ?? '',
+      displayName: data['display_name'] as String?,
+      arabicName: data['arabic_name'] as String?,
+      photoUrl: data['photo_url'] as String?,
+      role: (data['role'] as String?) ?? 'student',
+      status: (data['status'] as String?) ?? 'pending',
+      createdAt: DateTime.parse(data['created_at'] as String),
       updatedAt: data['updated_at'] != null
-          ? DateTime.parse(data['updated_at'])
+          ? DateTime.parse(data['updated_at'] as String)
           : null,
-      phoneNumber: data['phone_number'],
+      phoneNumber: data['phone_number'] as String?,
       dateOfBirth: data['date_of_birth'] != null
-          ? DateTime.parse(data['date_of_birth'])
+          ? DateTime.parse(data['date_of_birth'] as String)
           : null,
-      teacherId: data['teacher_id'],
-      bio: data['bio'],
-      websiteUrl: data['website_url'],
-      address: data['address'],
-      emergencyContact: data['emergency_contact'],
-      preferences: data['preferences'],
-      sessionsCompleted: data['sessions_completed'],
-      sessionsScheduled: data['sessions_scheduled'],
+      teacherId: data['teacher_id'] as String?,
+      bio: data['bio'] as String?,
+      websiteUrl: data['website_url'] as String?,
+      address: data['address'] as String?,
+      emergencyContact: data['emergency_contact'] as String?,
+      preferences: data['preferences'] as Map<String, dynamic>?,
+      sessionsCompleted: (data['sessions_completed'] as num?)?.toInt(),
+      sessionsScheduled: (data['sessions_scheduled'] as num?)?.toInt(),
     );
   }
 

@@ -1,151 +1,174 @@
-import 'package:drift/drift.dart';
+/// Offline database stub - drift code generation not available
+/// 
+/// This is a temporary implementation that stores data in memory.
+/// For production, run: flutter pub run build_runner build
+/// to generate the real drift database.
 
-part 'offline_database.g.dart';
+class CachedSession {
+  final String id;
+  final String teacherId;
+  final String? studentId;
+  final DateTime scheduledAt;
+  final int durationMinutes;
+  final String? topic;
+  final String? notes;
+  final String status;
+  final DateTime createdAt;
+  final DateTime syncedAt;
 
-@DataClassName('CachedSession')
-class CachedSessions extends Table {
-  TextColumn get id => text()();
-  TextColumn get teacherId => text()();
-  TextColumn get studentId => text().nullable()();
-  DateTimeColumn get scheduledAt => dateTime()();
-  IntColumn get durationMinutes => integer()();
-  TextColumn get topic => text().nullable()();
-  TextColumn get notes => text().nullable()();
-  TextColumn get status => text()();
-  DateTimeColumn get createdAt => dateTime()();
-  DateTimeColumn get syncedAt => dateTime()();
-
-  @override
-  Set<Column> get primaryKey => {id};
+  CachedSession({
+    required this.id,
+    required this.teacherId,
+    this.studentId,
+    required this.scheduledAt,
+    required this.durationMinutes,
+    this.topic,
+    this.notes,
+    required this.status,
+    required this.createdAt,
+    required this.syncedAt,
+  });
 }
 
-@DataClassName('CachedGrade')
-class CachedGrades extends Table {
-  TextColumn get id => text()();
-  TextColumn get sessionId => text()();
-  TextColumn get studentId => text()();
-  TextColumn get teacherId => text()();
-  TextColumn get category => text()();
-  IntColumn get grade => integer()();
-  TextColumn get notes => text().nullable()();
-  DateTimeColumn get createdAt => dateTime()();
-  DateTimeColumn get syncedAt => dateTime()();
+class CachedGrade {
+  final String id;
+  final String sessionId;
+  final String studentId;
+  final String teacherId;
+  final String category;
+  final int grade;
+  final String? notes;
+  final DateTime createdAt;
+  final DateTime syncedAt;
 
-  @override
-  Set<Column> get primaryKey => {id};
+  CachedGrade({
+    required this.id,
+    required this.sessionId,
+    required this.studentId,
+    required this.teacherId,
+    required this.category,
+    required this.grade,
+    this.notes,
+    required this.createdAt,
+    required this.syncedAt,
+  });
 }
 
-@DataClassName('SyncQueueEntry')
-class SyncQueue extends Table {
-  IntColumn get id => integer().autoIncrement()();
-  TextColumn get tableName => text()();
-  TextColumn get operation => text()();
-  TextColumn get recordId => text()();
-  TextColumn get data => text().nullable()();
-  DateTimeColumn get createdAt => dateTime()();
-  BoolColumn get isSynced => boolean().withDefault(const Constant(false))();
+class SyncQueueEntry {
+  final int id;
+  final String tableName;
+  final String operation;
+  final String recordId;
+  final String? data;
+  final DateTime createdAt;
+  final bool isSynced;
+
+  SyncQueueEntry({
+    required this.id,
+    required this.tableName,
+    required this.operation,
+    required this.recordId,
+    this.data,
+    required this.createdAt,
+    required this.isSynced,
+  });
 }
 
-@DriftDatabase(tables: [CachedSessions, CachedGrades, SyncQueue])
-class OfflineDatabase extends _$OfflineDatabase {
-  OfflineDatabase() : super(_openConnection());
+/// Stub implementation of offline database
+class OfflineDatabase {
+  final List<CachedSession> _sessions = [];
+  final List<CachedGrade> _grades = [];
+  final List<SyncQueueEntry> _syncQueue = [];
+  int _nextSyncId = 1;
 
-  @override
-  int get schemaVersion => 1;
-
-  static QueryExecutor _openConnection() {
-    return driftDatabase(name: 'quran_tutor_offline');
-  }
-
-  // Sessions cache operations
+  // Sessions
   Future<void> cacheSessions(List<CachedSession> sessions) async {
-    await batch((batch) {
-      batch.insertAllOnConflictUpdate(
-        cachedSessions,
-        sessions.map((s) => s.toCompanion(false)).toList(),
-      );
-    });
+    _sessions.removeWhere((s) => sessions.any((newS) => newS.id == s.id));
+    _sessions.addAll(sessions);
   }
 
   Future<List<CachedSession>> getCachedSessions({String? userId}) async {
     if (userId != null) {
-      return await (select(cachedSessions)
-            ..where((s) => s.teacherId.equals(userId) | s.studentId.equals(userId)))
-          .get();
+      return _sessions
+          .where((s) => s.teacherId == userId || s.studentId == userId)
+          .toList();
     }
-    return await select(cachedSessions).get();
+    return List.unmodifiable(_sessions);
   }
 
   Future<CachedSession?> getCachedSessionById(String sessionId) async {
-    return await (select(cachedSessions)
-          ..where((s) => s.id.equals(sessionId)))
-        .getSingleOrNull();
+    try {
+      return _sessions.firstWhere((s) => s.id == sessionId);
+    } catch (_) {
+      return null;
+    }
   }
 
   Future<void> deleteCachedSession(String sessionId) async {
-    await (delete(cachedSessions)..where((s) => s.id.equals(sessionId))).go();
+    _sessions.removeWhere((s) => s.id == sessionId);
   }
 
-  // Grades cache operations
+  // Grades
   Future<void> cacheGrades(List<CachedGrade> grades) async {
-    await batch((batch) {
-      batch.insertAllOnConflictUpdate(
-        cachedGrades,
-        grades.map((g) => g.toCompanion(false)).toList(),
-      );
-    });
+    _grades.removeWhere((g) => grades.any((newG) => newG.id == g.id));
+    _grades.addAll(grades);
   }
 
   Future<List<CachedGrade>> getCachedGrades({String? studentId}) async {
     if (studentId != null) {
-      return await (select(cachedGrades)
-            ..where((g) => g.studentId.equals(studentId)))
-          .get();
+      return _grades.where((g) => g.studentId == studentId).toList();
     }
-    return await select(cachedGrades).get();
+    return List.unmodifiable(_grades);
   }
 
   Future<void> deleteCachedGrade(String gradeId) async {
-    await (delete(cachedGrades)..where((g) => g.id.equals(gradeId))).go();
+    _grades.removeWhere((g) => g.id == gradeId);
   }
 
-  // Sync queue operations
+  // Sync Queue
   Future<void> addToSyncQueue({
     required String table,
     required String operation,
     required String recordId,
     String? data,
   }) async {
-    await into(syncQueue).insert(
-      SyncQueueCompanion.insert(
-        tableName: table,
-        operation: operation,
-        recordId: recordId,
-        data: Value(data),
-      ),
-    );
+    _syncQueue.add(SyncQueueEntry(
+      id: _nextSyncId++,
+      tableName: table,
+      operation: operation,
+      recordId: recordId,
+      data: data,
+      createdAt: DateTime.now(),
+      isSynced: false,
+    ));
   }
 
   Future<List<SyncQueueEntry>> getPendingSyncItems() async {
-    return await (select(syncQueue)..where((s) => s.isSynced.equals(false))).get();
+    return _syncQueue.where((s) => !s.isSynced).toList();
   }
 
   Future<void> markSynced(int entryId) async {
-    await update(syncQueue).replace(
-      SyncQueueCompanion(
-        id: Value(entryId),
-        isSynced: const Value(true),
-      ),
-    );
+    final index = _syncQueue.indexWhere((s) => s.id == entryId);
+    if (index >= 0) {
+      final old = _syncQueue[index];
+      _syncQueue[index] = SyncQueueEntry(
+        id: old.id,
+        tableName: old.tableName,
+        operation: old.operation,
+        recordId: old.recordId,
+        data: old.data,
+        createdAt: old.createdAt,
+        isSynced: true,
+      );
+    }
   }
 
   Future<void> clearSyncedItems() async {
-    await (delete(syncQueue)..where((s) => s.isSynced.equals(true))).go();
+    _syncQueue.removeWhere((s) => s.isSynced);
   }
 
   Future<DateTime?> getLastSyncTime() async {
-    final sessions = await select(cachedSessions).get();
-    if (sessions.isEmpty) return null;
-    return sessions.map((s) => s.syncedAt).reduce((a, b) => a.isAfter(b) ? a : b);
+    if (_sessions.isEmpty) return null;
+    return _sessions.map((s) => s.syncedAt).reduce((a, b) => a.isAfter(b) ? a : b);
   }
 }

@@ -1,10 +1,8 @@
+import 'package:equatable/equatable.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../domain/entities/progress_grade.dart';
 import '../../domain/repositories/grading_repository.dart';
-
-part 'grading_state.freezed.dart';
 
 enum GradingStatus {
   initial,
@@ -17,7 +15,7 @@ enum GradingStatus {
 }
 
 /// Chart data for progress visualization
-class ChartData {
+class ChartData extends Equatable {
   final List<FlSpot> weeklySessionsSpots;
   final Map<int, int> gradeDistribution;
   final double surahCompletionPercentage;
@@ -91,12 +89,45 @@ class ChartData {
     }
     return surahs;
   }
+
+  @override
+  List<Object?> get props => [
+        weeklySessionsSpots,
+        gradeDistribution,
+        surahCompletionPercentage,
+        completedSurahs,
+      ];
 }
 
-@freezed
-class GradingState with _$GradingState {
-  const factory GradingState({
-    required GradingStatus status,
+class GradingState extends Equatable {
+  final GradingStatus status;
+  final List<ProgressGrade>? grades;
+  final ProgressGrade? selectedGrade;
+  final ProgressSummary? progressSummary;
+  final ProgressTimeline? progressTimeline;
+  final List<StudentProgress>? classProgress;
+  final ChartData? chartData;
+  final String? errorMessage;
+  final DateTime? lastUpdated;
+
+  const GradingState({
+    required this.status,
+    this.grades,
+    this.selectedGrade,
+    this.progressSummary,
+    this.progressTimeline,
+    this.classProgress,
+    this.chartData,
+    this.errorMessage,
+    this.lastUpdated,
+  });
+
+  factory GradingState.initial() => const GradingState(
+        status: GradingStatus.initial,
+      );
+
+  GradingState copyWith({
+    GradingStatus? status,
     List<ProgressGrade>? grades,
     ProgressGrade? selectedGrade,
     ProgressSummary? progressSummary,
@@ -105,9 +136,30 @@ class GradingState with _$GradingState {
     ChartData? chartData,
     String? errorMessage,
     DateTime? lastUpdated,
-  }) = _GradingState;
+  }) {
+    return GradingState(
+      status: status ?? this.status,
+      grades: grades ?? this.grades,
+      selectedGrade: selectedGrade ?? this.selectedGrade,
+      progressSummary: progressSummary ?? this.progressSummary,
+      progressTimeline: progressTimeline ?? this.progressTimeline,
+      classProgress: classProgress ?? this.classProgress,
+      chartData: chartData ?? this.chartData,
+      errorMessage: errorMessage ?? this.errorMessage,
+      lastUpdated: lastUpdated ?? this.lastUpdated,
+    );
+  }
 
-  factory GradingState.initial() => const GradingState(
-        status: GradingStatus.initial,
-      );
+  @override
+  List<Object?> get props => [
+        status,
+        grades,
+        selectedGrade,
+        progressSummary,
+        progressTimeline,
+        classProgress,
+        chartData,
+        errorMessage,
+        lastUpdated,
+      ];
 }

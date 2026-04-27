@@ -23,7 +23,7 @@ class AppLocalizations {
   Future<bool> load() async {
     String jsonString = await rootBundle
         .loadString('\${AppConstants.translationsPath}/\${locale.languageCode}.json');
-    Map<String, dynamic> jsonMap = json.decode(jsonString);
+    Map<String, dynamic> jsonMap = json.decode(jsonString) as Map<String, dynamic>;
     _localizedStrings = jsonMap;
     return true;
   }

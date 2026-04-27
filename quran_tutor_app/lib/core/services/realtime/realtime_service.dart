@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../../../core/constants/app_constants.dart';
 import '../../../features/auth/domain/entities/auth_user.dart';
 
 /// Service for handling Supabase Realtime subscriptions

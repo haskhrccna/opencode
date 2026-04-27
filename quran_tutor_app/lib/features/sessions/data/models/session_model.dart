@@ -43,14 +43,14 @@ class SessionModel {
 
   factory SessionModel.fromSupabase(Map<String, dynamic> data) {
     return SessionModel(
-      id: data['id'] ?? '',
-      teacherId: data['teacher_id'] ?? '',
-      studentId: data['student_id'],
+      id: (data['id'] as String?) ?? '',
+      teacherId: (data['teacher_id'] as String?) ?? '',
+      studentId: data['student_id'] as String?,
       scheduledAt: DateTime.parse(data['scheduled_at'] as String),
-      durationMinutes: data['duration_minutes'] ?? 60,
-      topic: data['topic'],
-      notes: data['notes'],
-      status: data['status'] ?? 'scheduled',
+      durationMinutes: (data['duration_minutes'] as num?)?.toInt() ?? 60,
+      topic: data['topic'] as String?,
+      notes: data['notes'] as String?,
+      status: (data['status'] as String?) ?? 'scheduled',
       createdAt: DateTime.parse(data['created_at'] as String),
       updatedAt: data['updated_at'] != null
           ? DateTime.parse(data['updated_at'] as String)
@@ -58,11 +58,11 @@ class SessionModel {
       completedAt: data['completed_at'] != null
           ? DateTime.parse(data['completed_at'] as String)
           : null,
-      recordingUrl: data['recording_url'],
-      meetingLink: data['meeting_link'],
-      location: data['location'],
-      isOnline: data['is_online'] ?? true,
-      cancellationReason: data['cancellation_reason'],
+      recordingUrl: data['recording_url'] as String?,
+      meetingLink: data['meeting_link'] as String?,
+      location: data['location'] as String?,
+      isOnline: (data['is_online'] as bool?) ?? true,
+      cancellationReason: data['cancellation_reason'] as String?,
       metadata: data['metadata'] as Map<String, dynamic>?,
     );
   }

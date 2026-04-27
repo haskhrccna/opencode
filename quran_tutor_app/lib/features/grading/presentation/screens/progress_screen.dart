@@ -234,8 +234,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
   }
 
   Widget _buildRadialChart(double percentage, List<String> completedSurahs) {
-    final completedPercent = (percentage * 100).clamp(0, 100);
-    final remainingPercent = 100 - completedPercent;
+    final completedPercent = ((percentage * 100).clamp(0, 100) as double);
+    final remainingPercent = (100 - completedPercent) as double;
 
     return SizedBox(
       height: 200,
