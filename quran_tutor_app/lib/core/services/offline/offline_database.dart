@@ -6,11 +6,6 @@
 
 import 'package:injectable/injectable.dart';
 
-@singleton
-class OfflineDatabase {
-  OfflineDatabase();
-}
-
 class CachedSession {
 
   CachedSession({
@@ -73,6 +68,7 @@ class SyncQueueEntry {
 }
 
 /// Stub implementation of offline database
+@singleton
 class OfflineDatabase {
   final List<CachedSession> _sessions = [];
   final List<CachedGrade> _grades = [];

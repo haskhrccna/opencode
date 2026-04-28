@@ -56,6 +56,7 @@ class SessionModel {
       durationMinutes: entity.durationMinutes,
       topic: entity.topic,
       notes: entity.notes,
+      cancellationReason: entity.cancellationReason,
       status: entity.status.value,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
@@ -165,6 +166,7 @@ class SessionModel {
       meetingLink: meetingLink,
       location: location,
       isOnline: isOnline,
+      cancellationReason: cancellationReason,
       metadata: metadata,
     );
   }

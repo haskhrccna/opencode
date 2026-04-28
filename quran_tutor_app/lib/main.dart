@@ -7,6 +7,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:quran_tutor_app/core/constants/app_constants.dart';
 import 'package:quran_tutor_app/core/environment/app_environment.dart';
+import 'package:quran_tutor_app/core/localization/app_localizations.dart';
 import 'package:quran_tutor_app/core/router/app_router.dart';
 import 'package:quran_tutor_app/core/services/dependency_injection/injection.dart';
 import 'package:quran_tutor_app/core/theme/app_theme.dart';
@@ -57,6 +58,24 @@ void main() async {
 
   if (kDebugMode) {
     Bloc.observer = AppBlocObserver();
+    FlutterError.onError = (details) {
+      FlutterError.presentError(details);
+      logger.e('FlutterError: ${details.exception}',
+          error: details.exception, stackTrace: details.stack,);
+    };
+    ErrorWidget.builder = (details) => Material(
+      child: Container(
+        color: Colors.red,
+        padding: const EdgeInsets.all(16),
+        child: Center(
+          child: Text(
+            'Error:\n${details.exception.toString()}',
+            style: const TextStyle(color: Colors.white, fontSize: 14),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
+    );
   }
 
   logger.i('Quran Tutor App Started');
@@ -99,7 +118,10 @@ class QuranTutorApp extends StatelessWidget {
             return MaterialApp.router(
               title: 'Quran Tutor',
               debugShowCheckedModeBanner: false,
-              localizationsDelegates: context.localizationDelegates,
+              localizationsDelegates: [
+                ...context.localizationDelegates,
+                AppLocalizations.delegate,
+              ],
               supportedLocales: context.supportedLocales,
               locale: context.locale,
               theme: AppTheme.lightTheme,

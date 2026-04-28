@@ -15,8 +15,15 @@ class AppLocalizations {
   static const LocalizationsDelegate<AppLocalizations> delegate =
       _AppLocalizationsDelegate();
 
+  static AppLocalizations? maybeOf(BuildContext context) {
+    return Localizations.of<AppLocalizations>(context, AppLocalizations);
+  }
+
   static AppLocalizations of(BuildContext context) {
-    return Localizations.of<AppLocalizations>(context, AppLocalizations)!;
+    final localizations = maybeOf(context);
+    assert(localizations != null,
+        'No AppLocalizations found in context. Make sure to add AppLocalizations.delegate to localizationsDelegates.',);
+    return localizations!;
   }
 
   /// Load the language JSON file

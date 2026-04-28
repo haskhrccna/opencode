@@ -11,10 +11,14 @@ class Session extends Equatable {
   const Session({
     required this.id,
     required this.teacherId,
-    required this.scheduledAt, required this.status, required this.createdAt, this.studentId,
+    required this.scheduledAt,
+    required this.status,
+    required this.createdAt,
+    this.studentId,
     this.durationMinutes = 60,
     this.topic,
     this.notes,
+    this.cancellationReason,
     this.updatedAt,
     this.completedAt,
     this.recordingUrl,
@@ -39,6 +43,7 @@ class Session extends Equatable {
   final int durationMinutes;
   final String? topic;
   final String? notes;
+  final String? cancellationReason;
   final SessionStatus status;
   final DateTime createdAt; // Stored in UTC
   final DateTime? updatedAt; // Stored in UTC
@@ -108,6 +113,7 @@ class Session extends Equatable {
     int? durationMinutes,
     String? topic,
     String? notes,
+    String? cancellationReason,
     SessionStatus? status,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -126,6 +132,7 @@ class Session extends Equatable {
       durationMinutes: durationMinutes ?? this.durationMinutes,
       topic: topic ?? this.topic,
       notes: notes ?? this.notes,
+      cancellationReason: cancellationReason ?? this.cancellationReason,
       status: status ?? this.status,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -147,6 +154,7 @@ class Session extends Equatable {
         durationMinutes,
         topic,
         notes,
+        cancellationReason,
         status,
         createdAt,
         updatedAt,

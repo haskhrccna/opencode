@@ -87,7 +87,7 @@ _i174.GetIt $initGetIt(
   gh.singleton<_i558.FlutterSecureStorage>(() => supabaseModule.secureStorage);
   gh.singleton<_i895.Connectivity>(() => supabaseModule.connectivity);
   gh.singleton<_i229.NotificationService>(() => _i229.NotificationService());
-  gh.singleton<OfflineDatabase>(() => OfflineDatabase());
+  gh.singleton<_i95.OfflineDatabase>(() => _i95.OfflineDatabase());
   gh.singleton<_i441.PdfService>(() => _i441.PdfService());
   gh.singleton<_i838.AuthLocalDataSource>(() =>
       _i838.SecureStorageAuthDataSource(

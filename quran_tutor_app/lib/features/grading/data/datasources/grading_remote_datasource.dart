@@ -334,9 +334,13 @@ class SupabaseGradingDataSource implements GradingRemoteDataSource {
 
   @override
   Stream<List<GradeModel>> gradesStream({String? studentId}) {
-    var query = _supabase.from('grades').stream(primaryKey: ['id']);
+    final query = _supabase.from('grades').stream(primaryKey: ['id']);
     if (studentId != null && studentId.isNotEmpty) {
-      query = query.eq('student_id', studentId);
+      return query.eq('student_id', studentId).map(
+            (data) => data
+                .map((e) => GradeModel.fromSupabase(e as Map<String, dynamic>))
+                .toList(),
+          );
     }
     return query.map((data) => data
         .map((e) => GradeModel.fromSupabase(e as Map<String, dynamic>))

@@ -71,7 +71,7 @@ PODS:
     - OneSignalXCFramework/OneSignalOutcomes
   - package_info_plus (0.4.5):
     - Flutter
-  - PostHog (3.57.0)
+  - PostHog (3.57.2)
   - posthog_flutter (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -171,7 +171,7 @@ SPEC CHECKSUMS:
   onesignal_flutter: e2e682f7c4b0604ddba445d4f8ea6e79c77dabe1
   OneSignalXCFramework: 943852e7d70d719f73e9669d48620aeec1b93022
   package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499
-  PostHog: 74dca2dd7cc545225b1d53bf072cc36e0f0beac6
+  PostHog: 5bb9f302f7928e2aaa86853d48043972d2583654
   posthog_flutter: 03b15ff7a78e2a4162baaf11f8db37b079412106
   printing: 54ff03f28fe9ba3aa93358afb80a8595a071dd07
   record_ios: 412daca2350b228e698fffcd08f1f94ceb1e3844
@@ -180,6 +180,6 @@ SPEC CHECKSUMS:
   sqflite_darwin: 20b2a3a3b70e43edae938624ce550a3cbf66a3d0
   url_launcher_ios: 7a95fa5b60cc718a708b8f2966718e93db0cef1b
 
-PODFILE CHECKSUM: 251cb053df7158f337c0712f2ab29f4e0fa474ce
+PODFILE CHECKSUM: 1149450db8e5cb32cfeb37812d2adb37425f048d
 
 COCOAPODS: 1.16.2

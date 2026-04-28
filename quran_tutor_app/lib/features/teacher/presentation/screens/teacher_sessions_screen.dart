@@ -122,6 +122,8 @@ class _SessionList extends StatelessWidget {
         return Colors.green;
       case SessionStatus.cancelled:
         return AppColors.error;
+      case SessionStatus.rescheduled:
+        return Colors.purple;
     }
   }
 
@@ -135,6 +137,8 @@ class _SessionList extends StatelessWidget {
         return 'مكتملة';
       case SessionStatus.cancelled:
         return 'ملغاة';
+      case SessionStatus.rescheduled:
+        return 'معاد جدولتها';
     }
   }
 

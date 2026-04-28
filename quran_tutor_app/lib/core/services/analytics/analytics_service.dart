@@ -3,7 +3,7 @@ import 'package:posthog_flutter/posthog_flutter.dart';
 import 'package:quran_tutor_app/core/environment/app_environment.dart';
 
 /// Service for tracking analytics events via PostHog
-/// 
+///
 /// Only tracks events in production builds.
 /// Never tracks PII or sensitive data.
 @singleton
@@ -16,12 +16,16 @@ class AnalyticsService {
   /// Initialize PostHog
   Future<void> initialize() async {
     if (_initialized) return;
-    if (!AppEnvironment.current.enableAnalytics) return;
+    if (!AppEnvironment.enableAnalytics) return;
 
-    await Posthog().configure(
-      androidApiKey: const String.fromEnvironment('POSTHOG_API_KEY'),
-      androidCollectorHost: const String.fromEnvironment('POSTHOG_HOST'),
+    final config = PostHogConfig(
+      const String.fromEnvironment('POSTHOG_API_KEY'),
     );
+    final host = const String.fromEnvironment('POSTHOG_HOST');
+    if (host.isNotEmpty) {
+      config.host = host;
+    }
+    await Posthog().setup(config);
 
     _initialized = true;
   }
@@ -107,7 +111,8 @@ class AnalyticsService {
   }
 
   /// Generic track method
-  Future<void> _track(String eventName, {Map<String, dynamic>? properties}) async {
+  Future<void> _track(String eventName,
+      {Map<String, Object>? properties,}) async {
     if (!_shouldTrack) return;
 
     try {
@@ -120,5 +125,6 @@ class AnalyticsService {
     }
   }
 
-  bool get _shouldTrack => _initialized && AppEnvironment.current.enableAnalytics;
+  bool get _shouldTrack =>
+      _initialized && AppEnvironment.enableAnalytics;
 }
