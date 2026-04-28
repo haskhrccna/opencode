@@ -67,7 +67,8 @@ class AppRouter {
     ),
     GoRoute(
       path: '/auth',
-      redirect: (_, state) => state.path == '/auth' ? '/auth/login' : null,
+      redirect: (_, state) =>
+          state.uri.path == '/auth' ? '/auth/login' : null,
       routes: [
         GoRoute(path: 'login', builder: (_, __) => const LoginScreen()),
         GoRoute(path: 'signup', builder: (_, __) => const SignupScreen()),
@@ -82,7 +83,7 @@ class AppRouter {
     GoRoute(
       path: '/student',
       redirect: (_, state) =>
-          state.path == '/student' ? '/student/home' : null,
+          state.uri.path == '/student' ? '/student/home' : null,
       routes: [
         GoRoute(
           path: 'home', builder: (_, __) => const StudentHomeScreen(),),
@@ -106,7 +107,7 @@ class AppRouter {
     GoRoute(
       path: '/teacher',
       redirect: (_, state) =>
-          state.path == '/teacher' ? '/teacher/home' : null,
+          state.uri.path == '/teacher' ? '/teacher/home' : null,
       routes: [
         GoRoute(
           path: 'home', builder: (_, __) => const TeacherHomeScreen(),),
@@ -133,7 +134,7 @@ class AppRouter {
     GoRoute(
       path: '/admin',
       redirect: (_, state) =>
-          state.path == '/admin' ? '/admin/dashboard' : null,
+          state.uri.path == '/admin' ? '/admin/dashboard' : null,
       routes: [
         GoRoute(
           path: 'dashboard',
@@ -160,8 +161,10 @@ class AppRouter {
     final authBloc = context.read<AuthBloc>();
     final authState = authBloc.state;
 
-    final isSplash = state.path == '/splash';
-    final isAuthRoute = state.path?.startsWith('/auth') ?? false;
+    // Use the actual URL path, not the matched route pattern.
+    final location = state.uri.path;
+    final isSplash = location == '/splash';
+    final isAuthRoute = location.startsWith('/auth');
 
     if (authState.status == AuthStatus.initial ||
         authState.status == AuthStatus.loading) {
@@ -174,27 +177,27 @@ class AppRouter {
       if (isAuthRoute || isSplash) {
         return _getHomeRoute(user.role);
       }
-      final requestedPath = state.path ?? '/';
-      if (!_hasAccess(user.role, requestedPath)) {
+      if (!_hasAccess(user.role, location)) {
         return _getHomeRoute(user.role);
       }
       return null;
     }
 
     if (authState.status == AuthStatus.pendingApproval) {
-      if (state.path == '/pending-approval') return null;
+      if (location == '/pending-approval') return null;
       return '/pending-approval';
     }
 
     if (authState.status == AuthStatus.rejected) {
-      if (state.path == '/rejected') return null;
+      if (location == '/rejected') return null;
       return '/rejected';
     }
 
     if (authState.status == AuthStatus.unauthenticated ||
         authState.status == AuthStatus.error) {
-      if (!isAuthRoute && !isSplash) return '/auth/login';
-      return null;
+      // Auth has resolved: never strand the user on /splash.
+      if (isAuthRoute) return null;
+      return '/auth/login';
     }
 
     return null;
@@ -222,10 +225,7 @@ class AppRouter {
   }
 
   static bool _isDeepLinkPath(String path) {
-    // [path] is the matched GoRoute pattern (e.g. "/session/:id"), not the URI.
-    return path == '/session/:id' ||
-        path.startsWith('/session/') ||
-        path == '/invite/:code' ||
-        path.startsWith('/invite/');
+    // [path] is the URL path (e.g. "/session/abc-123" or "/invite/XYZ").
+    return path.startsWith('/session/') || path.startsWith('/invite/');
   }
 }

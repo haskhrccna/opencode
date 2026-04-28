@@ -34,8 +34,8 @@ class AppBlocObserver extends BlocObserver {
     // Only log in debug mode - strip verbose BLoC logs in release
     if (kDebugMode) {
       _logger.d('🔄 State Change: ${bloc.runtimeType}\n'
-          '  Current: ${change.currentState.runtimeType}\n'
-          '  Next: ${change.nextState.runtimeType}');
+          '  Current: ${change.currentState}\n'
+          '  Next: ${change.nextState}');
     }
   }
 
@@ -46,8 +46,8 @@ class AppBlocObserver extends BlocObserver {
     if (kDebugMode) {
       _logger.t('➡️ Transition: ${bloc.runtimeType}\n'
           '  Event: ${transition.event.runtimeType}\n'
-          '  Current: ${transition.currentState.runtimeType}\n'
-          '  Next: ${transition.nextState.runtimeType}');
+          '  Current: ${transition.currentState}\n'
+          '  Next: ${transition.nextState}');
     }
   }
 
