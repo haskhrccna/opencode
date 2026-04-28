@@ -1,36 +1,16 @@
-import '../../../../core/constants/app_constants.dart';
-import '../../domain/entities/session.dart';
+import 'package:quran_tutor_app/core/constants/app_constants.dart';
+import 'package:quran_tutor_app/features/sessions/domain/entities/session.dart';
 
 /// Data model for sessions
 class SessionModel {
-  final String id;
-  final String teacherId;
-  final String? studentId;
-  final DateTime scheduledAt;
-  final int durationMinutes;
-  final String? topic;
-  final String? notes;
-  final String status;
-  final DateTime createdAt;
-  final DateTime? updatedAt;
-  final DateTime? completedAt;
-  final String? recordingUrl;
-  final String? meetingLink;
-  final String? location;
-  final bool isOnline;
-  final String? cancellationReason;
-  final Map<String, dynamic>? metadata;
 
   SessionModel({
     required this.id,
     required this.teacherId,
-    this.studentId,
-    required this.scheduledAt,
+    required this.scheduledAt, required this.status, required this.createdAt, this.studentId,
     this.durationMinutes = 60,
     this.topic,
     this.notes,
-    required this.status,
-    required this.createdAt,
     this.updatedAt,
     this.completedAt,
     this.recordingUrl,
@@ -66,6 +46,44 @@ class SessionModel {
       metadata: data['metadata'] as Map<String, dynamic>?,
     );
   }
+
+  factory SessionModel.fromEntity(Session entity) {
+    return SessionModel(
+      id: entity.id,
+      teacherId: entity.teacherId,
+      studentId: entity.studentId,
+      scheduledAt: entity.scheduledAt, // Already UTC
+      durationMinutes: entity.durationMinutes,
+      topic: entity.topic,
+      notes: entity.notes,
+      status: entity.status.value,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
+      completedAt: entity.completedAt,
+      recordingUrl: entity.recordingUrl,
+      meetingLink: entity.meetingLink,
+      location: entity.location,
+      isOnline: entity.isOnline,
+      metadata: entity.metadata,
+    );
+  }
+  final String id;
+  final String teacherId;
+  final String? studentId;
+  final DateTime scheduledAt;
+  final int durationMinutes;
+  final String? topic;
+  final String? notes;
+  final String status;
+  final DateTime createdAt;
+  final DateTime? updatedAt;
+  final DateTime? completedAt;
+  final String? recordingUrl;
+  final String? meetingLink;
+  final String? location;
+  final bool isOnline;
+  final String? cancellationReason;
+  final Map<String, dynamic>? metadata;
 
   Map<String, dynamic> toSupabase() {
     // CRITICAL: All timestamps stored in UTC
@@ -108,27 +126,6 @@ class SessionModel {
       location: location,
       isOnline: isOnline,
       metadata: metadata,
-    );
-  }
-
-  factory SessionModel.fromEntity(Session entity) {
-    return SessionModel(
-      id: entity.id,
-      teacherId: entity.teacherId,
-      studentId: entity.studentId,
-      scheduledAt: entity.scheduledAt, // Already UTC
-      durationMinutes: entity.durationMinutes,
-      topic: entity.topic,
-      notes: entity.notes,
-      status: entity.status.value,
-      createdAt: entity.createdAt,
-      updatedAt: entity.updatedAt,
-      completedAt: entity.completedAt,
-      recordingUrl: entity.recordingUrl,
-      meetingLink: entity.meetingLink,
-      location: entity.location,
-      isOnline: entity.isOnline,
-      metadata: entity.metadata,
     );
   }
 }

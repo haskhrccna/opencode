@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../auth/presentation/bloc/auth_bloc.dart';
-import '../../../auth/presentation/bloc/auth_event.dart';
-import '../../../auth/presentation/bloc/auth_state.dart';
+import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_event.dart';
+import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_state.dart';
 
 class StudentHomeScreen extends StatelessWidget {
   const StudentHomeScreen({super.key});
@@ -56,11 +56,11 @@ class StudentHomeScreen extends StatelessWidget {
 }
 
 class _SummaryCard extends StatelessWidget {
+
+  const _SummaryCard({required this.icon, required this.label, required this.onTap});
   final IconData icon;
   final String label;
   final VoidCallback onTap;
-
-  const _SummaryCard({required this.icon, required this.label, required this.onTap});
 
   @override
   Widget build(BuildContext context) {

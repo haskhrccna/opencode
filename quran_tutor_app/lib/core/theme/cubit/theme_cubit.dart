@@ -3,13 +3,28 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 /// Theme state that can be persisted
 class ThemeState {
-  final ThemeMode themeMode;
   
   const ThemeState({this.themeMode = ThemeMode.light});
   
-  factory ThemeState.light() => const ThemeState(themeMode: ThemeMode.light);
+  factory ThemeState.light() => const ThemeState();
   factory ThemeState.dark() => const ThemeState(themeMode: ThemeMode.dark);
   factory ThemeState.system() => const ThemeState(themeMode: ThemeMode.system);
+  
+  factory ThemeState.fromJson(Map<String, dynamic> json) {
+    final themeModeName = json['themeMode'] as String?;
+    var mode = ThemeMode.light;
+    
+    if (themeModeName != null) {
+      try {
+        mode = ThemeMode.values.byName(themeModeName);
+      } catch (_) {
+        mode = ThemeMode.light;
+      }
+    }
+    
+    return ThemeState(themeMode: mode);
+  }
+  final ThemeMode themeMode;
   
   bool get isLight => themeMode == ThemeMode.light;
   bool get isDark => themeMode == ThemeMode.dark;
@@ -23,31 +38,16 @@ class ThemeState {
     return {'themeMode': themeMode.name};
   }
   
-  factory ThemeState.fromJson(Map<String, dynamic> json) {
-    final themeModeName = json['themeMode'] as String?;
-    ThemeMode mode = ThemeMode.light;
-    
-    if (themeModeName != null) {
-      try {
-        mode = ThemeMode.values.byName(themeModeName);
-      } catch (_) {
-        mode = ThemeMode.light;
-      }
-    }
-    
-    return ThemeState(themeMode: mode);
-  }
-  
   @override
   String toString() => 'ThemeState(themeMode: $themeMode)';
 }
 
 /// Cubit for managing app theme with persistence
 class ThemeCubit extends HydratedCubit<ThemeState> {
-  ThemeCubit() : super(const ThemeState(themeMode: ThemeMode.light));
+  ThemeCubit() : super(const ThemeState());
   
   /// Set theme to light mode
-  void setLight() => emit(const ThemeState(themeMode: ThemeMode.light));
+  void setLight() => emit(const ThemeState());
   
   /// Set theme to dark mode
   void setDark() => emit(const ThemeState(themeMode: ThemeMode.dark));

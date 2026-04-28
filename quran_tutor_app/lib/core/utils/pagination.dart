@@ -1,15 +1,9 @@
 import 'dart:async';
 
-import '../constants/app_constants.dart';
+import 'package:quran_tutor_app/core/constants/app_constants.dart';
 
 /// Pagination state for infinite scroll
 class PaginationState<T> {
-  final List<T> items;
-  final bool isLoading;
-  final bool hasMore;
-  final String? cursor;
-  final int currentPage;
-  final Failure? error;
 
   const PaginationState({
     this.items = const [],
@@ -19,6 +13,12 @@ class PaginationState<T> {
     this.currentPage = 0,
     this.error,
   });
+  final List<T> items;
+  final bool isLoading;
+  final bool hasMore;
+  final String? cursor;
+  final int currentPage;
+  final Failure? error;
 
   PaginationState<T> copyWith({
     List<T>? items,
@@ -41,26 +41,26 @@ class PaginationState<T> {
 
 /// Generic failure class for pagination
 class Failure {
-  final String message;
-  final String? code;
 
   const Failure({
     required this.message,
     this.code,
   });
+  final String message;
+  final String? code;
 }
 
 /// Pagination configuration
 class PaginationConfig {
-  final int pageSize;
-  final int maxPageSize;
-  final int initialPage;
 
   const PaginationConfig({
     this.pageSize = AppConstants.defaultPageSize,
     this.maxPageSize = AppConstants.maxPageSize,
     this.initialPage = 0,
   });
+  final int pageSize;
+  final int maxPageSize;
+  final int initialPage;
 
   /// Validate and clamp page size
   int get clampedPageSize =>
@@ -69,6 +69,11 @@ class PaginationConfig {
 
 /// Cursor-based pagination helper
 class CursorPagination<T> {
+
+  CursorPagination({
+    required this.config,
+    required this.fetchPage,
+  });
   final PaginationConfig config;
   final Future<PaginatedResult<T>> Function({
     required int limit,
@@ -77,11 +82,6 @@ class CursorPagination<T> {
 
   PaginationState<T> _state = PaginationState<T>();
   bool _isFetching = false;
-
-  CursorPagination({
-    required this.config,
-    required this.fetchPage,
-  });
 
   /// Current state
   PaginationState<T> get state => _state;
@@ -109,7 +109,6 @@ class CursorPagination<T> {
 
       _state = PaginationState<T>(
         items: result.items,
-        isLoading: false,
         hasMore: result.hasMore,
         cursor: result.cursor,
         currentPage: 1,
@@ -173,10 +172,6 @@ class CursorPagination<T> {
 
 /// Result of a paginated query
 class PaginatedResult<T> {
-  final List<T> items;
-  final bool hasMore;
-  final String? cursor;
-  final int totalCount;
 
   const PaginatedResult({
     required this.items,
@@ -184,4 +179,8 @@ class PaginatedResult<T> {
     this.cursor,
     this.totalCount = 0,
   });
+  final List<T> items;
+  final bool hasMore;
+  final String? cursor;
+  final int totalCount;
 }

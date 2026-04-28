@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import '../../../../core/constants/app_constants.dart';
+import 'package:quran_tutor_app/core/constants/app_constants.dart';
 
 /// Abstract local datasource interface
 abstract class AuthLocalDataSource {
@@ -45,13 +45,6 @@ abstract class AuthLocalDataSource {
 
 /// Secure storage implementation of AuthLocalDataSource
 class SecureStorageAuthDataSource implements AuthLocalDataSource {
-  final FlutterSecureStorage _storage;
-
-  // Keys for secure storage
-  static const _tokenKey = AppConstants.authTokenKey;
-  static const _refreshTokenKey = AppConstants.refreshTokenKey;
-  static const _userDataKey = AppConstants.userDataKey;
-  static const _userRoleKey = 'user_role';
 
   const SecureStorageAuthDataSource({
     FlutterSecureStorage? storage,
@@ -63,6 +56,13 @@ class SecureStorageAuthDataSource implements AuthLocalDataSource {
             accountName: 'quran_tutor_auth',
           ),
         );
+  final FlutterSecureStorage _storage;
+
+  // Keys for secure storage
+  static const String _tokenKey = AppConstants.authTokenKey;
+  static const String _refreshTokenKey = AppConstants.refreshTokenKey;
+  static const String _userDataKey = AppConstants.userDataKey;
+  static const _userRoleKey = 'user_role';
 
   @override
   Future<void> cacheToken(String token) async {
@@ -71,7 +71,7 @@ class SecureStorageAuthDataSource implements AuthLocalDataSource {
 
   @override
   Future<String?> getToken() async {
-    return await _storage.read(key: _tokenKey);
+    return _storage.read(key: _tokenKey);
   }
 
   @override
@@ -86,7 +86,7 @@ class SecureStorageAuthDataSource implements AuthLocalDataSource {
 
   @override
   Future<String?> getRefreshToken() async {
-    return await _storage.read(key: _refreshTokenKey);
+    return _storage.read(key: _refreshTokenKey);
   }
 
   @override
@@ -126,7 +126,7 @@ class SecureStorageAuthDataSource implements AuthLocalDataSource {
 
   @override
   Future<String?> getUserRole() async {
-    return await _storage.read(key: _userRoleKey);
+    return _storage.read(key: _userRoleKey);
   }
 
   @override

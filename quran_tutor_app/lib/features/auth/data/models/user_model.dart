@@ -1,32 +1,17 @@
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthUser;
 
-import '../../../../core/constants/app_constants.dart';
-import '../../domain/entities/auth_user.dart';
+import 'package:quran_tutor_app/core/constants/app_constants.dart';
+import 'package:quran_tutor_app/features/auth/domain/entities/auth_user.dart';
 
 /// User model for authentication
 class UserModel {
-  final String id;
-  final String email;
-  final String? displayName;
-  final String? arabicName;
-  final String? photoUrl;
-  final String role;
-  final String status;
-  final DateTime createdAt;
-  final DateTime? updatedAt;
-  final String? phoneNumber;
-  final DateTime? dateOfBirth;
-  final String? teacherId;
 
   UserModel({
     required this.id,
     required this.email,
-    this.displayName,
+    required this.role, required this.status, required this.createdAt, this.displayName,
     this.arabicName,
     this.photoUrl,
-    required this.role,
-    required this.status,
-    required this.createdAt,
     this.updatedAt,
     this.phoneNumber,
     this.dateOfBirth,
@@ -81,6 +66,36 @@ createdAt: DateTime.parse(user.createdAt),
     );
   }
 
+  /// Create from domain entity
+  factory UserModel.fromEntity(AuthUser user) {
+    return UserModel(
+      id: user.id,
+      email: user.email,
+      displayName: user.displayName,
+      arabicName: user.arabicName,
+      photoUrl: user.photoUrl,
+      role: user.role.value,
+      status: user.status.value,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+      phoneNumber: user.phoneNumber,
+      dateOfBirth: user.dateOfBirth,
+      teacherId: user.teacherId,
+    );
+  }
+  final String id;
+  final String email;
+  final String? displayName;
+  final String? arabicName;
+  final String? photoUrl;
+  final String role;
+  final String status;
+  final DateTime createdAt;
+  final DateTime? updatedAt;
+  final String? phoneNumber;
+  final DateTime? dateOfBirth;
+  final String? teacherId;
+
   /// Convert to JSON (snake_case for Supabase)
   Map<String, dynamic> toJson() {
     return {
@@ -117,24 +132,6 @@ createdAt: DateTime.parse(user.createdAt),
       phoneNumber: phoneNumber,
       dateOfBirth: dateOfBirth,
       teacherId: teacherId,
-    );
-  }
-
-  /// Create from domain entity
-  factory UserModel.fromEntity(AuthUser user) {
-    return UserModel(
-      id: user.id,
-      email: user.email,
-      displayName: user.displayName,
-      arabicName: user.arabicName,
-      photoUrl: user.photoUrl,
-      role: user.role.value,
-      status: user.status.value,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
-      phoneNumber: user.phoneNumber,
-      dateOfBirth: user.dateOfBirth,
-      teacherId: user.teacherId,
     );
   }
 

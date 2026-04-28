@@ -1,18 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
-import '../../environment/app_environment.dart';
+import 'package:quran_tutor_app/core/environment/app_environment.dart';
 
 /// Centralized logging utility with debug/release separation
 ///
 /// In debug mode: logs everything to console with colors
 /// In release mode: logs only errors/warnings, sends to analytics
 class AppLogger {
-  static AppLogger? _instance;
-  late final Logger _logger;
-
-  /// Whether to enable detailed logging
-  final bool _enableDetailedLogging;
 
   factory AppLogger({bool enableDetailedLogging = true}) {
     _instance ??= AppLogger._internal(
@@ -26,16 +21,17 @@ class AppLogger {
     _logger = Logger(
       filter: _LogFilter(enableDetailedLogging: enableDetailedLogging),
       printer: _LogPrinter(
-        methodCount: kDebugMode ? 2 : 0,
         errorMethodCount: kDebugMode ? 8 : 0,
-        lineLength: 120,
-        colors: kDebugMode,
-        printEmojis: kDebugMode,
         dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
       ),
       output: _LogOutput(),
     );
   }
+  static AppLogger? _instance;
+  late final Logger _logger;
+
+  /// Whether to enable detailed logging
+  final bool _enableDetailedLogging;
 
   /// Log a verbose/trace message
   void t(dynamic message, {dynamic error, StackTrace? stackTrace}) {
@@ -86,9 +82,9 @@ class AppLogger {
 
 /// Custom log filter
 class _LogFilter extends LogFilter {
-  final bool enableDetailedLogging;
 
   _LogFilter({required this.enableDetailedLogging});
+  final bool enableDetailedLogging;
 
   @override
   bool shouldLog(LogEvent event) {

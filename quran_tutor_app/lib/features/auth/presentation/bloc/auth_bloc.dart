@@ -1,15 +1,14 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../domain/repositories/auth_repository.dart';
-import 'auth_event.dart';
-import 'auth_state.dart';
+import 'package:quran_tutor_app/features/auth/domain/repositories/auth_repository.dart';
+import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_event.dart';
+import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_state.dart';
 
 @injectable
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final AuthRepository _authRepository;
 
-  AuthBloc(this._authRepository) : super(AuthState.initial()) {
+  AuthBloc(this._authRepository) : super(const AuthState.initial()) {
     on<AppStarted>(_onAppStarted);
     on<SignInRequested>(_onSignInRequested);
     on<SignUpStudentRequested>(_onSignUpStudentRequested);
@@ -19,6 +18,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<ResetPasswordRequested>(_onResetPasswordRequested);
     on<UpdatePasswordRequested>(_onUpdatePasswordRequested);
   }
+  final AuthRepository _authRepository;
 
   Future<void> _onAppStarted(
     AppStarted event,
@@ -31,7 +31,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(state.copyWith(
           status: AuthStatus.authenticated,
           user: user,
-        ));
+        ),);
       } else {
         emit(state.copyWith(status: AuthStatus.unauthenticated));
       }
@@ -53,12 +53,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(state.copyWith(
         status: AuthStatus.authenticated,
         user: user,
-      ));
+      ),);
     } else {
       emit(state.copyWith(
         status: AuthStatus.error,
         errorMessage: failure?.message ?? 'Login failed',
-      ));
+      ),);
     }
   }
 
@@ -81,18 +81,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(state.copyWith(
           status: AuthStatus.pendingApproval,
           user: user,
-        ));
+        ),);
       } else {
         emit(state.copyWith(
           status: AuthStatus.authenticated,
           user: user,
-        ));
+        ),);
       }
     } else {
       emit(state.copyWith(
         status: AuthStatus.error,
         errorMessage: failure?.message ?? 'Sign up failed',
-      ));
+      ),);
     }
   }
 
@@ -115,18 +115,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(state.copyWith(
           status: AuthStatus.pendingApproval,
           user: user,
-        ));
+        ),);
       } else {
         emit(state.copyWith(
           status: AuthStatus.authenticated,
           user: user,
-        ));
+        ),);
       }
     } else {
       emit(state.copyWith(
         status: AuthStatus.error,
         errorMessage: failure?.message ?? 'Sign up failed',
-      ));
+      ),);
     }
   }
 
@@ -148,17 +148,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(state.copyWith(
           status: AuthStatus.pendingApproval,
           user: user,
-        ));
+        ),);
       } else if (user.isRejected) {
         emit(state.copyWith(
           status: AuthStatus.rejected,
           user: user,
-        ));
+        ),);
       } else if (user.isAuthenticated) {
         emit(state.copyWith(
           status: AuthStatus.authenticated,
           user: user,
-        ));
+        ),);
       }
     }
   }
@@ -172,7 +172,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(state.copyWith(
         status: AuthStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     }
   }
 
@@ -188,7 +188,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(state.copyWith(
         status: AuthStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     }
   }
 }

@@ -33,7 +33,7 @@ void main() {
       when(() => mockRepository.signIn(
             email: any(named: 'email'),
             password: any(named: 'password'),
-          )).thenAnswer((_) async => (tAuthUser, null));
+          ),).thenAnswer((_) async => (tAuthUser, null));
 
       // Act
       final (result, failure) = await useCase(
@@ -54,7 +54,7 @@ void main() {
       when(() => mockRepository.signIn(
             email: any(named: 'email'),
             password: any(named: 'password'),
-          )).thenAnswer((_) async => (null, tFailure));
+          ),).thenAnswer((_) async => (null, tFailure));
 
       // Act
       final (result, failure) = await useCase(
@@ -74,7 +74,7 @@ void main() {
       when(() => mockRepository.signIn(
             email: any(named: 'email'),
             password: any(named: 'password'),
-          )).thenAnswer((_) async => (null, tFailure));
+          ),).thenAnswer((_) async => (null, tFailure));
 
       // Act
       final (result, failure) = await useCase(
@@ -92,7 +92,7 @@ void main() {
       when(() => mockRepository.signIn(
             email: any(named: 'email'),
             password: any(named: 'password'),
-          )).thenAnswer((_) async => (null, tFailure));
+          ),).thenAnswer((_) async => (null, tFailure));
 
       // Act
       final (result, failure) = await useCase(
@@ -111,7 +111,7 @@ void main() {
       when(() => mockRepository.signIn(
             email: any(named: 'email'),
             password: any(named: 'password'),
-          )).thenAnswer((_) async => (null, tFailure));
+          ),).thenAnswer((_) async => (null, tFailure));
 
       // Act
       final (result, failure) = await useCase(

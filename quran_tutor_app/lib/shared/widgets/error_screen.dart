@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../core/error/failures.dart';
-import '../../core/localization/app_localizations.dart';
+import 'package:quran_tutor_app/core/error/failures.dart';
+import 'package:quran_tutor_app/core/localization/app_localizations.dart';
 
 /// Error screen that displays different UI based on Failure type
 class ErrorScreen extends StatelessWidget {
-  final Failure? failure;
-  final VoidCallback? onRetry;
-  final String? customMessage;
 
   const ErrorScreen({
     super.key,
@@ -16,6 +13,9 @@ class ErrorScreen extends StatelessWidget {
     this.onRetry,
     this.customMessage,
   });
+  final Failure? failure;
+  final VoidCallback? onRetry;
+  final String? customMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +25,9 @@ class ErrorScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(24),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // Error Icon
               Icon(
@@ -193,10 +192,6 @@ class ErrorScreen extends StatelessWidget {
 
 /// Error data holder
 class _ErrorData {
-  final IconData icon;
-  final Color iconColor;
-  final String title;
-  final String message;
 
   _ErrorData({
     required this.icon,
@@ -211,4 +206,8 @@ class _ErrorData {
         title: l10n.t('error.title'),
         message: l10n.t('error.unknown'),
       );
+  final IconData icon;
+  final Color iconColor;
+  final String title;
+  final String message;
 }

@@ -58,7 +58,7 @@ void main() {
         when(() => mockRepository.signIn(
           email: any(named: 'email'),
           password: any(named: 'password'),
-        )).thenAnswer(
+        ),).thenAnswer(
           (_) async => (tAuthUser, null),
         );
         return authBloc;

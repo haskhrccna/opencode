@@ -1,19 +1,19 @@
-import '../../../../core/error/exceptions.dart';
-import '../../../../core/error/failures.dart';
-import '../../domain/entities/auth_user.dart';
-import '../../domain/repositories/auth_repository.dart';
-import '../datasources/auth_local_datasource.dart';
-import '../datasources/auth_remote_datasource.dart';
-import '../models/user_model.dart';
+import 'package:quran_tutor_app/core/error/exceptions.dart';
+import 'package:quran_tutor_app/core/error/failures.dart';
+import 'package:quran_tutor_app/features/auth/data/datasources/auth_local_datasource.dart';
+import 'package:quran_tutor_app/features/auth/data/datasources/auth_remote_datasource.dart';
+import 'package:quran_tutor_app/features/auth/data/models/user_model.dart';
+import 'package:quran_tutor_app/features/auth/domain/entities/auth_user.dart';
+import 'package:quran_tutor_app/features/auth/domain/repositories/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
-  final AuthRemoteDataSource remoteDataSource;
-  final AuthLocalDataSource localDataSource;
 
   const AuthRepositoryImpl({
     required this.remoteDataSource,
     required this.localDataSource,
   });
+  final AuthRemoteDataSource remoteDataSource;
+  final AuthLocalDataSource localDataSource;
 
   @override
   Future<AuthUser> getCurrentUser() async {

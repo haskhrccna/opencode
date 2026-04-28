@@ -8,7 +8,7 @@ void main() {
 
   group('Auth Flow Integration Tests', () {
     testWidgets('Golden path: Splash → Login → Student Home',
-        (WidgetTester tester) async {
+        (tester) async {
       // Start the app
       app.main();
       await tester.pumpAndSettle();
@@ -47,7 +47,7 @@ void main() {
     });
 
     testWidgets('Login with bad credentials shows error',
-        (WidgetTester tester) async {
+        (tester) async {
       app.main();
       await tester.pumpAndSettle();
 
@@ -77,7 +77,7 @@ void main() {
     });
 
     testWidgets('New registration → pending screen flow',
-        (WidgetTester tester) async {
+        (tester) async {
       app.main();
       await tester.pumpAndSettle();
 

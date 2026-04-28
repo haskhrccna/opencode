@@ -1,8 +1,8 @@
 import 'dart:io';
 
+import 'package:quran_tutor_app/core/error/exceptions.dart';
+import 'package:quran_tutor_app/features/profile/data/models/profile_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../../../../core/error/exceptions.dart';
-import '../models/profile_model.dart';
 
 /// Abstract remote datasource for profile operations
 abstract class ProfileRemoteDataSource {
@@ -36,10 +36,10 @@ abstract class ProfileRemoteDataSource {
 
 /// Supabase implementation
 class SupabaseProfileDataSource implements ProfileRemoteDataSource {
-  final SupabaseClient _supabase;
 
   SupabaseProfileDataSource({SupabaseClient? supabase})
       : _supabase = supabase ?? Supabase.instance.client;
+  final SupabaseClient _supabase;
 
   @override
   Future<ProfileModel?> getProfile(String userId) async {

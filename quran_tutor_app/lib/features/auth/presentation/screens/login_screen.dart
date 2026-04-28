@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/utils/validators/arabic_validators.dart';
-import '../bloc/auth_bloc.dart';
-import '../bloc/auth_event.dart';
-import '../bloc/auth_state.dart';
+import 'package:quran_tutor_app/core/utils/validators/arabic_validators.dart';
+import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_event.dart';
+import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_state.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -40,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const Icon(Icons.menu_book, size: 64, color: Colors.green),
                 const SizedBox(height: 16),
                 Text('تسجيل الدخول',
-                    style: Theme.of(context).textTheme.headlineMedium),
+                    style: Theme.of(context).textTheme.headlineMedium,),
                 const SizedBox(height: 32),
                 TextFormField(
                   controller: _emailController,
@@ -64,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                             content:
-                                Text(state.errorMessage ?? 'Login failed')),
+                                Text(state.errorMessage ?? 'Login failed'),),
                       );
                     }
                   },
@@ -87,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               width: 20,
                               height: 20,
                               child: CircularProgressIndicator(
-                                  strokeWidth: 2))
+                                  strokeWidth: 2,),)
                           : const Text('دخول'),
                     );
                   },

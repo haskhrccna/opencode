@@ -1,10 +1,10 @@
-import '../repositories/auth_repository.dart';
+import 'package:quran_tutor_app/features/auth/domain/repositories/auth_repository.dart';
 
 /// Use case for signing out
 class SignOutUseCase {
-  final AuthRepository repository;
 
   const SignOutUseCase(this.repository);
+  final AuthRepository repository;
 
   /// Execute sign out
   ///

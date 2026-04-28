@@ -1,5 +1,5 @@
-import '../../../../core/error/failures.dart';
-import '../entities/auth_user.dart';
+import 'package:quran_tutor_app/core/error/failures.dart';
+import 'package:quran_tutor_app/features/auth/domain/entities/auth_user.dart';
 
 /// Abstract repository interface for authentication
 ///

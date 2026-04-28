@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
-import '../../localization/app_localizations.dart';
-import '../../constants/app_constants.dart';
+import 'package:quran_tutor_app/core/constants/app_constants.dart';
+import 'package:quran_tutor_app/core/localization/app_localizations.dart';
 
 /// Arabic-specific validators for the Quran Tutor app
 /// 
@@ -111,17 +110,17 @@ class ArabicValidators {
     }
 
     // Check for at least one uppercase letter
-    if (!value.contains(RegExp(r'[A-Z]'))) {
+    if (!value.contains(RegExp('[A-Z]'))) {
       return 'validation.password_uppercase';
     }
 
     // Check for at least one lowercase letter
-    if (!value.contains(RegExp(r'[a-z]'))) {
+    if (!value.contains(RegExp('[a-z]'))) {
       return 'validation.password_lowercase';
     }
 
     // Check for at least one digit
-    if (!value.contains(RegExp(r'[0-9]'))) {
+    if (!value.contains(RegExp('[0-9]'))) {
       return 'validation.password_number';
     }
 
@@ -266,9 +265,6 @@ class ArabicValidators {
 
 /// Form input validation result
 class ValidationResult {
-  final bool isValid;
-  final String? errorKey;
-  final Map<String, String>? args;
 
   const ValidationResult._({
     required this.isValid,
@@ -284,6 +280,9 @@ class ValidationResult {
         errorKey: key,
         args: args,
       );
+  final bool isValid;
+  final String? errorKey;
+  final Map<String, String>? args;
 
   /// Get localized error message
   String getLocalizedMessage(BuildContext context) {

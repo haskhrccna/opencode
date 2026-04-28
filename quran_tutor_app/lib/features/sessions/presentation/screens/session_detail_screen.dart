@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 
 class SessionDetailScreen extends StatelessWidget {
-  final String sessionId;
-  final bool isTeacher;
 
   const SessionDetailScreen({
-    super.key,
-    required this.sessionId,
+    required this.sessionId, super.key,
     this.isTeacher = false,
   });
+  final String sessionId;
+  final bool isTeacher;
 
   @override
   Widget build(BuildContext context) {

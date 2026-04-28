@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../constants/app_constants.dart';
-import 'app_colors.dart';
+import 'package:quran_tutor_app/core/constants/app_constants.dart';
+import 'package:quran_tutor_app/core/theme/app_colors.dart';
 
 /// Application theme configuration
 class AppTheme {
@@ -14,7 +14,6 @@ class AppTheme {
       brightness: Brightness.light,
       colorScheme: const ColorScheme.light(
         primary: AppColors.primary,
-        onPrimary: AppColors.onPrimary,
         primaryContainer: AppColors.primaryContainer,
         onPrimaryContainer: AppColors.onPrimaryContainer,
         secondary: AppColors.secondary,
@@ -26,7 +25,6 @@ class AppTheme {
         tertiaryContainer: AppColors.tertiaryContainer,
         onTertiaryContainer: AppColors.onTertiaryContainer,
         error: AppColors.error,
-        onError: AppColors.onError,
         errorContainer: AppColors.errorContainer,
         onErrorContainer: AppColors.onErrorContainer,
         surface: AppColors.surface,
@@ -375,7 +373,7 @@ class AppTheme {
 
   // Divider Theme
   static DividerThemeData get _dividerTheme {
-    return DividerThemeData(
+    return const DividerThemeData(
       color: AppColors.outlineVariant,
       thickness: 1,
       space: AppConstants.defaultPadding,

@@ -3,10 +3,13 @@ import 'dart:async';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../../../core/constants/app_constants.dart';
+import 'package:quran_tutor_app/core/constants/app_constants.dart';
 /// Service for handling Supabase Realtime subscriptions
 @singleton
 class RealtimeService {
+
+  RealtimeService({SupabaseClient? supabase})
+      : _supabase = supabase ?? Supabase.instance.client;
   final SupabaseClient _supabase;
 
   // Stream controllers for different events
@@ -16,9 +19,6 @@ class RealtimeService {
 
   // Store subscriptions for proper cleanup
   final List<StreamSubscription<dynamic>> _subscriptions = [];
-
-  RealtimeService({SupabaseClient? supabase})
-      : _supabase = supabase ?? Supabase.instance.client;
 
   /// Stream for session status updates
   Stream<SessionUpdate> get sessionUpdates => _sessionUpdatesController.stream;
@@ -50,7 +50,7 @@ class RealtimeService {
                 status: change['status'] as String,
                 studentId: change['student_id'] as String?,
                 updatedAt: DateTime.parse(change['updated_at'] as String),
-              ));
+              ),);
             }
           });
       _subscriptions.add(subscription);
@@ -67,7 +67,7 @@ class RealtimeService {
                 status: change['status'] as String,
                 studentId: change['student_id'] as String?,
                 updatedAt: DateTime.parse(change['updated_at'] as String),
-              ));
+              ),);
             }
           });
       _subscriptions.add(subscription);
@@ -83,7 +83,7 @@ class RealtimeService {
                 status: change['status'] as String,
                 studentId: change['student_id'] as String?,
                 updatedAt: DateTime.parse(change['updated_at'] as String),
-              ));
+              ),);
             }
           });
       _subscriptions.add(subscription);
@@ -108,7 +108,7 @@ class RealtimeService {
                   'Unknown',
               role: change['role'] as String,
               createdAt: DateTime.parse(change['created_at'] as String),
-            ));
+            ),);
           }
         });
     _subscriptions.add(subscription);
@@ -131,7 +131,7 @@ class RealtimeService {
                 studentId: change['student_id'] as String,
                 studentName: change['student_name'] as String? ?? 'Unknown',
                 joinedAt: DateTime.now(),
-              ));
+              ),);
             }
           }
         });
@@ -164,26 +164,20 @@ class RealtimeService {
 
 /// Session update event
 class SessionUpdate {
-  final String sessionId;
-  final String status;
-  final String? studentId;
-  final DateTime updatedAt;
 
   SessionUpdate({
     required this.sessionId,
     required this.status,
-    this.studentId,
-    required this.updatedAt,
+    required this.updatedAt, this.studentId,
   });
+  final String sessionId;
+  final String status;
+  final String? studentId;
+  final DateTime updatedAt;
 }
 
 /// Admin notification event
 class AdminNotification {
-  final AdminNotificationType type;
-  final String userId;
-  final String userName;
-  final String role;
-  final DateTime createdAt;
 
   AdminNotification({
     required this.type,
@@ -192,6 +186,11 @@ class AdminNotification {
     required this.role,
     required this.createdAt,
   });
+  final AdminNotificationType type;
+  final String userId;
+  final String userName;
+  final String role;
+  final DateTime createdAt;
 }
 
 enum AdminNotificationType {
@@ -202,10 +201,6 @@ enum AdminNotificationType {
 
 /// Student join event
 class StudentJoin {
-  final String sessionId;
-  final String studentId;
-  final String studentName;
-  final DateTime joinedAt;
 
   StudentJoin({
     required this.sessionId,
@@ -213,4 +208,8 @@ class StudentJoin {
     required this.studentName,
     required this.joinedAt,
   });
+  final String sessionId;
+  final String studentId;
+  final String studentName;
+  final DateTime joinedAt;
 }

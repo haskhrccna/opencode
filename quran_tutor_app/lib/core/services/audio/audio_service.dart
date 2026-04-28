@@ -10,12 +10,6 @@ import 'package:path_provider/path_provider.dart';
 /// Service for handling audio recording and playback
 @singleton
 class AudioService {
-  final AudioPlayer _player;
-  final AudioRecorder _recorder;
-  final SupabaseClient _supabase;
-
-  bool _isInitialized = false;
-  String? _currentRecordingPath;
 
   AudioService({
     AudioPlayer? player,
@@ -24,6 +18,12 @@ class AudioService {
   })  : _player = player ?? AudioPlayer(),
         _recorder = recorder ?? AudioRecorder(),
         _supabase = supabase ?? Supabase.instance.client;
+  final AudioPlayer _player;
+  final AudioRecorder _recorder;
+  final SupabaseClient _supabase;
+
+  bool _isInitialized = false;
+  String? _currentRecordingPath;
 
   /// Initialize the audio service
   Future<void> initialize() async {
@@ -43,9 +43,7 @@ class AudioService {
 
     // Configure recording
     const config = RecordConfig(
-      encoder: AudioEncoder.aacLc,
-      bitRate: 128000,
-      sampleRate: 44100,
+      
     );
 
     // Start recording
@@ -61,7 +59,7 @@ class AudioService {
 
   /// Check if currently recording
   Future<bool> isRecording() async {
-    return await _recorder.isRecording();
+    return _recorder.isRecording();
   }
 
   /// Play audio from URL

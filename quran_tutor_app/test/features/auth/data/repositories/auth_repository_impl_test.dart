@@ -172,7 +172,7 @@ void main() {
             dateOfBirth: any(named: 'dateOfBirth'),
             phoneNumber: any(named: 'phoneNumber'),
             teacherInviteCode: any(named: 'teacherInviteCode'),
-          )).thenAnswer((_) async => tPendingUser);
+          ),).thenAnswer((_) async => tPendingUser);
       when(() => mockLocalDataSource.cacheUserData(any()))
           .thenAnswer((_) async {});
 
@@ -203,7 +203,7 @@ void main() {
             dateOfBirth: any(named: 'dateOfBirth'),
             phoneNumber: any(named: 'phoneNumber'),
             teacherInviteCode: any(named: 'teacherInviteCode'),
-          )).thenThrow(AuthException.emailAlreadyInUse());
+          ),).thenThrow(AuthException.emailAlreadyInUse());
 
       // Act
       final (result, failure) = await repository.signUpStudent(
@@ -230,7 +230,7 @@ void main() {
             dateOfBirth: any(named: 'dateOfBirth'),
             phoneNumber: any(named: 'phoneNumber'),
             teacherInviteCode: any(named: 'teacherInviteCode'),
-          )).thenThrow(ValidationException.invalidInput(message: 'Invalid code'));
+          ),).thenThrow(ValidationException.invalidInput(message: 'Invalid code'));
 
       // Act
       final (result, failure) = await repository.signUpStudent(

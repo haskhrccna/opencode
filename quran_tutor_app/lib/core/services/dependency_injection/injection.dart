@@ -1,10 +1,9 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
+import 'package:quran_tutor_app/core/services/dependency_injection/injection.config.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'injection.config.dart';
-
-final getIt = GetIt.instance;
+final GetIt getIt = GetIt.instance;
 
 @InjectableInit(
   initializerName: r'$initGetIt',

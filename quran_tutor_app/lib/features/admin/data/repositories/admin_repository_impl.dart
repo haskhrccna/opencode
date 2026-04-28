@@ -1,7 +1,7 @@
-import '../../../../core/constants/app_constants.dart';
-import '../../../../core/error/failures.dart';
-import '../../../auth/domain/entities/auth_user.dart';
-import '../../domain/repositories/admin_repository.dart';
+import 'package:quran_tutor_app/core/constants/app_constants.dart';
+import 'package:quran_tutor_app/core/error/failures.dart';
+import 'package:quran_tutor_app/features/admin/domain/repositories/admin_repository.dart';
+import 'package:quran_tutor_app/features/auth/domain/entities/auth_user.dart';
 
 /// Stub implementation of AdminRepository
 class AdminRepositoryImpl implements AdminRepository {
@@ -71,5 +71,5 @@ class AdminRepositoryImpl implements AdminRepository {
 
   @override
   Stream<List<AuthUser>> get pendingUsersStream =>
-      Stream<List<AuthUser>>.empty();
+      const Stream<List<AuthUser>>.empty();
 }

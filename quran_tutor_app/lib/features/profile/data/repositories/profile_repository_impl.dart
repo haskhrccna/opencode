@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import '../../../../core/error/failures.dart';
-import '../../domain/entities/user_profile.dart';
-import '../../domain/repositories/profile_repository.dart';
+import 'package:quran_tutor_app/core/error/failures.dart';
+import 'package:quran_tutor_app/features/profile/domain/entities/user_profile.dart';
+import 'package:quran_tutor_app/features/profile/domain/repositories/profile_repository.dart';
 
 /// Stub implementation of ProfileRepository
 class ProfileRepositoryImpl implements ProfileRepository {
@@ -51,5 +51,5 @@ class ProfileRepositoryImpl implements ProfileRepository {
       const ServerFailure(message: 'Not implemented');
 
   @override
-  Stream<UserProfile> get profileUpdates => Stream<UserProfile>.empty();
+  Stream<UserProfile> get profileUpdates => const Stream<UserProfile>.empty();
 }

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../domain/entities/user_profile.dart';
+import 'package:quran_tutor_app/features/profile/domain/entities/user_profile.dart';
 
 enum ProfileStatus {
   initial,
@@ -12,12 +12,6 @@ enum ProfileStatus {
 }
 
 class ProfileState extends Equatable {
-  final ProfileStatus status;
-  final UserProfile? profile;
-  final List<UserProfile>? teachers;
-  final List<UserProfile>? students;
-  final String? errorMessage;
-  final DateTime? lastUpdated;
 
   const ProfileState({
     required this.status,
@@ -31,6 +25,12 @@ class ProfileState extends Equatable {
   factory ProfileState.initial() => const ProfileState(
         status: ProfileStatus.initial,
       );
+  final ProfileStatus status;
+  final UserProfile? profile;
+  final List<UserProfile>? teachers;
+  final List<UserProfile>? students;
+  final String? errorMessage;
+  final DateTime? lastUpdated;
 
   ProfileState copyWith({
     ProfileStatus? status,

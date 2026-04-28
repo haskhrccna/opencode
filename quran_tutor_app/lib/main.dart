@@ -5,19 +5,18 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:quran_tutor_app/core/constants/app_constants.dart';
+import 'package:quran_tutor_app/core/environment/app_environment.dart';
+import 'package:quran_tutor_app/core/router/app_router.dart';
+import 'package:quran_tutor_app/core/services/dependency_injection/injection.dart';
+import 'package:quran_tutor_app/core/theme/app_theme.dart';
+import 'package:quran_tutor_app/core/theme/cubit/theme_cubit.dart';
+import 'package:quran_tutor_app/core/utils/bloc_observer.dart';
+import 'package:quran_tutor_app/core/utils/logging/app_logger.dart';
+import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_event.dart';
+import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_state.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
-
-import 'core/constants/app_constants.dart';
-import 'core/environment/app_environment.dart';
-import 'core/router/app_router.dart';
-import 'core/services/dependency_injection/injection.dart';
-import 'core/theme/app_theme.dart';
-import 'core/theme/cubit/theme_cubit.dart';
-import 'core/utils/bloc_observer.dart';
-import 'core/utils/logging/app_logger.dart';
-import 'features/auth/presentation/bloc/auth_bloc.dart';
-import 'features/auth/presentation/bloc/auth_event.dart';
-import 'features/auth/presentation/bloc/auth_state.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,9 +24,9 @@ void main() async {
   const supabaseUrl = String.fromEnvironment('SUPABASE_URL');
   const supabaseAnonKey = String.fromEnvironment('SUPABASE_ANON_KEY');
   assert(supabaseUrl.isNotEmpty,
-      'SUPABASE_URL must be provided via --dart-define=SUPABASE_URL=...');
+      'SUPABASE_URL must be provided via --dart-define=SUPABASE_URL=...',);
   assert(supabaseAnonKey.isNotEmpty,
-      'SUPABASE_ANON_KEY must be provided via --dart-define=SUPABASE_ANON_KEY=...');
+      'SUPABASE_ANON_KEY must be provided via --dart-define=SUPABASE_ANON_KEY=...',);
 
   await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
   await EasyLocalization.ensureInitialized();

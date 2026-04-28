@@ -23,7 +23,7 @@ class PdfService {
     pdf.addPage(
       Page(
         pageFormat: PdfPageFormat.a4,
-        build: (Context context) {
+        build: (context) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -132,7 +132,7 @@ class PdfService {
   /// Print the PDF
   Future<void> printPdf(Uint8List pdfData) async {
     await Printing.layoutPdf(
-      onLayout: (PdfPageFormat format) async => pdfData,
+      onLayout: (format) async => pdfData,
     );
   }
 
@@ -147,7 +147,7 @@ class PdfService {
   /// Preview the PDF
   Future<void> previewPdf(Uint8List pdfData) async {
     await Printing.layoutPdf(
-      onLayout: (PdfPageFormat format) async => pdfData,
+      onLayout: (format) async => pdfData,
     );
   }
 
@@ -161,7 +161,7 @@ class PdfService {
 
     // Convert chart data to table rows
     data.forEach((key, value) {
-      rows.add([key.toString(), value.toString()]);
+      rows.add([key, value.toString()]);
     });
 
     return Column(
@@ -194,39 +194,39 @@ class PdfService {
 
 /// Report section model
 class ReportSection {
-  final String title;
-  final String content;
 
   ReportSection({
     required this.title,
     required this.content,
   });
+  final String title;
+  final String content;
 }
 
 /// Report table model
 class ReportTable {
-  final String title;
-  final List<String> headers;
-  final List<List<String>> rows;
 
   ReportTable({
     required this.title,
     required this.headers,
     required this.rows,
   });
+  final String title;
+  final List<String> headers;
+  final List<List<String>> rows;
 }
 
 /// Report chart model
 class ReportChart {
-  final String title;
-  final ChartType type;
-  final Map<String, dynamic> data;
 
   ReportChart({
     required this.title,
     required this.type,
     required this.data,
   });
+  final String title;
+  final ChartType type;
+  final Map<String, dynamic> data;
 }
 
 enum ChartType {

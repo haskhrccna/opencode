@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../core/theme/cubit/theme_cubit.dart';
-import '../../core/localization/app_localizations.dart';
+import 'package:quran_tutor_app/core/localization/app_localizations.dart';
+import 'package:quran_tutor_app/core/theme/cubit/theme_cubit.dart';
 
 /// Theme toggle widget that can be used in settings/profile
 class ThemeToggle extends StatelessWidget {
-  final bool showTitle;
-  final bool useDropdown;
 
   const ThemeToggle({
     super.key,
     this.showTitle = true,
     this.useDropdown = false,
   });
+  final bool showTitle;
+  final bool useDropdown;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +34,7 @@ class ThemeToggle extends StatelessWidget {
       children: [
         if (showTitle)
           Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
+            padding: const EdgeInsets.only(bottom: 8),
             child: Text(
               l10n.t('settings.theme.title'),
               style: Theme.of(context).textTheme.titleMedium,
@@ -60,7 +59,7 @@ class ThemeToggle extends StatelessWidget {
             ),
           ],
           selected: {state.themeMode},
-          onSelectionChanged: (Set<ThemeMode> newSelection) {
+          onSelectionChanged: (newSelection) {
             final themeMode = newSelection.first;
             _setTheme(context, themeMode);
           },
@@ -109,7 +108,7 @@ class ThemeToggle extends StatelessWidget {
             ),
           ),
         ],
-        onChanged: (ThemeMode? value) {
+        onChanged: (value) {
           if (value != null) {
             _setTheme(context, value);
           }
@@ -123,13 +122,10 @@ class ThemeToggle extends StatelessWidget {
     switch (themeMode) {
       case ThemeMode.light:
         cubit.setLight();
-        break;
       case ThemeMode.dark:
         cubit.setDark();
-        break;
       case ThemeMode.system:
         cubit.setSystem();
-        break;
     }
   }
 

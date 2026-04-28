@@ -1,37 +1,15 @@
-import '../../../../core/constants/app_constants.dart';
-import '../../domain/entities/user_profile.dart';
+import 'package:quran_tutor_app/core/constants/app_constants.dart';
+import 'package:quran_tutor_app/features/profile/domain/entities/user_profile.dart';
 
 /// Data model for user profile
 class ProfileModel {
-  final String id;
-  final String email;
-  final String? displayName;
-  final String? arabicName;
-  final String? photoUrl;
-  final String role;
-  final String status;
-  final DateTime createdAt;
-  final DateTime? updatedAt;
-  final String? phoneNumber;
-  final DateTime? dateOfBirth;
-  final String? teacherId;
-  final String? bio;
-  final String? websiteUrl;
-  final String? address;
-  final String? emergencyContact;
-  final Map<String, dynamic>? preferences;
-  final int? sessionsCompleted;
-  final int? sessionsScheduled;
 
   ProfileModel({
     required this.id,
     required this.email,
-    this.displayName,
+    required this.role, required this.status, required this.createdAt, this.displayName,
     this.arabicName,
     this.photoUrl,
-    required this.role,
-    required this.status,
-    required this.createdAt,
     this.updatedAt,
     this.phoneNumber,
     this.dateOfBirth,
@@ -72,6 +50,49 @@ class ProfileModel {
       sessionsScheduled: (data['sessions_scheduled'] as num?)?.toInt(),
     );
   }
+
+  factory ProfileModel.fromEntity(UserProfile entity) {
+    return ProfileModel(
+      id: entity.id,
+      email: entity.email,
+      displayName: entity.displayName,
+      arabicName: entity.arabicName,
+      photoUrl: entity.photoUrl,
+      role: entity.role.value,
+      status: entity.status.value,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
+      phoneNumber: entity.phoneNumber,
+      dateOfBirth: entity.dateOfBirth,
+      teacherId: entity.teacherId,
+      bio: entity.bio,
+      websiteUrl: entity.websiteUrl,
+      address: entity.address,
+      emergencyContact: entity.emergencyContact,
+      preferences: entity.preferences,
+      sessionsCompleted: entity.sessionsCompleted,
+      sessionsScheduled: entity.sessionsScheduled,
+    );
+  }
+  final String id;
+  final String email;
+  final String? displayName;
+  final String? arabicName;
+  final String? photoUrl;
+  final String role;
+  final String status;
+  final DateTime createdAt;
+  final DateTime? updatedAt;
+  final String? phoneNumber;
+  final DateTime? dateOfBirth;
+  final String? teacherId;
+  final String? bio;
+  final String? websiteUrl;
+  final String? address;
+  final String? emergencyContact;
+  final Map<String, dynamic>? preferences;
+  final int? sessionsCompleted;
+  final int? sessionsScheduled;
 
   Map<String, dynamic> toSupabase() {
     return {
@@ -118,30 +139,6 @@ class ProfileModel {
       preferences: preferences,
       sessionsCompleted: sessionsCompleted,
       sessionsScheduled: sessionsScheduled,
-    );
-  }
-
-  factory ProfileModel.fromEntity(UserProfile entity) {
-    return ProfileModel(
-      id: entity.id,
-      email: entity.email,
-      displayName: entity.displayName,
-      arabicName: entity.arabicName,
-      photoUrl: entity.photoUrl,
-      role: entity.role.value,
-      status: entity.status.value,
-      createdAt: entity.createdAt,
-      updatedAt: entity.updatedAt,
-      phoneNumber: entity.phoneNumber,
-      dateOfBirth: entity.dateOfBirth,
-      teacherId: entity.teacherId,
-      bio: entity.bio,
-      websiteUrl: entity.websiteUrl,
-      address: entity.address,
-      emergencyContact: entity.emergencyContact,
-      preferences: entity.preferences,
-      sessionsCompleted: entity.sessionsCompleted,
-      sessionsScheduled: entity.sessionsScheduled,
     );
   }
 

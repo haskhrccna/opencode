@@ -1,18 +1,18 @@
-import '../../../../core/error/failures.dart';
-import '../entities/auth_user.dart';
-import '../repositories/auth_repository.dart';
+import 'package:quran_tutor_app/core/error/failures.dart';
+import 'package:quran_tutor_app/features/auth/domain/entities/auth_user.dart';
+import 'package:quran_tutor_app/features/auth/domain/repositories/auth_repository.dart';
 
 /// Use case for student registration
 class SignUpStudentUseCase {
-  final AuthRepository repository;
 
   const SignUpStudentUseCase(this.repository);
+  final AuthRepository repository;
 
   /// Execute student sign up
   /// 
   /// Returns [AuthUser] on success, [Failure] on error
   Future<(AuthUser?, Failure?)> call(SignUpStudentParams params) async {
-    return await repository.signUpStudent(
+    return repository.signUpStudent(
       email: params.email,
       password: params.password,
       arabicName: params.arabicName,
@@ -26,13 +26,6 @@ class SignUpStudentUseCase {
 
 /// Parameters for student sign up
 class SignUpStudentParams {
-  final String email;
-  final String password;
-  final String arabicName;
-  final String englishName;
-  final DateTime dateOfBirth;
-  final String phoneNumber;
-  final String? teacherInviteCode;
 
   const SignUpStudentParams({
     required this.email,
@@ -43,4 +36,11 @@ class SignUpStudentParams {
     required this.phoneNumber,
     this.teacherInviteCode,
   });
+  final String email;
+  final String password;
+  final String arabicName;
+  final String englishName;
+  final DateTime dateOfBirth;
+  final String phoneNumber;
+  final String? teacherInviteCode;
 }

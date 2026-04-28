@@ -12,23 +12,16 @@ class AppStarted extends AuthEvent {
 }
 
 class SignInRequested extends AuthEvent {
-  final String email;
-  final String password;
 
   const SignInRequested({required this.email, required this.password});
+  final String email;
+  final String password;
 
   @override
   List<Object?> get props => [email, password];
 }
 
 class SignUpStudentRequested extends AuthEvent {
-  final String email;
-  final String password;
-  final String arabicName;
-  final String englishName;
-  final DateTime dateOfBirth;
-  final String phoneNumber;
-  final String? teacherInviteCode;
 
   const SignUpStudentRequested({
     required this.email,
@@ -39,6 +32,13 @@ class SignUpStudentRequested extends AuthEvent {
     required this.phoneNumber,
     this.teacherInviteCode,
   });
+  final String email;
+  final String password;
+  final String arabicName;
+  final String englishName;
+  final DateTime dateOfBirth;
+  final String phoneNumber;
+  final String? teacherInviteCode;
 
   @override
   List<Object?> get props => [
@@ -53,13 +53,6 @@ class SignUpStudentRequested extends AuthEvent {
 }
 
 class SignUpTeacherRequested extends AuthEvent {
-  final String email;
-  final String password;
-  final String arabicName;
-  final String englishName;
-  final String phoneNumber;
-  final String? bio;
-  final String? websiteUrl;
 
   const SignUpTeacherRequested({
     required this.email,
@@ -70,6 +63,13 @@ class SignUpTeacherRequested extends AuthEvent {
     this.bio,
     this.websiteUrl,
   });
+  final String email;
+  final String password;
+  final String arabicName;
+  final String englishName;
+  final String phoneNumber;
+  final String? bio;
+  final String? websiteUrl;
 
   @override
   List<Object?> get props => [
@@ -92,22 +92,22 @@ class RefreshUserRequested extends AuthEvent {
 }
 
 class ResetPasswordRequested extends AuthEvent {
-  final String email;
 
   const ResetPasswordRequested({required this.email});
+  final String email;
 
   @override
   List<Object?> get props => [email];
 }
 
 class UpdatePasswordRequested extends AuthEvent {
-  final String currentPassword;
-  final String newPassword;
 
   const UpdatePasswordRequested({
     required this.currentPassword,
     required this.newPassword,
   });
+  final String currentPassword;
+  final String newPassword;
 
   @override
   List<Object?> get props => [currentPassword, newPassword];

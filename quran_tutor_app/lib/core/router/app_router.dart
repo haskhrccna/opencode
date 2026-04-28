@@ -2,30 +2,29 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../features/admin/presentation/screens/admin_dashboard_screen.dart';
-import '../../features/admin/presentation/screens/admin_sessions_screen.dart';
-import '../../features/admin/presentation/screens/admin_settings_screen.dart';
-import '../../features/admin/presentation/screens/pending_students_screen.dart';
-import '../../features/admin/presentation/screens/reports_screen.dart';
-import '../../features/admin/presentation/screens/teacher_management_screen.dart';
-import '../../features/auth/presentation/bloc/auth_bloc.dart';
-import '../../features/auth/presentation/bloc/auth_state.dart';
-import '../../features/auth/presentation/screens/login_screen.dart';
-import '../../features/auth/presentation/screens/pending_approval_screen.dart';
-import '../../features/auth/presentation/screens/rejected_screen.dart';
-import '../../features/auth/presentation/screens/signup_screen.dart';
-import '../../features/auth/presentation/screens/splash_screen.dart';
-import '../../features/grading/presentation/screens/progress_screen.dart';
-import '../../features/profile/presentation/screens/profile_screen.dart';
-import '../../features/sessions/presentation/screens/session_detail_screen.dart';
-import '../../features/sessions/presentation/screens/sessions_screen.dart';
-import '../../features/student/presentation/screens/student_home_screen.dart';
-import '../../features/teacher/presentation/screens/teacher_home_screen.dart';
-import '../../features/teacher/presentation/screens/teacher_sessions_screen.dart';
-import '../../features/teacher/presentation/screens/teacher_students_screen.dart';
-import '../../shared/widgets/error_screen.dart';
-import '../constants/app_constants.dart';
+import 'package:quran_tutor_app/core/constants/app_constants.dart';
+import 'package:quran_tutor_app/features/admin/presentation/screens/admin_dashboard_screen.dart';
+import 'package:quran_tutor_app/features/admin/presentation/screens/admin_sessions_screen.dart';
+import 'package:quran_tutor_app/features/admin/presentation/screens/admin_settings_screen.dart';
+import 'package:quran_tutor_app/features/admin/presentation/screens/pending_students_screen.dart';
+import 'package:quran_tutor_app/features/admin/presentation/screens/reports_screen.dart';
+import 'package:quran_tutor_app/features/admin/presentation/screens/teacher_management_screen.dart';
+import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_state.dart';
+import 'package:quran_tutor_app/features/auth/presentation/screens/login_screen.dart';
+import 'package:quran_tutor_app/features/auth/presentation/screens/pending_approval_screen.dart';
+import 'package:quran_tutor_app/features/auth/presentation/screens/rejected_screen.dart';
+import 'package:quran_tutor_app/features/auth/presentation/screens/signup_screen.dart';
+import 'package:quran_tutor_app/features/auth/presentation/screens/splash_screen.dart';
+import 'package:quran_tutor_app/features/grading/presentation/screens/progress_screen.dart';
+import 'package:quran_tutor_app/features/profile/presentation/screens/profile_screen.dart';
+import 'package:quran_tutor_app/features/sessions/presentation/screens/session_detail_screen.dart';
+import 'package:quran_tutor_app/features/sessions/presentation/screens/sessions_screen.dart';
+import 'package:quran_tutor_app/features/student/presentation/screens/student_home_screen.dart';
+import 'package:quran_tutor_app/features/teacher/presentation/screens/teacher_home_screen.dart';
+import 'package:quran_tutor_app/features/teacher/presentation/screens/teacher_sessions_screen.dart';
+import 'package:quran_tutor_app/features/teacher/presentation/screens/teacher_students_screen.dart';
+import 'package:quran_tutor_app/shared/widgets/error_screen.dart';
 
 class AppRouter {
   AppRouter._();
@@ -75,16 +74,16 @@ class AppRouter {
     ),
     GoRoute(
       path: '/pending-approval',
-      builder: (_, __) => const PendingApprovalScreen()),
+      builder: (_, __) => const PendingApprovalScreen(),),
     GoRoute(
-      path: '/rejected', builder: (_, __) => const RejectedScreen()),
+      path: '/rejected', builder: (_, __) => const RejectedScreen(),),
     GoRoute(
       path: '/student',
       redirect: (_, state) =>
           state.path == '/student' ? '/student/home' : null,
       routes: [
         GoRoute(
-          path: 'home', builder: (_, __) => const StudentHomeScreen()),
+          path: 'home', builder: (_, __) => const StudentHomeScreen(),),
         GoRoute(
           path: 'sessions',
           builder: (_, __) => const SessionsScreen(),
@@ -92,14 +91,14 @@ class AppRouter {
             GoRoute(
               path: ':id',
               builder: (_, state) => SessionDetailScreen(
-                sessionId: state.pathParameters['id']!),
+                sessionId: state.pathParameters['id']!,),
             ),
           ],
         ),
         GoRoute(
-          path: 'progress', builder: (_, __) => const ProgressScreen()),
+          path: 'progress', builder: (_, __) => const ProgressScreen(),),
         GoRoute(
-          path: 'profile', builder: (_, __) => const ProfileScreen()),
+          path: 'profile', builder: (_, __) => const ProfileScreen(),),
       ],
     ),
     GoRoute(
@@ -108,7 +107,7 @@ class AppRouter {
           state.path == '/teacher' ? '/teacher/home' : null,
       routes: [
         GoRoute(
-          path: 'home', builder: (_, __) => const TeacherHomeScreen()),
+          path: 'home', builder: (_, __) => const TeacherHomeScreen(),),
         GoRoute(
           path: 'sessions',
           builder: (_, __) => const TeacherSessionsScreen(),
@@ -124,9 +123,9 @@ class AppRouter {
         ),
         GoRoute(
           path: 'students',
-          builder: (_, __) => const TeacherStudentsScreen()),
+          builder: (_, __) => const TeacherStudentsScreen(),),
         GoRoute(
-          path: 'profile', builder: (_, __) => const ProfileScreen()),
+          path: 'profile', builder: (_, __) => const ProfileScreen(),),
       ],
     ),
     GoRoute(
@@ -136,21 +135,21 @@ class AppRouter {
       routes: [
         GoRoute(
           path: 'dashboard',
-          builder: (_, __) => const AdminDashboardScreen()),
+          builder: (_, __) => const AdminDashboardScreen(),),
         GoRoute(
           path: 'pending',
-          builder: (_, __) => const PendingStudentsScreen()),
+          builder: (_, __) => const PendingStudentsScreen(),),
         GoRoute(
           path: 'teachers',
-          builder: (_, __) => const TeacherManagementScreen()),
+          builder: (_, __) => const TeacherManagementScreen(),),
         GoRoute(
           path: 'sessions',
-          builder: (_, __) => const AdminSessionsScreen()),
+          builder: (_, __) => const AdminSessionsScreen(),),
         GoRoute(
-          path: 'reports', builder: (_, __) => const ReportsScreen()),
+          path: 'reports', builder: (_, __) => const ReportsScreen(),),
         GoRoute(
           path: 'settings',
-          builder: (_, __) => const AdminSettingsScreen()),
+          builder: (_, __) => const AdminSettingsScreen(),),
       ],
     ),
   ];

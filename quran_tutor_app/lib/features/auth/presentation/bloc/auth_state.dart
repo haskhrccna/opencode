@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../domain/entities/auth_user.dart';
+import 'package:quran_tutor_app/features/auth/domain/entities/auth_user.dart';
 
 enum AuthStatus {
   initial,
@@ -13,9 +13,6 @@ enum AuthStatus {
 }
 
 class AuthState extends Equatable {
-  final AuthStatus status;
-  final AuthUser? user;
-  final String? errorMessage;
 
   const AuthState({
     required this.status,
@@ -27,6 +24,9 @@ class AuthState extends Equatable {
       : status = AuthStatus.initial,
         user = null,
         errorMessage = null;
+  final AuthStatus status;
+  final AuthUser? user;
+  final String? errorMessage;
 
   AuthState copyWith({
     AuthStatus? status,

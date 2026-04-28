@@ -1,22 +1,8 @@
-import '../../../../core/constants/app_constants.dart';
-import '../../domain/entities/progress_grade.dart';
+import 'package:quran_tutor_app/core/constants/app_constants.dart';
+import 'package:quran_tutor_app/features/grading/domain/entities/progress_grade.dart';
 
 /// Data model for grades
 class GradeModel {
-  final String id;
-  final String sessionId;
-  final String studentId;
-  final String teacherId;
-  final String category;
-  final int grade;
-  final String? notes;
-  final String? audioFeedbackUrl;
-  final DateTime createdAt;
-  final DateTime? updatedAt;
-  final List<String>? surahs;
-  final String? verses;
-  final int? pagesMemorized;
-  final Map<String, dynamic>? metadata;
 
   GradeModel({
     required this.id,
@@ -25,9 +11,8 @@ class GradeModel {
     required this.teacherId,
     required this.category,
     required this.grade,
-    this.notes,
+    required this.createdAt, this.notes,
     this.audioFeedbackUrl,
-    required this.createdAt,
     this.updatedAt,
     this.surahs,
     this.verses,
@@ -57,6 +42,39 @@ class GradeModel {
       metadata: data['metadata'] as Map<String, dynamic>?,
     );
   }
+
+  factory GradeModel.fromEntity(ProgressGrade entity) {
+    return GradeModel(
+      id: entity.id,
+      sessionId: entity.sessionId,
+      studentId: entity.studentId,
+      teacherId: entity.teacherId,
+      category: entity.category.value,
+      grade: entity.grade,
+      notes: entity.notes,
+      audioFeedbackUrl: entity.audioFeedbackUrl,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
+      surahs: entity.surahs,
+      verses: entity.verses,
+      pagesMemorized: entity.pagesMemorized,
+      metadata: entity.metadata,
+    );
+  }
+  final String id;
+  final String sessionId;
+  final String studentId;
+  final String teacherId;
+  final String category;
+  final int grade;
+  final String? notes;
+  final String? audioFeedbackUrl;
+  final DateTime createdAt;
+  final DateTime? updatedAt;
+  final List<String>? surahs;
+  final String? verses;
+  final int? pagesMemorized;
+  final Map<String, dynamic>? metadata;
 
   Map<String, dynamic> toSupabase() {
     return {
@@ -96,25 +114,6 @@ class GradeModel {
       verses: verses,
       pagesMemorized: pagesMemorized,
       metadata: metadata,
-    );
-  }
-
-  factory GradeModel.fromEntity(ProgressGrade entity) {
-    return GradeModel(
-      id: entity.id,
-      sessionId: entity.sessionId,
-      studentId: entity.studentId,
-      teacherId: entity.teacherId,
-      category: entity.category.value,
-      grade: entity.grade,
-      notes: entity.notes,
-      audioFeedbackUrl: entity.audioFeedbackUrl,
-      createdAt: entity.createdAt,
-      updatedAt: entity.updatedAt,
-      surahs: entity.surahs,
-      verses: entity.verses,
-      pagesMemorized: entity.pagesMemorized,
-      metadata: entity.metadata,
     );
   }
 }

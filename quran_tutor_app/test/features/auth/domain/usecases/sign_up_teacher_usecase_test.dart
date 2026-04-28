@@ -47,11 +47,11 @@ void main() {
             phoneNumber: any(named: 'phoneNumber'),
             bio: any(named: 'bio'),
             websiteUrl: any(named: 'websiteUrl'),
-          )).thenAnswer((_) async => (tPendingTeacher, null));
+          ),).thenAnswer((_) async => (tPendingTeacher, null));
 
       // Act
       final (result, failure) = await useCase(
-        SignUpTeacherParams(
+        const SignUpTeacherParams(
           email: tEmail,
           password: tPassword,
           arabicName: tArabicName,
@@ -80,7 +80,7 @@ void main() {
             phoneNumber: any(named: 'phoneNumber'),
             bio: any(named: 'bio'),
             websiteUrl: any(named: 'websiteUrl'),
-          )).thenAnswer((_) async => (tPendingTeacher, null));
+          ),).thenAnswer((_) async => (tPendingTeacher, null));
 
       // Act
       final (result, failure) = await useCase(
@@ -110,7 +110,7 @@ void main() {
             phoneNumber: any(named: 'phoneNumber'),
             bio: any(named: 'bio'),
             websiteUrl: any(named: 'websiteUrl'),
-          )).thenAnswer((_) async => (null, tFailure));
+          ),).thenAnswer((_) async => (null, tFailure));
 
       // Act
       final (result, failure) = await useCase(
@@ -140,7 +140,7 @@ void main() {
             phoneNumber: any(named: 'phoneNumber'),
             bio: any(named: 'bio'),
             websiteUrl: any(named: 'websiteUrl'),
-          )).thenAnswer((_) async => (null, tFailure));
+          ),).thenAnswer((_) async => (null, tFailure));
 
       // Act
       final (result, failure) = await useCase(

@@ -1,5 +1,5 @@
-import '../../../../core/error/failures.dart';
-import '../entities/session.dart';
+import 'package:quran_tutor_app/core/error/failures.dart';
+import 'package:quran_tutor_app/features/sessions/domain/entities/session.dart';
 
 /// Repository interface for session operations
 abstract class SessionsRepository {

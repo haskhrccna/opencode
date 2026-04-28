@@ -1,7 +1,6 @@
+import 'package:quran_tutor_app/core/error/exceptions.dart';
+import 'package:quran_tutor_app/features/sessions/data/models/session_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
-import '../../../../core/error/exceptions.dart';
-import '../models/session_model.dart';
 
 /// Abstract remote datasource for sessions
 abstract class SessionsRemoteDataSource {
@@ -53,10 +52,10 @@ abstract class SessionsRemoteDataSource {
 
 /// Supabase implementation with UTC handling
 class SupabaseSessionsDataSource implements SessionsRemoteDataSource {
-  final SupabaseClient _supabase;
 
   SupabaseSessionsDataSource({SupabaseClient? supabase})
       : _supabase = supabase ?? Supabase.instance.client;
+  final SupabaseClient _supabase;
 
   @override
   Future<SessionModel?> getSession(String sessionId) async {

@@ -5,15 +5,15 @@ import 'package:equatable/equatable.dart';
 /// Failures represent expected error states that can occur
 /// and should be handled gracefully by the UI
 abstract class Failure extends Equatable {
-  final String message;
-  final String? code;
-  final StackTrace? stackTrace;
 
   const Failure({
     required this.message,
     this.code,
     this.stackTrace,
   });
+  final String message;
+  final String? code;
+  final StackTrace? stackTrace;
 
   @override
   List<Object?> get props => [message, code];
@@ -22,17 +22,14 @@ abstract class Failure extends Equatable {
 /// Network-related failures (no connection, timeout, etc.)
 class NetworkFailure extends Failure {
   const NetworkFailure({
-    String message = 'No internet connection',
+    super.message = 'No internet connection',
     String? code,
-    StackTrace? stackTrace,
+    super.stackTrace,
   }) : super(
-          message: message,
           code: code ?? 'network_error',
-          stackTrace: stackTrace,
         );
 
   factory NetworkFailure.noConnection() => const NetworkFailure(
-        message: 'No internet connection',
         code: 'no_connection',
       );
 
@@ -50,13 +47,11 @@ class NetworkFailure extends Failure {
 /// Authentication-related failures
 class AuthFailure extends Failure {
   const AuthFailure({
-    required String message,
+    required super.message,
     String? code,
-    StackTrace? stackTrace,
+    super.stackTrace,
   }) : super(
-          message: message,
           code: code ?? 'auth_error',
-          stackTrace: stackTrace,
         );
 
   factory AuthFailure.invalidCredentials() => const AuthFailure(
@@ -119,20 +114,13 @@ class AuthFailure extends Failure {
 /// Server-side failures (5xx errors, bad responses, etc.)
 class ServerFailure extends Failure {
   const ServerFailure({
-    required String message,
+    required super.message,
     String? code,
-    StackTrace? stackTrace,
+    super.stackTrace,
     this.statusCode,
   }) : super(
-          message: message,
           code: code ?? 'server_error',
-          stackTrace: stackTrace,
         );
-
-  final int? statusCode;
-
-  @override
-  List<Object?> get props => [...super.props, statusCode];
 
   factory ServerFailure.badRequest({String? message}) => ServerFailure(
         message: message ?? 'Invalid request',
@@ -181,18 +169,21 @@ class ServerFailure extends Failure {
         code: 'gateway_timeout',
         statusCode: 504,
       );
+
+  final int? statusCode;
+
+  @override
+  List<Object?> get props => [...super.props, statusCode];
 }
 
 /// Cache-related failures (storage, retrieval, etc.)
 class CacheFailure extends Failure {
   const CacheFailure({
-    required String message,
+    required super.message,
     String? code,
-    StackTrace? stackTrace,
+    super.stackTrace,
   }) : super(
-          message: message,
           code: code ?? 'cache_error',
-          stackTrace: stackTrace,
         );
 
   factory CacheFailure.writeError() => const CacheFailure(
@@ -228,21 +219,15 @@ class CacheFailure extends Failure {
 
 /// Validation failures (form validation, business logic, etc.)
 class ValidationFailure extends Failure {
-  final Map<String, String>? fieldErrors;
 
   const ValidationFailure({
-    required String message,
+    required super.message,
     String? code,
     this.fieldErrors,
-    StackTrace? stackTrace,
+    super.stackTrace,
   }) : super(
-          message: message,
           code: code ?? 'validation_error',
-          stackTrace: stackTrace,
         );
-
-  @override
-  List<Object?> get props => [...super.props, fieldErrors];
 
   factory ValidationFailure.invalidInput({String? message}) => ValidationFailure(
         message: message ?? 'Invalid input',
@@ -262,18 +247,20 @@ class ValidationFailure extends Failure {
         code: 'invalid_format',
         fieldErrors: {fieldName: 'Invalid format'},
       );
+  final Map<String, String>? fieldErrors;
+
+  @override
+  List<Object?> get props => [...super.props, fieldErrors];
 }
 
 /// Business logic failures
 class BusinessFailure extends Failure {
   const BusinessFailure({
-    required String message,
+    required super.message,
     String? code,
-    StackTrace? stackTrace,
+    super.stackTrace,
   }) : super(
-          message: message,
           code: code ?? 'business_error',
-          stackTrace: stackTrace,
         );
 
   factory BusinessFailure.operationNotAllowed() => const BusinessFailure(
@@ -300,13 +287,11 @@ class BusinessFailure extends Failure {
 /// Unknown/Unexpected failures
 class UnknownFailure extends Failure {
   const UnknownFailure({
-    String message = 'An unexpected error occurred',
+    super.message = 'An unexpected error occurred',
     String? code,
-    StackTrace? stackTrace,
+    super.stackTrace,
   }) : super(
-          message: message,
           code: code ?? 'unknown_error',
-          stackTrace: stackTrace,
         );
 }
 

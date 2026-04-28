@@ -1,4 +1,4 @@
-import '../constants/app_constants.dart';
+import 'package:quran_tutor_app/core/constants/app_constants.dart';
 
 /// Input sanitizer for security and data integrity
 ///
@@ -24,7 +24,7 @@ class Sanitizer {
   /// Remove HTML/XML tags to prevent XSS
   static String stripHtmlTags(String input) {
     if (input.isEmpty) return input;
-    return input.replaceAll(RegExp(r'<[^>]*>'), '');
+    return input.replaceAll(RegExp('<[^>]*>'), '');
   }
 
   /// Remove JavaScript event handlers
@@ -122,7 +122,7 @@ class Sanitizer {
     sanitized = stripHtmlTags(sanitized);
 
     // Remove all non-numeric characters except +
-    sanitized = sanitized.replaceAll(RegExp(r'[^0-9+]'), '');
+    sanitized = sanitized.replaceAll(RegExp('[^0-9+]'), '');
 
     // Validate
     if (!AppConstants.phoneRegex.hasMatch(sanitized)) {
@@ -250,7 +250,7 @@ class Sanitizer {
 
     var sanitized = code.trim().toUpperCase();
     sanitized = stripControlCharacters(sanitized);
-    sanitized = sanitized.replaceAll(RegExp(r'[^A-Z0-9]'), '');
+    sanitized = sanitized.replaceAll(RegExp('[^A-Z0-9]'), '');
 
     if (sanitized.length < 6) {
       throw ArgumentError('Invite code must be at least 6 characters');
@@ -292,10 +292,10 @@ class Sanitizer {
 
     return input
         .replaceAll("'", "''")
-        .replaceAll('\\', '\\\\')
+        .replaceAll(r'\', r'\\')
         .replaceAll('\x00', '')
-        .replaceAll('\n', '\\n')
-        .replaceAll('\r', '\\r');
+        .replaceAll('\n', r'\n')
+        .replaceAll('\r', r'\r');
   }
 
   /// Sanitize JSON string key
@@ -332,7 +332,6 @@ class Sanitizer {
     return sanitizeText(
       title,
       maxLength: 100,
-      allowNewlines: false,
     );
   }
 
@@ -363,10 +362,10 @@ class Sanitizer {
     if (input.isEmpty) return false;
 
     final xssPatterns = [
-      RegExp(r'<script[^>]*>', caseSensitive: false),
-      RegExp(r'javascript:', caseSensitive: false),
+      RegExp('<script[^>]*>', caseSensitive: false),
+      RegExp('javascript:', caseSensitive: false),
       RegExp(r'''on\w+\s*=\s*["']''', caseSensitive: false),
-      RegExp(r'<iframe', caseSensitive: false),
+      RegExp('<iframe', caseSensitive: false),
       RegExp(r'expression\(', caseSensitive: false),
     ];
 

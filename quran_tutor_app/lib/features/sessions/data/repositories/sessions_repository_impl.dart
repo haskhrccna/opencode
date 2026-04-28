@@ -1,6 +1,6 @@
-import '../../../../core/error/failures.dart';
-import '../../domain/entities/session.dart';
-import '../../domain/repositories/sessions_repository.dart';
+import 'package:quran_tutor_app/core/error/failures.dart';
+import 'package:quran_tutor_app/features/sessions/domain/entities/session.dart';
+import 'package:quran_tutor_app/features/sessions/domain/repositories/sessions_repository.dart';
 
 /// Stub implementation of SessionsRepository
 class SessionsRepositoryImpl implements SessionsRepository {
@@ -89,5 +89,5 @@ class SessionsRepositoryImpl implements SessionsRepository {
   }) async => (null, const ServerFailure(message: 'Not implemented'));
 
   @override
-  Stream<List<Session>> get sessionsStream => Stream<List<Session>>.empty();
+  Stream<List<Session>> get sessionsStream => const Stream<List<Session>>.empty();
 }

@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
-
-import '../../../auth/domain/entities/auth_user.dart';
-import '../../domain/repositories/admin_repository.dart';
+import 'package:quran_tutor_app/features/admin/domain/repositories/admin_repository.dart';
+import 'package:quran_tutor_app/features/auth/domain/entities/auth_user.dart';
 
 enum AdminStatus {
   initial,
@@ -17,16 +16,6 @@ enum AdminStatus {
 }
 
 class AdminState extends Equatable {
-  final AdminStatus status;
-  final List<AuthUser>? pendingUsers;
-  final List<AuthUser>? rejectedUsers;
-  final List<AuthUser>? allUsers;
-  final List<AuthUser>? usersByRole;
-  final SystemStats? systemStats;
-  final ReportData? reportData;
-  final SystemSettings? systemSettings;
-  final String? errorMessage;
-  final DateTime? lastUpdated;
 
   const AdminState({
     required this.status,
@@ -44,6 +33,16 @@ class AdminState extends Equatable {
   factory AdminState.initial() => const AdminState(
         status: AdminStatus.initial,
       );
+  final AdminStatus status;
+  final List<AuthUser>? pendingUsers;
+  final List<AuthUser>? rejectedUsers;
+  final List<AuthUser>? allUsers;
+  final List<AuthUser>? usersByRole;
+  final SystemStats? systemStats;
+  final ReportData? reportData;
+  final SystemSettings? systemSettings;
+  final String? errorMessage;
+  final DateTime? lastUpdated;
 
   AdminState copyWith({
     AdminStatus? status,

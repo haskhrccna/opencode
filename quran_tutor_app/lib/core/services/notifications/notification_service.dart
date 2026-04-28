@@ -2,22 +2,21 @@ import 'dart:async';
 
 import 'package:injectable/injectable.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-
-import '../../../features/auth/domain/entities/auth_user.dart';
-import '../../../core/constants/app_constants.dart';
+import 'package:quran_tutor_app/core/constants/app_constants.dart';
+import 'package:quran_tutor_app/features/auth/domain/entities/auth_user.dart';
 
 /// Service for handling push notifications via OneSignal
 @singleton
 class NotificationService {
+
+  NotificationService()
+      : _appId = const String.fromEnvironment('ONESIGNAL_APP_ID');
   final String _appId;
   bool _initialized = false;
 
   // Stream controllers for notification events
   final _notificationReceivedController = StreamController<dynamic>.broadcast();
   final _notificationOpenedController = StreamController<dynamic>.broadcast();
-
-  NotificationService()
-      : _appId = const String.fromEnvironment('ONESIGNAL_APP_ID');
 
   /// Stream for received notifications
   Stream<dynamic> get notificationReceived =>
@@ -35,9 +34,7 @@ class NotificationService {
     await OneSignal.initialize(_appId);
 
     // Set up notification handlers
-    OneSignal.Notifications.addClickListener((result) {
-      _notificationOpenedController.add(result);
-    });
+    OneSignal.Notifications.addClickListener(_notificationOpenedController.add);
 
     OneSignal.Notifications.addForegroundWillDisplayListener((event) {
       _notificationReceivedController.add(event.notification);

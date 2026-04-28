@@ -3,8 +3,17 @@
 /// This is a temporary implementation that stores data in memory.
 /// For production, run: flutter pub run build_runner build
 /// to generate the real drift database.
+library;
 
 class CachedSession {
+
+  CachedSession({
+    required this.id,
+    required this.teacherId,
+    required this.scheduledAt, required this.durationMinutes, required this.status, required this.createdAt, required this.syncedAt, this.studentId,
+    this.topic,
+    this.notes,
+  });
   final String id;
   final String teacherId;
   final String? studentId;
@@ -15,22 +24,19 @@ class CachedSession {
   final String status;
   final DateTime createdAt;
   final DateTime syncedAt;
-
-  CachedSession({
-    required this.id,
-    required this.teacherId,
-    this.studentId,
-    required this.scheduledAt,
-    required this.durationMinutes,
-    this.topic,
-    this.notes,
-    required this.status,
-    required this.createdAt,
-    required this.syncedAt,
-  });
 }
 
 class CachedGrade {
+
+  CachedGrade({
+    required this.id,
+    required this.sessionId,
+    required this.studentId,
+    required this.teacherId,
+    required this.category,
+    required this.grade,
+    required this.createdAt, required this.syncedAt, this.notes,
+  });
   final String id;
   final String sessionId;
   final String studentId;
@@ -40,21 +46,17 @@ class CachedGrade {
   final String? notes;
   final DateTime createdAt;
   final DateTime syncedAt;
-
-  CachedGrade({
-    required this.id,
-    required this.sessionId,
-    required this.studentId,
-    required this.teacherId,
-    required this.category,
-    required this.grade,
-    this.notes,
-    required this.createdAt,
-    required this.syncedAt,
-  });
 }
 
 class SyncQueueEntry {
+
+  SyncQueueEntry({
+    required this.id,
+    required this.tableName,
+    required this.operation,
+    required this.recordId,
+    required this.createdAt, required this.isSynced, this.data,
+  });
   final int id;
   final String tableName;
   final String operation;
@@ -62,16 +64,6 @@ class SyncQueueEntry {
   final String? data;
   final DateTime createdAt;
   final bool isSynced;
-
-  SyncQueueEntry({
-    required this.id,
-    required this.tableName,
-    required this.operation,
-    required this.recordId,
-    this.data,
-    required this.createdAt,
-    required this.isSynced,
-  });
 }
 
 /// Stub implementation of offline database
@@ -140,7 +132,7 @@ class OfflineDatabase {
       data: data,
       createdAt: DateTime.now(),
       isSynced: false,
-    ));
+    ),);
   }
 
   Future<List<SyncQueueEntry>> getPendingSyncItems() async {

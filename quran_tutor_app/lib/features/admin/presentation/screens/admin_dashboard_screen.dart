@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../auth/domain/entities/auth_user.dart';
-import '../../domain/repositories/admin_repository.dart';
-import '../bloc/admin_bloc.dart';
-import '../bloc/admin_event.dart';
-import '../bloc/admin_state.dart';
+import 'package:quran_tutor_app/features/admin/domain/repositories/admin_repository.dart';
+import 'package:quran_tutor_app/features/admin/presentation/bloc/admin_bloc.dart';
+import 'package:quran_tutor_app/features/admin/presentation/bloc/admin_event.dart';
+import 'package:quran_tutor_app/features/admin/presentation/bloc/admin_state.dart';
+import 'package:quran_tutor_app/features/auth/domain/entities/auth_user.dart';
 
 class AdminDashboardScreen extends StatefulWidget {
   const AdminDashboardScreen({super.key});
@@ -122,7 +121,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       physics: const NeverScrollableScrollPhysics(),
       crossAxisSpacing: 16,
       mainAxisSpacing: 16,
-      children: statsList.map((stat) => _buildStatCard(stat)).toList(),
+      children: statsList.map(_buildStatCard).toList(),
     );
   }
 
@@ -191,10 +190,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
 }
 
 class _StatCard {
-  final String title;
-  final String value;
-  final IconData icon;
-  final Color color;
 
   _StatCard({
     required this.title,
@@ -202,4 +197,8 @@ class _StatCard {
     required this.icon,
     required this.color,
   });
+  final String title;
+  final String value;
+  final IconData icon;
+  final Color color;
 }
