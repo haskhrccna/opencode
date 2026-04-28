@@ -1,3 +1,4 @@
+import 'package:injectable/injectable.dart';
 import 'package:quran_tutor_app/core/error/exceptions.dart';
 import 'package:quran_tutor_app/features/auth/data/models/user_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -52,6 +53,7 @@ abstract class AuthRemoteDataSource {
 }
 
 /// Supabase implementation of AuthRemoteDataSource
+@Singleton(as: AuthRemoteDataSource)
 class SupabaseAuthDataSource implements AuthRemoteDataSource {
 
   SupabaseAuthDataSource({SupabaseClient? supabase})

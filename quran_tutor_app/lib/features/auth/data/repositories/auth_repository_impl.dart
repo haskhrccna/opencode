@@ -1,3 +1,4 @@
+import 'package:injectable/injectable.dart';
 import 'package:quran_tutor_app/core/error/exceptions.dart';
 import 'package:quran_tutor_app/core/error/failures.dart';
 import 'package:quran_tutor_app/features/auth/data/datasources/auth_local_datasource.dart';
@@ -6,6 +7,7 @@ import 'package:quran_tutor_app/features/auth/data/models/user_model.dart';
 import 'package:quran_tutor_app/features/auth/domain/entities/auth_user.dart';
 import 'package:quran_tutor_app/features/auth/domain/repositories/auth_repository.dart';
 
+@Singleton(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
 
   const AuthRepositoryImpl({
@@ -40,6 +42,10 @@ class AuthRepositoryImpl implements AuthRepository {
       final userModel = await remoteDataSource.signIn(email, password);
       await localDataSource.cacheUserData(userModel.toJson());
       return (userModel.toEntity(), null);
+    } on AuthException catch (e) {
+      return (null, AuthFailure(message: e.message, code: e.code));
+    } on ValidationException catch (e) {
+      return (null, ValidationFailure.invalidInput(message: e.message));
     } on ServerException catch (e) {
       return (null, _mapServerExceptionToFailure(e));
     } on NetworkException catch (e) {
@@ -71,6 +77,10 @@ class AuthRepositoryImpl implements AuthRepository {
       );
       await localDataSource.cacheUserData(userModel.toJson());
       return (userModel.toEntity(), null);
+    } on AuthException catch (e) {
+      return (null, AuthFailure(message: e.message, code: e.code));
+    } on ValidationException catch (e) {
+      return (null, ValidationFailure.invalidInput(message: e.message));
     } on ServerException catch (e) {
       return (null, _mapServerExceptionToFailure(e));
     } on NetworkException catch (e) {
@@ -122,6 +132,8 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       await remoteDataSource.resetPassword(email);
       return null;
+    } on AuthException catch (e) {
+      return AuthFailure(message: e.message, code: e.code);
     } on ServerException catch (e) {
       return _mapServerExceptionToFailure(e);
     } on NetworkException catch (e) {

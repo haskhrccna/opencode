@@ -1,3 +1,4 @@
+import 'package:injectable/injectable.dart';
 import 'package:quran_tutor_app/core/error/exceptions.dart';
 import 'package:quran_tutor_app/features/sessions/data/models/session_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -51,6 +52,7 @@ abstract class SessionsRemoteDataSource {
 }
 
 /// Supabase implementation with UTC handling
+@Singleton(as: SessionsRemoteDataSource)
 class SupabaseSessionsDataSource implements SessionsRemoteDataSource {
 
   SupabaseSessionsDataSource({SupabaseClient? supabase})

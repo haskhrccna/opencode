@@ -21,7 +21,6 @@ class AppLogger {
     _logger = Logger(
       filter: _LogFilter(enableDetailedLogging: enableDetailedLogging),
       printer: _LogPrinter(
-        errorMethodCount: kDebugMode ? 8 : 0,
         dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
       ),
       output: _LogOutput(),
@@ -99,11 +98,7 @@ class _LogFilter extends LogFilter {
 /// Custom log printer
 class _LogPrinter extends PrettyPrinter {
   _LogPrinter({
-    super.methodCount,
     super.errorMethodCount,
-    super.lineLength,
-    super.colors,
-    super.printEmojis,
     super.dateTimeFormat,
   });
 }

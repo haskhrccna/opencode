@@ -1,10 +1,11 @@
 import 'dart:io';
 
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:injectable/injectable.dart';
 import 'package:quran_tutor_app/core/constants/app_constants.dart';
 import 'package:quran_tutor_app/core/error/exceptions.dart';
-import 'package:quran_tutor_app/features/grading/domain/repositories/grading_repository.dart';
 import 'package:quran_tutor_app/features/grading/data/models/grade_model.dart';
+import 'package:quran_tutor_app/features/grading/domain/repositories/grading_repository.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// Abstract remote datasource for grading
 abstract class GradingRemoteDataSource {
@@ -57,9 +58,13 @@ abstract class GradingRemoteDataSource {
 
   /// Get class progress
   Future<List<StudentProgress>> getClassProgress(String teacherId);
+
+  /// Stream of grade changes
+  Stream<List<GradeModel>> gradesStream({String? studentId});
 }
 
 /// Supabase implementation
+@Singleton(as: GradingRemoteDataSource)
 class SupabaseGradingDataSource implements GradingRemoteDataSource {
 
   SupabaseGradingDataSource({SupabaseClient? supabase})
@@ -325,5 +330,16 @@ class SupabaseGradingDataSource implements GradingRemoteDataSource {
     } catch (e) {
       throw ServerException.internalError();
     }
+  }
+
+  @override
+  Stream<List<GradeModel>> gradesStream({String? studentId}) {
+    var query = _supabase.from('grades').stream(primaryKey: ['id']);
+    if (studentId != null && studentId.isNotEmpty) {
+      query = query.eq('student_id', studentId);
+    }
+    return query.map((data) => data
+        .map((e) => GradeModel.fromSupabase(e as Map<String, dynamic>))
+        .toList());
   }
 }

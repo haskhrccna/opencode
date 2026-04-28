@@ -1,7 +1,6 @@
-import 'package:supabase_flutter/supabase_flutter.dart' hide AuthUser;
-
 import 'package:quran_tutor_app/core/constants/app_constants.dart';
 import 'package:quran_tutor_app/features/auth/domain/entities/auth_user.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide AuthUser;
 
 /// User model for authentication
 class UserModel {

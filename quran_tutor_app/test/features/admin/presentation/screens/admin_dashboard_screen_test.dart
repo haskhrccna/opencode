@@ -5,14 +5,21 @@ import 'package:mocktail/mocktail.dart';
 import 'package:quran_tutor_app/core/constants/app_constants.dart';
 import 'package:quran_tutor_app/features/admin/domain/repositories/admin_repository.dart';
 import 'package:quran_tutor_app/features/admin/presentation/bloc/admin_bloc.dart';
+import 'package:quran_tutor_app/features/admin/presentation/bloc/admin_event.dart';
 import 'package:quran_tutor_app/features/admin/presentation/bloc/admin_state.dart';
 import 'package:quran_tutor_app/features/admin/presentation/screens/admin_dashboard_screen.dart';
 import 'package:quran_tutor_app/features/auth/domain/entities/auth_user.dart';
 
 class MockAdminBloc extends Mock implements AdminBloc {}
 
+class FakeAdminEvent extends Fake implements AdminEvent {}
+
 void main() {
   late MockAdminBloc mockAdminBloc;
+
+  setUpAll(() {
+    registerFallbackValue(FakeAdminEvent());
+  });
 
   setUp(() {
     mockAdminBloc = MockAdminBloc();

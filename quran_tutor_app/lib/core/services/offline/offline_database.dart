@@ -3,7 +3,13 @@
 /// This is a temporary implementation that stores data in memory.
 /// For production, run: flutter pub run build_runner build
 /// to generate the real drift database.
-library;
+
+import 'package:injectable/injectable.dart';
+
+@singleton
+class OfflineDatabase {
+  OfflineDatabase();
+}
 
 class CachedSession {
 

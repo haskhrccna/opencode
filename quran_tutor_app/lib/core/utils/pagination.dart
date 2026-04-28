@@ -18,7 +18,7 @@ class PaginationState<T> {
   final bool hasMore;
   final String? cursor;
   final int currentPage;
-  final Failure? error;
+  final PaginationFailure? error;
 
   PaginationState<T> copyWith({
     List<T>? items,
@@ -40,9 +40,9 @@ class PaginationState<T> {
 }
 
 /// Generic failure class for pagination
-class Failure {
+class PaginationFailure {
 
-  const Failure({
+  const PaginationFailure({
     required this.message,
     this.code,
   });
@@ -117,7 +117,7 @@ class CursorPagination<T> {
     } catch (e) {
       _state = _state.copyWith(
         isLoading: false,
-        error: Failure(message: e.toString()),
+        error: PaginationFailure(message: e.toString()),
       );
       _stateController.add(_state);
     } finally {
@@ -150,7 +150,7 @@ class CursorPagination<T> {
     } catch (e) {
       _state = _state.copyWith(
         isLoading: false,
-        error: Failure(message: e.toString()),
+        error: PaginationFailure(message: e.toString()),
       );
       _stateController.add(_state);
     } finally {

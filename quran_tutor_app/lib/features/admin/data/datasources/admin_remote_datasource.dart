@@ -1,3 +1,4 @@
+import 'package:injectable/injectable.dart';
 import 'package:quran_tutor_app/core/constants/app_constants.dart';
 import 'package:quran_tutor_app/core/error/exceptions.dart';
 import 'package:quran_tutor_app/features/admin/domain/repositories/admin_repository.dart';
@@ -53,6 +54,7 @@ abstract class AdminRemoteDataSource {
 }
 
 /// Supabase implementation
+@Singleton(as: AdminRemoteDataSource)
 class SupabaseAdminDataSource implements AdminRemoteDataSource {
 
   SupabaseAdminDataSource({SupabaseClient? supabase})

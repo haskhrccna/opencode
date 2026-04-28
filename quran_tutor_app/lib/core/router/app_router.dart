@@ -15,6 +15,7 @@ import 'package:quran_tutor_app/features/auth/presentation/screens/login_screen.
 import 'package:quran_tutor_app/features/auth/presentation/screens/pending_approval_screen.dart';
 import 'package:quran_tutor_app/features/auth/presentation/screens/rejected_screen.dart';
 import 'package:quran_tutor_app/features/auth/presentation/screens/signup_screen.dart';
+import 'package:quran_tutor_app/features/auth/presentation/screens/teacher_signup_screen.dart';
 import 'package:quran_tutor_app/features/auth/presentation/screens/splash_screen.dart';
 import 'package:quran_tutor_app/features/grading/presentation/screens/progress_screen.dart';
 import 'package:quran_tutor_app/features/profile/presentation/screens/profile_screen.dart';
@@ -70,6 +71,7 @@ class AppRouter {
       routes: [
         GoRoute(path: 'login', builder: (_, __) => const LoginScreen()),
         GoRoute(path: 'signup', builder: (_, __) => const SignupScreen()),
+        GoRoute(path: 'teacher-signup', builder: (_, __) => const TeacherSignupScreen()),
       ],
     ),
     GoRoute(

@@ -108,6 +108,46 @@ class SessionModel {
     };
   }
 
+  SessionModel copyWith({
+    String? id,
+    String? teacherId,
+    String? studentId,
+    DateTime? scheduledAt,
+    int? durationMinutes,
+    String? topic,
+    String? notes,
+    String? status,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    DateTime? completedAt,
+    String? recordingUrl,
+    String? meetingLink,
+    String? location,
+    bool? isOnline,
+    String? cancellationReason,
+    Map<String, dynamic>? metadata,
+  }) {
+    return SessionModel(
+      id: id ?? this.id,
+      teacherId: teacherId ?? this.teacherId,
+      studentId: studentId ?? this.studentId,
+      scheduledAt: scheduledAt ?? this.scheduledAt,
+      durationMinutes: durationMinutes ?? this.durationMinutes,
+      topic: topic ?? this.topic,
+      notes: notes ?? this.notes,
+      status: status ?? this.status,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      completedAt: completedAt ?? this.completedAt,
+      recordingUrl: recordingUrl ?? this.recordingUrl,
+      meetingLink: meetingLink ?? this.meetingLink,
+      location: location ?? this.location,
+      isOnline: isOnline ?? this.isOnline,
+      cancellationReason: cancellationReason ?? this.cancellationReason,
+      metadata: metadata ?? this.metadata,
+    );
+  }
+
   Session toEntity() {
     return Session(
       id: id,

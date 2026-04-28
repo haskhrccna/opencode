@@ -57,7 +57,7 @@ void main() {
       await tester.pump();
 
       // assert
-      expect(find.textContaining('valid'), findsOneWidget);
+      expect(find.text('validation.email_invalid'), findsOneWidget);
     });
 
     testWidgets('should show error for empty password', (tester) async {
@@ -68,7 +68,7 @@ void main() {
       await tester.pump();
 
       // assert
-      expect(find.textContaining('password'), findsOneWidget);
+      expect(find.text('validation.required'), findsOneWidget);
     });
 
     testWidgets('should call SignInRequested on valid form submit', (tester) async {

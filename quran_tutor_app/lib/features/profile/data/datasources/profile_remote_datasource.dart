@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:injectable/injectable.dart';
 import 'package:quran_tutor_app/core/error/exceptions.dart';
 import 'package:quran_tutor_app/features/profile/data/models/profile_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -35,6 +36,7 @@ abstract class ProfileRemoteDataSource {
 }
 
 /// Supabase implementation
+@Singleton(as: ProfileRemoteDataSource)
 class SupabaseProfileDataSource implements ProfileRemoteDataSource {
 
   SupabaseProfileDataSource({SupabaseClient? supabase})

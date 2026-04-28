@@ -55,6 +55,8 @@ void main() {
           .thenAnswer((_) async => null);
       when(() => mockRemoteDataSource.getCurrentUser())
           .thenAnswer((_) async => tUserModel);
+      when(() => mockLocalDataSource.cacheUserData(any()))
+          .thenAnswer((_) async {});
 
       // Act
       final result = await repository.getCurrentUser();
@@ -62,6 +64,7 @@ void main() {
       // Assert
       expect(result.email, equals('test@example.com'));
       verify(() => mockRemoteDataSource.getCurrentUser()).called(1);
+      verify(() => mockLocalDataSource.cacheUserData(any())).called(1);
     });
 
     test('should return empty user when not authenticated', () async {

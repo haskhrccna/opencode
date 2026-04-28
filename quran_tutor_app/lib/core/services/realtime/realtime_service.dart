@@ -1,9 +1,8 @@
 import 'dart:async';
 
 import 'package:injectable/injectable.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-
 import 'package:quran_tutor_app/core/constants/app_constants.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 /// Service for handling Supabase Realtime subscriptions
 @singleton
 class RealtimeService {
@@ -18,7 +17,9 @@ class RealtimeService {
   final _studentJoinsController = StreamController<StudentJoin>.broadcast();
 
   // Store subscriptions for proper cleanup
-  final List<StreamSubscription<dynamic>> _subscriptions = [];
+  final List<StreamSubscription<dynamic>> _sessionSubscriptions = [];
+  final List<StreamSubscription<dynamic>> _adminSubscriptions = [];
+  final List<StreamSubscription<dynamic>> _studentJoinSubscriptions = [];
 
   /// Stream for session status updates
   Stream<SessionUpdate> get sessionUpdates => _sessionUpdatesController.stream;
@@ -53,7 +54,7 @@ class RealtimeService {
               ),);
             }
           });
-      _subscriptions.add(subscription);
+      _sessionSubscriptions.add(subscription);
     } else if (role == UserRole.student) {
       // Student: listen to sessions where they are the student
       final subscription = _supabase
@@ -70,7 +71,7 @@ class RealtimeService {
               ),);
             }
           });
-      _subscriptions.add(subscription);
+      _sessionSubscriptions.add(subscription);
     } else {
       // Admin: listen to all sessions
       final subscription = _supabase
@@ -86,7 +87,7 @@ class RealtimeService {
               ),);
             }
           });
-      _subscriptions.add(subscription);
+      _sessionSubscriptions.add(subscription);
     }
   }
 
@@ -111,7 +112,7 @@ class RealtimeService {
             ),);
           }
         });
-    _subscriptions.add(subscription);
+    _adminSubscriptions.add(subscription);
   }
 
   /// Subscribe to student joins for a teacher
@@ -135,21 +136,28 @@ class RealtimeService {
             }
           }
         });
-    _subscriptions.add(subscription);
+    _studentJoinSubscriptions.add(subscription);
   }
 
   /// Clear only session-related subscriptions
   void _clearSessionSubscriptions() {
-    // Cancel all existing subscriptions
-    for (final sub in _subscriptions) {
+    for (final sub in _sessionSubscriptions) {
       sub.cancel();
     }
-    _subscriptions.clear();
+    _sessionSubscriptions.clear();
   }
 
   /// Unsubscribe from all channels and streams
   void unsubscribeAll() {
     _clearSessionSubscriptions();
+    for (final sub in _adminSubscriptions) {
+      sub.cancel();
+    }
+    _adminSubscriptions.clear();
+    for (final sub in _studentJoinSubscriptions) {
+      sub.cancel();
+    }
+    _studentJoinSubscriptions.clear();
     _supabase.removeAllChannels();
   }
 

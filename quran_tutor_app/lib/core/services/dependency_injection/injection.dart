@@ -1,6 +1,10 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:quran_tutor_app/core/services/dependency_injection/injection.config.dart';
+import 'package:record/record.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final GetIt getIt = GetIt.instance;
@@ -34,4 +38,20 @@ abstract class SupabaseModule {
   /// Get Realtime client
   @singleton
   RealtimeClient get realtime => Supabase.instance.client.realtime;
+
+  /// Audio player
+  @singleton
+  AudioPlayer get audioPlayer => AudioPlayer();
+
+  /// Audio recorder
+  @singleton
+  AudioRecorder get audioRecorder => AudioRecorder();
+
+  /// Secure storage
+  @singleton
+  FlutterSecureStorage get secureStorage => const FlutterSecureStorage();
+
+  /// Connectivity
+  @singleton
+  Connectivity get connectivity => Connectivity();
 }

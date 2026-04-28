@@ -12,8 +12,14 @@ import 'package:quran_tutor_app/features/student/presentation/screens/student_ho
 
 class MockAuthBloc extends Mock implements AuthBloc {}
 
+class FakeAuthEvent extends Fake implements AuthEvent {}
+
 void main() {
   late MockAuthBloc mockAuthBloc;
+
+  setUpAll(() {
+    registerFallbackValue(FakeAuthEvent());
+  });
 
   setUp(() {
     mockAuthBloc = MockAuthBloc();

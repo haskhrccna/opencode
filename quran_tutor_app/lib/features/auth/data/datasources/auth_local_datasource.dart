@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:injectable/injectable.dart';
 
 import 'package:quran_tutor_app/core/constants/app_constants.dart';
 
@@ -44,6 +45,7 @@ abstract class AuthLocalDataSource {
 }
 
 /// Secure storage implementation of AuthLocalDataSource
+@Singleton(as: AuthLocalDataSource)
 class SecureStorageAuthDataSource implements AuthLocalDataSource {
 
   const SecureStorageAuthDataSource({
