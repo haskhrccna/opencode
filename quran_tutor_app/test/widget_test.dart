@@ -7,7 +7,7 @@
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('App can be imported', (WidgetTester tester) async {
+  testWidgets('App can be imported', (tester) async {
     // Placeholder test - the app requires DI initialization
     expect(true, isTrue);
   });

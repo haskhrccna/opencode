@@ -1,13 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../domain/repositories/admin_repository.dart';
-import 'admin_event.dart';
-import 'admin_state.dart';
+import 'package:quran_tutor_app/features/admin/domain/repositories/admin_repository.dart';
+import 'package:quran_tutor_app/features/admin/presentation/bloc/admin_event.dart';
+import 'package:quran_tutor_app/features/admin/presentation/bloc/admin_state.dart';
 
 @injectable
 class AdminBloc extends Bloc<AdminEvent, AdminState> {
-  final AdminRepository _repository;
 
   AdminBloc(this._repository) : super(AdminState.initial()) {
     on<LoadDashboard>(_onLoadDashboard);
@@ -27,6 +26,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     on<UpdateSystemSettings>(_onUpdateSystemSettings);
     on<RefreshAdmin>(_onRefreshAdmin);
   }
+  final AdminRepository _repository;
 
   Future<void> _onLoadDashboard(
     LoadDashboard event,
@@ -42,7 +42,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       emit(state.copyWith(
         status: AdminStatus.error,
         errorMessage: statsFailure?.message ?? pendingFailure?.message ?? 'Failed to load dashboard',
-      ));
+      ),);
       return;
     }
 
@@ -51,7 +51,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       systemStats: stats,
       pendingUsers: pending,
       lastUpdated: DateTime.now(),
-    ));
+    ),);
   }
 
   Future<void> _onLoadPendingUsers(
@@ -66,13 +66,13 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       emit(state.copyWith(
         status: AdminStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       emit(state.copyWith(
         status: AdminStatus.loaded,
         pendingUsers: users,
         lastUpdated: DateTime.now(),
-      ));
+      ),);
     }
   }
 
@@ -88,13 +88,13 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       emit(state.copyWith(
         status: AdminStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       emit(state.copyWith(
         status: AdminStatus.loaded,
         rejectedUsers: users,
         lastUpdated: DateTime.now(),
-      ));
+      ),);
     }
   }
 
@@ -110,13 +110,13 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       emit(state.copyWith(
         status: AdminStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       emit(state.copyWith(
         status: AdminStatus.loaded,
         allUsers: users,
         lastUpdated: DateTime.now(),
-      ));
+      ),);
     }
   }
 
@@ -132,13 +132,13 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       emit(state.copyWith(
         status: AdminStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       emit(state.copyWith(
         status: AdminStatus.loaded,
         usersByRole: users,
         lastUpdated: DateTime.now(),
-      ));
+      ),);
     }
   }
 
@@ -154,7 +154,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       emit(state.copyWith(
         status: AdminStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       // Refresh pending users
       add(const LoadPendingUsers());
@@ -176,7 +176,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       emit(state.copyWith(
         status: AdminStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       // Refresh pending users
       add(const LoadPendingUsers());
@@ -198,7 +198,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       emit(state.copyWith(
         status: AdminStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       // Refresh all users
       add(const LoadAllUsers());
@@ -217,7 +217,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       emit(state.copyWith(
         status: AdminStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       // Refresh all users
       add(const LoadAllUsers());
@@ -239,7 +239,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       emit(state.copyWith(
         status: AdminStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       // Refresh all users
       add(const LoadAllUsers());
@@ -258,7 +258,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       emit(state.copyWith(
         status: AdminStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       // Refresh all users
       add(const LoadAllUsers());
@@ -277,13 +277,13 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       emit(state.copyWith(
         status: AdminStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       emit(state.copyWith(
         status: AdminStatus.loaded,
         systemStats: stats,
         lastUpdated: DateTime.now(),
-      ));
+      ),);
     }
   }
 
@@ -302,13 +302,13 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       emit(state.copyWith(
         status: AdminStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       emit(state.copyWith(
         status: AdminStatus.loaded,
         reportData: report,
         lastUpdated: DateTime.now(),
-      ));
+      ),);
     }
   }
 
@@ -324,13 +324,13 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       emit(state.copyWith(
         status: AdminStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       emit(state.copyWith(
         status: AdminStatus.loaded,
         systemSettings: settings,
         lastUpdated: DateTime.now(),
-      ));
+      ),);
     }
   }
 
@@ -346,13 +346,13 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       emit(state.copyWith(
         status: AdminStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       emit(state.copyWith(
         status: AdminStatus.loaded,
         systemSettings: event.settings,
         lastUpdated: DateTime.now(),
-      ));
+      ),);
     }
   }
 

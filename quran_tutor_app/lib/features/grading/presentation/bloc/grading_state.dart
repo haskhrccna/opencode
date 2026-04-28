@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:fl_chart/fl_chart.dart';
 
-import '../../domain/entities/progress_grade.dart';
-import '../../domain/repositories/grading_repository.dart';
+import 'package:quran_tutor_app/features/grading/domain/entities/progress_grade.dart';
+import 'package:quran_tutor_app/features/grading/domain/repositories/grading_repository.dart';
 
 enum GradingStatus {
   initial,
@@ -16,10 +16,6 @@ enum GradingStatus {
 
 /// Chart data for progress visualization
 class ChartData extends Equatable {
-  final List<FlSpot> weeklySessionsSpots;
-  final Map<int, int> gradeDistribution;
-  final double surahCompletionPercentage;
-  final List<String> completedSurahs;
 
   const ChartData({
     this.weeklySessionsSpots = const [],
@@ -50,12 +46,16 @@ class ChartData extends Equatable {
       completedSurahs: surahs.toList(),
     );
   }
+  final List<FlSpot> weeklySessionsSpots;
+  final Map<int, int> gradeDistribution;
+  final double surahCompletionPercentage;
+  final List<String> completedSurahs;
 
   static List<FlSpot> _calculateWeeklySessions(List<ProgressGrade> grades) {
     final now = DateTime.now();
-    final Map<int, int> weeklyCounts = {};
+    final weeklyCounts = <int, int>{};
 
-    for (int i = 6; i >= 0; i--) {
+    for (var i = 6; i >= 0; i--) {
       weeklyCounts[i] = 0;
     }
 
@@ -100,15 +100,6 @@ class ChartData extends Equatable {
 }
 
 class GradingState extends Equatable {
-  final GradingStatus status;
-  final List<ProgressGrade>? grades;
-  final ProgressGrade? selectedGrade;
-  final ProgressSummary? progressSummary;
-  final ProgressTimeline? progressTimeline;
-  final List<StudentProgress>? classProgress;
-  final ChartData? chartData;
-  final String? errorMessage;
-  final DateTime? lastUpdated;
 
   const GradingState({
     required this.status,
@@ -125,6 +116,15 @@ class GradingState extends Equatable {
   factory GradingState.initial() => const GradingState(
         status: GradingStatus.initial,
       );
+  final GradingStatus status;
+  final List<ProgressGrade>? grades;
+  final ProgressGrade? selectedGrade;
+  final ProgressSummary? progressSummary;
+  final ProgressTimeline? progressTimeline;
+  final List<StudentProgress>? classProgress;
+  final ChartData? chartData;
+  final String? errorMessage;
+  final DateTime? lastUpdated;
 
   GradingState copyWith({
     GradingStatus? status,

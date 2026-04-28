@@ -1,5 +1,5 @@
 import 'package:intl/intl.dart';
-import '../../constants/app_constants.dart';
+import 'package:quran_tutor_app/core/constants/app_constants.dart';
 
 /// Extensions for DateTime operations
 extension DateTimeExtensions on DateTime {
@@ -64,7 +64,7 @@ extension DateTimeExtensions on DateTime {
   }
 
   /// Get start of month
-  DateTime get startOfMonth => DateTime(year, month, 1);
+  DateTime get startOfMonth => DateTime(year, month);
 
   /// Get end of month
   DateTime get endOfMonth {
@@ -132,7 +132,7 @@ extension DateTimeExtensions on DateTime {
       'ذو الحجة',
     ];
     // Approximate conversion - for exact use hijri_date package
-    final hijriMonth = ((month + 2) % 12);
+    final hijriMonth = (month + 2) % 12;
     return names[(hijriMonth + 11) % 12];
   }
 
@@ -180,7 +180,7 @@ extension DateTimeExtensions on DateTime {
   /// Get age from birth date
   int get age {
     final now = DateTime.now();
-    int age = now.year - year;
+    var age = now.year - year;
     if (now.month < month || (now.month == month && now.day < day)) {
       age--;
     }

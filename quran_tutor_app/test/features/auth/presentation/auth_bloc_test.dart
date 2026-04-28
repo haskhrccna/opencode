@@ -58,7 +58,7 @@ void main() {
         when(() => mockRepository.signIn(
           email: any(named: 'email'),
           password: any(named: 'password'),
-        )).thenAnswer(
+        ),).thenAnswer(
           (_) async => (tAuthUser, null),
         );
         return authBloc;
@@ -81,6 +81,54 @@ void main() {
       act: (bloc) => bloc.add(const SignOutRequested()),
       expect: () => [
         isA<AuthState>().having((s) => s.status, 'status', AuthStatus.unauthenticated),
+      ],
+    );
+  });
+
+  group('ResetPasswordRequested', () {
+    blocTest<AuthBloc, AuthState>(
+      'emits loading then unauthenticated on success '
+      '(regression: previously emitted nothing on success)',
+      build: () {
+        when(() => mockRepository.resetPassword(any()))
+            .thenAnswer((_) async => null);
+        return authBloc;
+      },
+      act: (bloc) =>
+          bloc.add(const ResetPasswordRequested(email: 'test@example.com')),
+      expect: () => [
+        isA<AuthState>().having((s) => s.status, 'status', AuthStatus.loading),
+        isA<AuthState>()
+            .having((s) => s.status, 'status', AuthStatus.unauthenticated)
+            .having((s) => s.errorMessage, 'errorMessage', isNull),
+      ],
+    );
+  });
+
+  group('UpdatePasswordRequested', () {
+    blocTest<AuthBloc, AuthState>(
+      'emits loading then resting state on success '
+      '(regression: previously emitted nothing on success)',
+      build: () {
+        when(() => mockRepository.updatePassword(
+              currentPassword: any(named: 'currentPassword'),
+              newPassword: any(named: 'newPassword'),
+            ),).thenAnswer((_) async => null);
+        return authBloc;
+      },
+      act: (bloc) => bloc.add(const UpdatePasswordRequested(
+        currentPassword: 'old',
+        newPassword: 'new',
+      ),),
+      expect: () => [
+        isA<AuthState>().having((s) => s.status, 'status', AuthStatus.loading),
+        isA<AuthState>()
+            .having(
+              (s) => s.status,
+              'status',
+              AuthStatus.authenticated,
+            )
+            .having((s) => s.errorMessage, 'errorMessage', isNull),
       ],
     );
   });

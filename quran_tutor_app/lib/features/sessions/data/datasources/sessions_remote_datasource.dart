@@ -1,7 +1,7 @@
+import 'package:injectable/injectable.dart';
+import 'package:quran_tutor_app/core/error/exceptions.dart';
+import 'package:quran_tutor_app/features/sessions/data/models/session_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
-import '../../../../core/error/exceptions.dart';
-import '../models/session_model.dart';
 
 /// Abstract remote datasource for sessions
 abstract class SessionsRemoteDataSource {
@@ -40,8 +40,14 @@ abstract class SessionsRemoteDataSource {
   /// Reschedule session
   Future<SessionModel> rescheduleSession(String sessionId, DateTime newScheduledAt);
 
+  /// Start session (mark as in_progress)
+  Future<SessionModel> startSession(String sessionId);
+
   /// Complete session
   Future<SessionModel> completeSession(String sessionId);
+
+  /// Unassign student from session
+  Future<void> unassignStudent(String sessionId);
 
   /// Get sessions in date range
   Future<List<SessionModel>> getSessionsInRange({
@@ -52,11 +58,12 @@ abstract class SessionsRemoteDataSource {
 }
 
 /// Supabase implementation with UTC handling
+@Singleton(as: SessionsRemoteDataSource)
 class SupabaseSessionsDataSource implements SessionsRemoteDataSource {
-  final SupabaseClient _supabase;
 
   SupabaseSessionsDataSource({SupabaseClient? supabase})
       : _supabase = supabase ?? Supabase.instance.client;
+  final SupabaseClient _supabase;
 
   @override
   Future<SessionModel?> getSession(String sessionId) async {
@@ -236,6 +243,25 @@ class SupabaseSessionsDataSource implements SessionsRemoteDataSource {
   }
 
   @override
+  Future<SessionModel> startSession(String sessionId) async {
+    try {
+      final response = await _supabase
+          .from('sessions')
+          .update({
+            'status': 'in_progress',
+            'updated_at': DateTime.now().toUtc().toIso8601String(),
+          })
+          .eq('id', sessionId)
+          .select()
+          .single();
+
+      return SessionModel.fromSupabase(response);
+    } catch (e) {
+      throw ServerException.internalError();
+    }
+  }
+
+  @override
   Future<SessionModel> completeSession(String sessionId) async {
     try {
       final response = await _supabase
@@ -250,6 +276,18 @@ class SupabaseSessionsDataSource implements SessionsRemoteDataSource {
           .single();
 
       return SessionModel.fromSupabase(response);
+    } catch (e) {
+      throw ServerException.internalError();
+    }
+  }
+
+  @override
+  Future<void> unassignStudent(String sessionId) async {
+    try {
+      await _supabase
+          .from('sessions')
+          .update({'student_id': null})
+          .eq('id', sessionId);
     } catch (e) {
       throw ServerException.internalError();
     }

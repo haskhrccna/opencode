@@ -12,8 +12,14 @@ import 'package:quran_tutor_app/features/student/presentation/screens/student_ho
 
 class MockAuthBloc extends Mock implements AuthBloc {}
 
+class FakeAuthEvent extends Fake implements AuthEvent {}
+
 void main() {
   late MockAuthBloc mockAuthBloc;
+
+  setUpAll(() {
+    registerFallbackValue(FakeAuthEvent());
+  });
 
   setUp(() {
     mockAuthBloc = MockAuthBloc();
@@ -33,15 +39,15 @@ void main() {
   }
 
   group('StudentHomeScreen', () {
-    testWidgets('should show loading when user is null', (WidgetTester tester) async {
+    testWidgets('should show loading when user is null', (tester) async {
       // act
-      await tester.pumpWidget(createWidgetUnderTest(AuthState.initial()));
+      await tester.pumpWidget(createWidgetUnderTest(const AuthState.initial()));
 
       // assert
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
 
-    testWidgets('should render user name in app bar', (WidgetTester tester) async {
+    testWidgets('should render user name in app bar', (tester) async {
       // arrange
       final user = AuthUser(
         id: 'user-123',
@@ -65,7 +71,7 @@ void main() {
       expect(find.textContaining('طالب تجريبي'), findsOneWidget);
     });
 
-    testWidgets('should render navigation cards', (WidgetTester tester) async {
+    testWidgets('should render navigation cards', (tester) async {
       // arrange
       final user = AuthUser(
         id: 'user-123',
@@ -90,7 +96,7 @@ void main() {
       expect(find.text('تسجيل الخروج'), findsOneWidget);
     });
 
-    testWidgets('should call SignOutRequested when logout tapped', (WidgetTester tester) async {
+    testWidgets('should call SignOutRequested when logout tapped', (tester) async {
       // arrange
       final user = AuthUser(
         id: 'user-123',

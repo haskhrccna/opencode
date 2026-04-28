@@ -3,37 +3,44 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../constants/app_constants.dart';
+import 'package:quran_tutor_app/core/constants/app_constants.dart';
 
 /// App localizations delegate
 class AppLocalizations {
-  final Locale locale;
-  late Map<String, dynamic> _localizedStrings;
 
   AppLocalizations(this.locale);
+  final Locale locale;
+  late Map<String, dynamic> _localizedStrings;
 
   static const LocalizationsDelegate<AppLocalizations> delegate =
       _AppLocalizationsDelegate();
 
+  static AppLocalizations? maybeOf(BuildContext context) {
+    return Localizations.of<AppLocalizations>(context, AppLocalizations);
+  }
+
   static AppLocalizations of(BuildContext context) {
-    return Localizations.of<AppLocalizations>(context, AppLocalizations)!;
+    final localizations = maybeOf(context);
+    assert(localizations != null,
+        'No AppLocalizations found in context. Make sure to add AppLocalizations.delegate to localizationsDelegates.',);
+    return localizations!;
   }
 
   /// Load the language JSON file
   Future<bool> load() async {
-    String jsonString = await rootBundle
-        .loadString('\${AppConstants.translationsPath}/\${locale.languageCode}.json');
-    Map<String, dynamic> jsonMap = json.decode(jsonString) as Map<String, dynamic>;
+    final jsonString = await rootBundle
+        .loadString('${AppConstants.translationsPath}/${locale.languageCode}.json');
+    final jsonMap = json.decode(jsonString) as Map<String, dynamic>;
     _localizedStrings = jsonMap;
     return true;
   }
 
   /// Translate a key with optional parameters
   String translate(String key, {Map<String, dynamic>? args}) {
-    List<String> keys = key.split('.');
+    final keys = key.split('.');
     dynamic value = _localizedStrings;
     
-    for (String k in keys) {
+    for (final k in keys) {
       if (value is Map<String, dynamic>) {
         value = value[k];
       } else {
@@ -43,11 +50,11 @@ class AppLocalizations {
     
     if (value == null) return key;
     
-    String result = value.toString();
+    var result = value.toString();
     
     if (args != null) {
       args.forEach((paramKey, paramValue) {
-        result = result.replaceAll('{\$paramKey}', paramValue.toString());
+        result = result.replaceAll(r'{$paramKey}', paramValue.toString());
       });
     }
     
@@ -79,7 +86,7 @@ class _AppLocalizationsDelegate
 
   @override
   Future<AppLocalizations> load(Locale locale) async {
-    AppLocalizations localizations = AppLocalizations(locale);
+    final localizations = AppLocalizations(locale);
     await localizations.load();
     return localizations;
   }

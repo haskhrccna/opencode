@@ -1,14 +1,14 @@
 /// Base class for all exceptions in the data layer
 abstract class AppException implements Exception {
-  final String message;
-  final String? code;
-  final StackTrace? stackTrace;
 
   const AppException({
     required this.message,
     this.code,
     this.stackTrace,
   });
+  final String message;
+  final String? code;
+  final StackTrace? stackTrace;
 
   @override
   String toString() => '[$runtimeType] $message';
@@ -17,13 +17,11 @@ abstract class AppException implements Exception {
 /// Network-related exceptions
 class NetworkException extends AppException {
   const NetworkException({
-    required String message,
+    required super.message,
     String? code,
-    StackTrace? stackTrace,
+    super.stackTrace,
   }) : super(
-          message: message,
           code: code ?? 'network_error',
-          stackTrace: stackTrace,
         );
 
   factory NetworkException.noConnection() => const NetworkException(
@@ -44,19 +42,15 @@ class NetworkException extends AppException {
 
 /// Server-related exceptions
 class ServerException extends AppException {
-  final int? statusCode;
-  final dynamic responseData;
 
   const ServerException({
-    required String message,
+    required super.message,
     String? code,
     this.statusCode,
     this.responseData,
-    StackTrace? stackTrace,
+    super.stackTrace,
   }) : super(
-          message: message,
           code: code ?? 'server_error',
-          stackTrace: stackTrace,
         );
 
   factory ServerException.badRequest({dynamic responseData}) => ServerException(
@@ -83,18 +77,18 @@ class ServerException extends AppException {
         code: 'internal_error',
         statusCode: 500,
       );
+  final int? statusCode;
+  final dynamic responseData;
 }
 
 /// Cache-related exceptions
 class CacheException extends AppException {
   const CacheException({
-    required String message,
+    required super.message,
     String? code,
-    StackTrace? stackTrace,
+    super.stackTrace,
   }) : super(
-          message: message,
           code: code ?? 'cache_error',
-          stackTrace: stackTrace,
         );
 
   factory CacheException.notFound() => const CacheException(
@@ -111,13 +105,11 @@ class CacheException extends AppException {
 /// Authentication-related exceptions
 class AuthException extends AppException {
   const AuthException({
-    required String message,
+    required super.message,
     String? code,
-    StackTrace? stackTrace,
+    super.stackTrace,
   }) : super(
-          message: message,
           code: code ?? 'auth_error',
-          stackTrace: stackTrace,
         );
 
   factory AuthException.invalidCredentials() => const AuthException(
@@ -163,17 +155,14 @@ class AuthException extends AppException {
 
 /// Validation-related exceptions
 class ValidationException extends AppException {
-  final Map<String, String>? errors;
 
   const ValidationException({
-    required String message,
+    required super.message,
     String? code,
     this.errors,
-    StackTrace? stackTrace,
+    super.stackTrace,
   }) : super(
-          message: message,
           code: code ?? 'validation_error',
-          stackTrace: stackTrace,
         );
 
   factory ValidationException.invalidInput({String? message, Map<String, String>? errors}) =>
@@ -188,4 +177,5 @@ class ValidationException extends AppException {
         code: 'required_field',
         errors: {field: 'This field is required'},
       );
+  final Map<String, String>? errors;
 }

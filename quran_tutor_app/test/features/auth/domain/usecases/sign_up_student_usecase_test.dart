@@ -48,7 +48,7 @@ void main() {
             dateOfBirth: any(named: 'dateOfBirth'),
             phoneNumber: any(named: 'phoneNumber'),
             teacherInviteCode: any(named: 'teacherInviteCode'),
-          )).thenAnswer((_) async => (tPendingUser, null));
+          ),).thenAnswer((_) async => (tPendingUser, null));
 
       // Act
       final (result, failure) = await useCase(
@@ -82,10 +82,10 @@ void main() {
             dateOfBirth: any(named: 'dateOfBirth'),
             phoneNumber: any(named: 'phoneNumber'),
             teacherInviteCode: any(named: 'teacherInviteCode'),
-          )).thenAnswer((_) async => (
-            tPendingUser.copyWith(teacherId: null),
+          ),).thenAnswer((_) async => (
+            tPendingUser.copyWith(),
             null
-          ));
+          ),);
 
       // Act
       final (result, failure) = await useCase(
@@ -116,7 +116,7 @@ void main() {
             dateOfBirth: any(named: 'dateOfBirth'),
             phoneNumber: any(named: 'phoneNumber'),
             teacherInviteCode: any(named: 'teacherInviteCode'),
-          )).thenAnswer((_) async => (null, tFailure));
+          ),).thenAnswer((_) async => (null, tFailure));
 
       // Act
       final (result, failure) = await useCase(
@@ -146,7 +146,7 @@ void main() {
             dateOfBirth: any(named: 'dateOfBirth'),
             phoneNumber: any(named: 'phoneNumber'),
             teacherInviteCode: any(named: 'teacherInviteCode'),
-          )).thenAnswer((_) async => (null, tFailure));
+          ),).thenAnswer((_) async => (null, tFailure));
 
       // Act
       final (result, failure) = await useCase(
@@ -177,7 +177,7 @@ void main() {
             dateOfBirth: any(named: 'dateOfBirth'),
             phoneNumber: any(named: 'phoneNumber'),
             teacherInviteCode: any(named: 'teacherInviteCode'),
-          )).thenAnswer((_) async => (null, tFailure));
+          ),).thenAnswer((_) async => (null, tFailure));
 
       // Act
       final (result, failure) = await useCase(

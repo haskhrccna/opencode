@@ -1,14 +1,16 @@
-import '../../../../core/constants/app_constants.dart';
-import '../../../../core/error/failures.dart';
-import '../../domain/entities/progress_grade.dart';
-import '../../domain/repositories/grading_repository.dart';
-import '../datasources/grading_remote_datasource.dart';
-import '../models/grade_model.dart';
+import 'package:injectable/injectable.dart';
+import 'package:quran_tutor_app/core/constants/app_constants.dart';
+import 'package:quran_tutor_app/core/error/failures.dart';
+import 'package:quran_tutor_app/features/grading/data/datasources/grading_remote_datasource.dart';
+import 'package:quran_tutor_app/features/grading/data/models/grade_model.dart';
+import 'package:quran_tutor_app/features/grading/domain/entities/progress_grade.dart';
+import 'package:quran_tutor_app/features/grading/domain/repositories/grading_repository.dart';
 
+@Singleton(as: GradingRepository)
 class GradingRepositoryImpl implements GradingRepository {
-  final GradingRemoteDataSource _remoteDataSource;
 
   GradingRepositoryImpl(this._remoteDataSource);
+  final GradingRemoteDataSource _remoteDataSource;
 
   @override
   Future<(ProgressGrade?, Failure?)> getGrade(String gradeId) async {
@@ -179,7 +181,8 @@ class GradingRepositoryImpl implements GradingRepository {
 
   @override
   Stream<List<ProgressGrade>> get gradesStream {
-    // TODO: Implement real-time stream
-    return Stream.empty();
+    return _remoteDataSource.gradesStream().map(
+      (models) => models.map((m) => m.toEntity()).toList(),
+    );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../domain/entities/session.dart';
+import 'package:quran_tutor_app/features/sessions/domain/entities/session.dart';
 
 enum SessionsStatus {
   initial,
@@ -13,11 +13,6 @@ enum SessionsStatus {
 }
 
 class SessionsState extends Equatable {
-  final SessionsStatus status;
-  final List<Session>? sessions;
-  final Session? selectedSession;
-  final String? errorMessage;
-  final DateTime? lastUpdated;
 
   const SessionsState({
     required this.status,
@@ -30,6 +25,11 @@ class SessionsState extends Equatable {
   factory SessionsState.initial() => const SessionsState(
         status: SessionsStatus.initial,
       );
+  final SessionsStatus status;
+  final List<Session>? sessions;
+  final Session? selectedSession;
+  final String? errorMessage;
+  final DateTime? lastUpdated;
 
   SessionsState copyWith({
     SessionsStatus? status,

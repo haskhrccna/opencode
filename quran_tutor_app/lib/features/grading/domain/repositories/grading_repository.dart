@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/constants/app_constants.dart';
-import '../../../../core/error/failures.dart';
-import '../entities/progress_grade.dart';
+import 'package:quran_tutor_app/core/constants/app_constants.dart';
+import 'package:quran_tutor_app/core/error/failures.dart';
+import 'package:quran_tutor_app/features/grading/domain/entities/progress_grade.dart';
 
 /// Repository interface for grading operations
 abstract class GradingRepository {
@@ -73,6 +73,17 @@ abstract class GradingRepository {
 
 /// Progress summary for a student
 class ProgressSummary extends Equatable {
+
+  const ProgressSummary({
+    required this.studentId,
+    required this.totalSessions,
+    required this.sessionsGraded,
+    required this.averageGrade,
+    required this.categoryAverages,
+    required this.currentStreak,
+    required this.longestStreak,
+    required this.totalPagesMemorized, required this.surahsMemorized, this.lastSessionDate,
+  });
   final String studentId;
   final int totalSessions;
   final int sessionsGraded;
@@ -83,19 +94,6 @@ class ProgressSummary extends Equatable {
   final DateTime? lastSessionDate;
   final int totalPagesMemorized;
   final List<String> surahsMemorized;
-
-  const ProgressSummary({
-    required this.studentId,
-    required this.totalSessions,
-    required this.sessionsGraded,
-    required this.averageGrade,
-    required this.categoryAverages,
-    required this.currentStreak,
-    required this.longestStreak,
-    this.lastSessionDate,
-    required this.totalPagesMemorized,
-    required this.surahsMemorized,
-  });
 
   @override
   List<Object?> get props => [
@@ -114,13 +112,13 @@ class ProgressSummary extends Equatable {
 
 /// Progress timeline for charting
 class ProgressTimeline extends Equatable {
-  final String studentId;
-  final List<ProgressPoint> points;
 
   const ProgressTimeline({
     required this.studentId,
     required this.points,
   });
+  final String studentId;
+  final List<ProgressPoint> points;
 
   @override
   List<Object?> get props => [studentId, points];
@@ -128,15 +126,15 @@ class ProgressTimeline extends Equatable {
 
 /// Single progress data point
 class ProgressPoint extends Equatable {
-  final DateTime date;
-  final double averageGrade;
-  final int sessionsCount;
 
   const ProgressPoint({
     required this.date,
     required this.averageGrade,
     required this.sessionsCount,
   });
+  final DateTime date;
+  final double averageGrade;
+  final int sessionsCount;
 
   @override
   List<Object?> get props => [date, averageGrade, sessionsCount];
@@ -144,6 +142,13 @@ class ProgressPoint extends Equatable {
 
 /// Student progress for class overview
 class StudentProgress extends Equatable {
+
+  const StudentProgress({
+    required this.studentId,
+    required this.averageGrade, required this.sessionsAttended, required this.sessionsTotal, this.studentName,
+    this.lastSession,
+    this.isOnTrack = true,
+  });
   final String studentId;
   final String? studentName;
   final double averageGrade;
@@ -151,16 +156,6 @@ class StudentProgress extends Equatable {
   final int sessionsTotal;
   final DateTime? lastSession;
   final bool isOnTrack;
-
-  const StudentProgress({
-    required this.studentId,
-    this.studentName,
-    required this.averageGrade,
-    required this.sessionsAttended,
-    required this.sessionsTotal,
-    this.lastSession,
-    this.isOnTrack = true,
-  });
 
   double get attendanceRate => sessionsTotal > 0
       ? (sessionsAttended / sessionsTotal) * 100

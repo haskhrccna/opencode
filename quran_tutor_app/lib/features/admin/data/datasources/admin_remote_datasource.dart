@@ -1,9 +1,9 @@
+import 'package:injectable/injectable.dart';
+import 'package:quran_tutor_app/core/constants/app_constants.dart';
+import 'package:quran_tutor_app/core/error/exceptions.dart';
+import 'package:quran_tutor_app/features/admin/domain/repositories/admin_repository.dart';
+import 'package:quran_tutor_app/features/auth/data/models/user_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
-import '../../../../core/constants/app_constants.dart';
-import '../../../../core/error/exceptions.dart';
-import '../../../auth/data/models/user_model.dart';
-import '../../domain/repositories/admin_repository.dart';
 
 /// Abstract remote datasource for admin operations
 abstract class AdminRemoteDataSource {
@@ -54,11 +54,12 @@ abstract class AdminRemoteDataSource {
 }
 
 /// Supabase implementation
+@Singleton(as: AdminRemoteDataSource)
 class SupabaseAdminDataSource implements AdminRemoteDataSource {
-  final SupabaseClient _supabase;
 
   SupabaseAdminDataSource({SupabaseClient? supabase})
       : _supabase = supabase ?? Supabase.instance.client;
+  final SupabaseClient _supabase;
 
   @override
   Future<List<UserModel>> getPendingUsers() async {
@@ -252,7 +253,7 @@ class SupabaseAdminDataSource implements AdminRemoteDataSource {
       final response = await _supabase.rpc<Map<String, dynamic>>('get_report_data', params: {
         'start_date': startDate.toIso8601String(),
         'end_date': endDate.toIso8601String(),
-      });
+      },);
 
       return ReportData(
         title: (response['title'] as String?) ?? 'Report',
@@ -262,14 +263,14 @@ class SupabaseAdminDataSource implements AdminRemoteDataSource {
             .map((e) => ReportSection(
                   title: (e as Map<String, dynamic>)['title'] as String? ?? '',
                   content: e['content'] as String? ?? '',
-                ))
+                ),)
             .toList(),
         charts: (response['charts'] as List? ?? [])
             .map((e) => ReportChart(
                   title: (e as Map<String, dynamic>)['title'] as String? ?? '',
                   type: ChartType.values.byName((e['type'] as String?) ?? 'bar'),
                   data: (e['data'] as Map<String, dynamic>?) ?? {},
-                ))
+                ),)
             .toList(),
         tables: (response['tables'] as List? ?? [])
             .map((e) => ReportTable(
@@ -278,7 +279,7 @@ class SupabaseAdminDataSource implements AdminRemoteDataSource {
                   rows: ((e['rows'] as List?) ?? [])
                       .map((r) => List<String>.from(r as List))
                       .toList(),
-                ))
+                ),)
             .toList(),
       );
     } catch (e) {

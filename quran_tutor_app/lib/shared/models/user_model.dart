@@ -1,9 +1,48 @@
 import 'package:equatable/equatable.dart';
 
-import '../../core/constants/app_constants.dart';
+import 'package:quran_tutor_app/core/constants/app_constants.dart';
 
 /// User model representing all user types in the application
-class UserModel extends Equatable {
+class UserModel extends Equatable { // For teachers - list of student IDs
+
+  const UserModel({
+    required this.id,
+    required this.name,
+    required this.role, required this.createdAt, this.email,
+    this.phone,
+    this.age,
+    this.photoUrl,
+    this.status = UserStatus.pending,
+    this.updatedAt,
+    this.preferredLevel,
+    this.bio,
+    this.teacherId,
+    this.assignedStudents,
+  });
+
+  /// Create from a Supabase profiles row (snake_case keys)
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      email: json['email'] as String?,
+      phone: json['phone'] as String?,
+      age: json['age'] as int?,
+      photoUrl: json['avatar_url'] as String?,
+      role: UserRole.fromString(json['role'] as String),
+      status: UserStatus.fromString(json['status'] as String),
+      createdAt: DateTime.parse(json['created_at'] as String),
+      updatedAt: json['updated_at'] != null
+          ? DateTime.parse(json['updated_at'] as String)
+          : null,
+      preferredLevel: json['preferred_level'] as String?,
+      bio: json['bio'] as String?,
+      teacherId: json['teacher_id'] as String?,
+      assignedStudents: json['assigned_students'] != null
+          ? List<String>.from(json['assigned_students'] as List)
+          : null,
+    );
+  }
   final String id;
   final String name;
   final String? email;
@@ -17,24 +56,7 @@ class UserModel extends Equatable {
   final String? preferredLevel;
   final String? bio;
   final String? teacherId; // For students - assigned teacher
-  final List<String>? assignedStudents; // For teachers - list of student IDs
-
-  const UserModel({
-    required this.id,
-    required this.name,
-    this.email,
-    this.phone,
-    this.age,
-    this.photoUrl,
-    required this.role,
-    this.status = UserStatus.pending,
-    required this.createdAt,
-    this.updatedAt,
-    this.preferredLevel,
-    this.bio,
-    this.teacherId,
-    this.assignedStudents,
-  });
+  final List<String>? assignedStudents;
 
   /// Empty user model
   static final empty = UserModel(
@@ -89,30 +111,6 @@ class UserModel extends Equatable {
       'bio': bio,
       'teacher_id': teacherId,
     };
-  }
-
-  /// Create from a Supabase profiles row (snake_case keys)
-  factory UserModel.fromJson(Map<String, dynamic> json) {
-    return UserModel(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      email: json['email'] as String?,
-      phone: json['phone'] as String?,
-      age: json['age'] as int?,
-      photoUrl: json['avatar_url'] as String?,
-      role: UserRole.fromString(json['role'] as String),
-      status: UserStatus.fromString(json['status'] as String),
-      createdAt: DateTime.parse(json['created_at'] as String),
-      updatedAt: json['updated_at'] != null
-          ? DateTime.parse(json['updated_at'] as String)
-          : null,
-      preferredLevel: json['preferred_level'] as String?,
-      bio: json['bio'] as String?,
-      teacherId: json['teacher_id'] as String?,
-      assignedStudents: json['assigned_students'] != null
-          ? List<String>.from(json['assigned_students'] as List)
-          : null,
-    );
   }
 
   /// Create a copy with updated fields
@@ -176,21 +174,20 @@ class UserModel extends Equatable {
 
 /// Student signup request
 class StudentSignupRequest {
+
+  const StudentSignupRequest({
+    required this.name,
+    required this.email,
+    required this.password,
+    required this.age, this.phone,
+    this.preferredLevel,
+  });
   final String name;
   final String email;
   final String password;
   final String? phone;
   final int age;
   final String? preferredLevel;
-
-  const StudentSignupRequest({
-    required this.name,
-    required this.email,
-    required this.password,
-    this.phone,
-    required this.age,
-    this.preferredLevel,
-  });
 
   Map<String, dynamic> toJson() {
     return {
@@ -205,12 +202,6 @@ class StudentSignupRequest {
 
 /// Teacher signup request
 class TeacherSignupRequest {
-  final String name;
-  final String email;
-  final String password;
-  final String inviteCode;
-  final String? phone;
-  final String? bio;
 
   const TeacherSignupRequest({
     required this.name,
@@ -220,6 +211,12 @@ class TeacherSignupRequest {
     this.phone,
     this.bio,
   });
+  final String name;
+  final String email;
+  final String password;
+  final String inviteCode;
+  final String? phone;
+  final String? bio;
 
   Map<String, dynamic> toJson() {
     return {

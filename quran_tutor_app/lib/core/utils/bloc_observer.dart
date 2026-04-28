@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'logging/app_logger.dart';
+import 'package:quran_tutor_app/core/utils/logging/app_logger.dart';
 
 /// Custom BLoC observer for debugging
 /// 
@@ -56,7 +56,7 @@ class AppBlocObserver extends BlocObserver {
     super.onError(bloc, error, stackTrace);
     // Always log errors, regardless of mode
     _logger.e('🔴 Error in ${bloc.runtimeType}',
-        error: error, stackTrace: stackTrace);
+        error: error, stackTrace: stackTrace,);
     
     // In release mode, this will also be reported to Crashlytics
     // via the AppLogger

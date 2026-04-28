@@ -2,24 +2,17 @@ import 'dart:convert';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:injectable/injectable.dart';
-
-import '../../../../core/constants/app_constants.dart';
-import '../../../features/grading/data/datasources/grading_remote_datasource.dart';
-import '../../../features/grading/data/models/grade_model.dart';
-import '../../../features/sessions/data/datasources/sessions_remote_datasource.dart';
-import '../../../features/sessions/data/models/session_model.dart';
-import '../../../features/sessions/domain/entities/session.dart';
-import 'offline_database.dart';
+import 'package:quran_tutor_app/core/constants/app_constants.dart';
+import 'package:quran_tutor_app/core/services/offline/offline_database.dart';
+import 'package:quran_tutor_app/features/grading/data/datasources/grading_remote_datasource.dart';
+import 'package:quran_tutor_app/features/grading/data/models/grade_model.dart';
+import 'package:quran_tutor_app/features/sessions/data/datasources/sessions_remote_datasource.dart';
+import 'package:quran_tutor_app/features/sessions/data/models/session_model.dart';
+import 'package:quran_tutor_app/features/sessions/domain/entities/session.dart';
 
 /// Service that manages offline caching and sync
 @singleton
 class OfflineService {
-  final OfflineDatabase _db;
-  final Connectivity _connectivity;
-  SessionsRemoteDataSource? _sessionsDataSource;
-  GradingRemoteDataSource? _gradingDataSource;
-
-  bool _isOnline = true;
 
   OfflineService({
     required OfflineDatabase db,
@@ -32,6 +25,12 @@ class OfflineService {
         _gradingDataSource = gradingDataSource {
     _initConnectivity();
   }
+  final OfflineDatabase _db;
+  final Connectivity _connectivity;
+  SessionsRemoteDataSource? _sessionsDataSource;
+  GradingRemoteDataSource? _gradingDataSource;
+
+  bool _isOnline = true;
 
   /// Set datasources after initialization (for DI)
   void setDataSources({
@@ -76,7 +75,7 @@ class OfflineService {
   /// Get cached sessions
   Future<List<Session>> getCachedSessions({String? userId}) async {
     final cached = await _db.getCachedSessions(userId: userId);
-    return cached.map((c) => _mapCachedSessionToEntity(c)).toList();
+    return cached.map(_mapCachedSessionToEntity).toList();
   }
 
   /// Check if we have cached sessions
@@ -111,7 +110,7 @@ class OfflineService {
 
   /// Get cached grades
   Future<List<CachedGrade>> getCachedGrades({String? studentId}) async {
-    return await _db.getCachedGrades(studentId: studentId);
+    return _db.getCachedGrades(studentId: studentId);
   }
 
   /// Queue an operation for when online
@@ -152,10 +151,8 @@ class OfflineService {
     switch (item.tableName) {
       case 'sessions':
         await _processSessionSync(item);
-        break;
       case 'grades':
         await _processGradeSync(item);
-        break;
       default:
         // Unknown table, mark as processed to avoid endless retries
         break;
@@ -183,17 +180,14 @@ class OfflineService {
             isOnline: session.isOnline,
           );
         }
-        break;
       case 'update':
         if (data != null) {
           final session = SessionModel.fromSupabase(data);
           await _sessionsDataSource!.updateSession(session);
         }
-        break;
       case 'delete':
       case 'cancel':
         await _sessionsDataSource!.cancelSession(item.recordId);
-        break;
       default:
         break;
     }
@@ -222,10 +216,8 @@ class OfflineService {
             pagesMemorized: grade.pagesMemorized,
           );
         }
-        break;
       case 'delete':
         await _gradingDataSource!.deleteGrade(item.recordId);
-        break;
       default:
         break;
     }

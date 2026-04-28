@@ -15,21 +15,15 @@ class LoadProfile extends ProfileEvent {
 }
 
 class LoadProfileById extends ProfileEvent {
-  final String userId;
 
   const LoadProfileById(this.userId);
+  final String userId;
 
   @override
   List<Object?> get props => [userId];
 }
 
 class UpdateProfile extends ProfileEvent {
-  final String? arabicName;
-  final String? englishName;
-  final String? phoneNumber;
-  final String? bio;
-  final String? websiteUrl;
-  final DateTime? dateOfBirth;
 
   const UpdateProfile({
     this.arabicName,
@@ -39,6 +33,12 @@ class UpdateProfile extends ProfileEvent {
     this.websiteUrl,
     this.dateOfBirth,
   });
+  final String? arabicName;
+  final String? englishName;
+  final String? phoneNumber;
+  final String? bio;
+  final String? websiteUrl;
+  final DateTime? dateOfBirth;
 
   @override
   List<Object?> get props => [
@@ -52,9 +52,9 @@ class UpdateProfile extends ProfileEvent {
 }
 
 class UploadAvatar extends ProfileEvent {
-  final File imageFile;
 
   const UploadAvatar(this.imageFile);
+  final File imageFile;
 
   @override
   List<Object?> get props => [imageFile];
@@ -65,13 +65,13 @@ class DeleteAvatar extends ProfileEvent {
 }
 
 class UpdatePassword extends ProfileEvent {
-  final String currentPassword;
-  final String newPassword;
 
   const UpdatePassword({
     required this.currentPassword,
     required this.newPassword,
   });
+  final String currentPassword;
+  final String newPassword;
 
   @override
   List<Object?> get props => [currentPassword, newPassword];
@@ -82,31 +82,31 @@ class LoadTeachers extends ProfileEvent {
 }
 
 class LoadStudentsByTeacher extends ProfileEvent {
-  final String teacherId;
 
   const LoadStudentsByTeacher(this.teacherId);
+  final String teacherId;
 
   @override
   List<Object?> get props => [teacherId];
 }
 
 class LinkStudentToTeacher extends ProfileEvent {
-  final String studentId;
-  final String teacherId;
 
   const LinkStudentToTeacher({
     required this.studentId,
     required this.teacherId,
   });
+  final String studentId;
+  final String teacherId;
 
   @override
   List<Object?> get props => [studentId, teacherId];
 }
 
 class UnlinkStudentFromTeacher extends ProfileEvent {
-  final String studentId;
 
   const UnlinkStudentFromTeacher(this.studentId);
+  final String studentId;
 
   @override
   List<Object?> get props => [studentId];

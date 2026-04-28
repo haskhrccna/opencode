@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/utils/validators/arabic_validators.dart';
-import '../bloc/auth_bloc.dart';
-import '../bloc/auth_event.dart';
-import '../bloc/auth_state.dart';
+import 'package:quran_tutor_app/core/utils/validators/arabic_validators.dart';
+import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_event.dart';
+import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_state.dart';
 
 class TeacherSignupScreen extends StatefulWidget {
   const TeacherSignupScreen({super.key});
@@ -47,7 +47,6 @@ class _TeacherSignupScreenState extends State<TeacherSignupScreen> {
             bio: _bioController.text.trim().isEmpty
                 ? null
                 : _bioController.text.trim(),
-            websiteUrl: null,
           ),
         );
   }

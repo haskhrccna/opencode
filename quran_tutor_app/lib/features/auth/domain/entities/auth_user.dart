@@ -1,34 +1,19 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/constants/app_constants.dart';
+import 'package:quran_tutor_app/core/constants/app_constants.dart';
 
 /// Domain entity representing an authenticated user
 /// 
 /// This is decoupled from UserModel and contains only
 /// the fields needed for authentication and authorization.
-class AuthUser extends Equatable {
-  final String id;
-  final String email;
-  final String? displayName;
-  final String? arabicName;
-  final String? photoUrl;
-  final UserRole role;
-  final UserStatus status;
-  final DateTime createdAt;
-  final DateTime? updatedAt;
-  final String? phoneNumber;
-  final DateTime? dateOfBirth;
-  final String? teacherId; // For students - references their teacher
+class AuthUser extends Equatable { // For students - references their teacher
 
   const AuthUser({
     required this.id,
     required this.email,
-    this.displayName,
+    required this.role, required this.status, required this.createdAt, this.displayName,
     this.arabicName,
     this.photoUrl,
-    required this.role,
-    required this.status,
-    required this.createdAt,
     this.updatedAt,
     this.phoneNumber,
     this.dateOfBirth,
@@ -43,6 +28,18 @@ class AuthUser extends Equatable {
         status: UserStatus.pending,
         createdAt: DateTime.now(),
       );
+  final String id;
+  final String email;
+  final String? displayName;
+  final String? arabicName;
+  final String? photoUrl;
+  final UserRole role;
+  final UserStatus status;
+  final DateTime createdAt;
+  final DateTime? updatedAt;
+  final String? phoneNumber;
+  final DateTime? dateOfBirth;
+  final String? teacherId;
 
   /// Check if user is authenticated
   bool get isAuthenticated => id.isNotEmpty && email.isNotEmpty;

@@ -1,39 +1,24 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/constants/app_constants.dart';
+import 'package:quran_tutor_app/core/constants/app_constants.dart';
 
 /// Session entity representing a Quran learning session
 ///
 /// **CRITICAL**: All timestamps are stored in UTC and converted
 /// to local time for display only.
 class Session extends Equatable {
-  final String id;
-  final String teacherId;
-  final String? studentId;
-  final DateTime scheduledAt; // Stored in UTC
-  final int durationMinutes;
-  final String? topic;
-  final String? notes;
-  final SessionStatus status;
-  final DateTime createdAt; // Stored in UTC
-  final DateTime? updatedAt; // Stored in UTC
-  final DateTime? completedAt; // Stored in UTC
-  final String? recordingUrl;
-  final String? meetingLink;
-  final String? location;
-  final bool isOnline;
-  final Map<String, dynamic>? metadata;
 
   const Session({
     required this.id,
     required this.teacherId,
-    this.studentId,
     required this.scheduledAt,
+    required this.status,
+    required this.createdAt,
+    this.studentId,
     this.durationMinutes = 60,
     this.topic,
     this.notes,
-    required this.status,
-    required this.createdAt,
+    this.cancellationReason,
     this.updatedAt,
     this.completedAt,
     this.recordingUrl,
@@ -51,6 +36,23 @@ class Session extends Equatable {
         status: SessionStatus.scheduled,
         createdAt: DateTime.now().toUtc(),
       );
+  final String id;
+  final String teacherId;
+  final String? studentId;
+  final DateTime scheduledAt; // Stored in UTC
+  final int durationMinutes;
+  final String? topic;
+  final String? notes;
+  final String? cancellationReason;
+  final SessionStatus status;
+  final DateTime createdAt; // Stored in UTC
+  final DateTime? updatedAt; // Stored in UTC
+  final DateTime? completedAt; // Stored in UTC
+  final String? recordingUrl;
+  final String? meetingLink;
+  final String? location;
+  final bool isOnline;
+  final Map<String, dynamic>? metadata;
 
   /// Get local time for display
   DateTime get localScheduledAt => scheduledAt.toLocal();
@@ -111,6 +113,7 @@ class Session extends Equatable {
     int? durationMinutes,
     String? topic,
     String? notes,
+    String? cancellationReason,
     SessionStatus? status,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -129,6 +132,7 @@ class Session extends Equatable {
       durationMinutes: durationMinutes ?? this.durationMinutes,
       topic: topic ?? this.topic,
       notes: notes ?? this.notes,
+      cancellationReason: cancellationReason ?? this.cancellationReason,
       status: status ?? this.status,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -150,6 +154,7 @@ class Session extends Equatable {
         durationMinutes,
         topic,
         notes,
+        cancellationReason,
         status,
         createdAt,
         updatedAt,

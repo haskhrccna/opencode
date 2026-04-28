@@ -37,7 +37,7 @@ void main() {
   }
 
   group('LoginScreen', () {
-    testWidgets('should render login form', (WidgetTester tester) async {
+    testWidgets('should render login form', (tester) async {
       // act
       await tester.pumpWidget(createWidgetUnderTest());
 
@@ -49,7 +49,7 @@ void main() {
       expect(find.text('إنشاء حساب جديد'), findsOneWidget);
     });
 
-    testWidgets('should show error for invalid email', (WidgetTester tester) async {
+    testWidgets('should show error for invalid email', (tester) async {
       // act
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.enterText(find.byType(TextFormField).first, 'invalid-email');
@@ -57,10 +57,10 @@ void main() {
       await tester.pump();
 
       // assert
-      expect(find.textContaining('valid'), findsOneWidget);
+      expect(find.text('validation.email_invalid'), findsOneWidget);
     });
 
-    testWidgets('should show error for empty password', (WidgetTester tester) async {
+    testWidgets('should show error for empty password', (tester) async {
       // act
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.enterText(find.byType(TextFormField).first, 'test@example.com');
@@ -68,10 +68,10 @@ void main() {
       await tester.pump();
 
       // assert
-      expect(find.textContaining('password'), findsOneWidget);
+      expect(find.text('validation.required'), findsOneWidget);
     });
 
-    testWidgets('should call SignInRequested on valid form submit', (WidgetTester tester) async {
+    testWidgets('should call SignInRequested on valid form submit', (tester) async {
       // arrange
       when(() => mockAuthBloc.add(any())).thenReturn(null);
 
@@ -94,10 +94,10 @@ void main() {
           email: 'test@example.com',
           password: 'Password123',
         ),
-      )).called(1);
+      ),).called(1);
     });
 
-    testWidgets('should show loading indicator when loading', (WidgetTester tester) async {
+    testWidgets('should show loading indicator when loading', (tester) async {
       // arrange
       when(() => mockAuthBloc.state).thenReturn(
         const AuthState(status: AuthStatus.loading),
@@ -112,12 +112,12 @@ void main() {
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
 
-    testWidgets('should show error snackbar on error', (WidgetTester tester) async {
+    testWidgets('should show error snackbar on error', (tester) async {
       // arrange
       whenListen(
         mockAuthBloc,
         Stream.fromIterable([
-          AuthState.initial(),
+          const AuthState.initial(),
           const AuthState(
             status: AuthStatus.error,
             errorMessage: 'Invalid credentials',

@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/constants/app_constants.dart';
-import '../../../../core/error/failures.dart';
-import '../../../auth/domain/entities/auth_user.dart';
+import 'package:quran_tutor_app/core/constants/app_constants.dart';
+import 'package:quran_tutor_app/core/error/failures.dart';
+import 'package:quran_tutor_app/features/auth/domain/entities/auth_user.dart';
 
 /// Repository interface for admin operations
 abstract class AdminRepository {
@@ -63,18 +63,6 @@ abstract class AdminRepository {
 
 /// System statistics
 class SystemStats extends Equatable {
-  final int totalUsers;
-  final int totalStudents;
-  final int totalTeachers;
-  final int totalAdmins;
-  final int pendingApprovals;
-  final int totalSessions;
-  final int completedSessions;
-  final int cancelledSessions;
-  final double averageSessionDuration;
-  final double averageGrade;
-  final int newUsersThisWeek;
-  final int activeUsersToday;
 
   const SystemStats({
     required this.totalUsers,
@@ -90,6 +78,18 @@ class SystemStats extends Equatable {
     required this.newUsersThisWeek,
     required this.activeUsersToday,
   });
+  final int totalUsers;
+  final int totalStudents;
+  final int totalTeachers;
+  final int totalAdmins;
+  final int pendingApprovals;
+  final int totalSessions;
+  final int completedSessions;
+  final int cancelledSessions;
+  final double averageSessionDuration;
+  final double averageGrade;
+  final int newUsersThisWeek;
+  final int activeUsersToday;
 
   @override
   List<Object?> get props => [
@@ -110,12 +110,6 @@ class SystemStats extends Equatable {
 
 /// Report data for PDF export
 class ReportData extends Equatable {
-  final String title;
-  final DateTime startDate;
-  final DateTime endDate;
-  final List<ReportSection> sections;
-  final List<ReportChart> charts;
-  final List<ReportTable> tables;
 
   const ReportData({
     required this.title,
@@ -125,6 +119,12 @@ class ReportData extends Equatable {
     required this.charts,
     required this.tables,
   });
+  final String title;
+  final DateTime startDate;
+  final DateTime endDate;
+  final List<ReportSection> sections;
+  final List<ReportChart> charts;
+  final List<ReportTable> tables;
 
   @override
   List<Object?> get props => [title, startDate, endDate, sections, charts, tables];
@@ -132,13 +132,13 @@ class ReportData extends Equatable {
 
 /// Report section
 class ReportSection extends Equatable {
-  final String title;
-  final String content;
 
   const ReportSection({
     required this.title,
     required this.content,
   });
+  final String title;
+  final String content;
 
   @override
   List<Object?> get props => [title, content];
@@ -146,15 +146,15 @@ class ReportSection extends Equatable {
 
 /// Report chart
 class ReportChart extends Equatable {
-  final String title;
-  final ChartType type;
-  final Map<String, dynamic> data;
 
   const ReportChart({
     required this.title,
     required this.type,
     required this.data,
   });
+  final String title;
+  final ChartType type;
+  final Map<String, dynamic> data;
 
   @override
   List<Object?> get props => [title, type, data];
@@ -165,15 +165,15 @@ enum ChartType { bar, line, pie, radar }
 
 /// Report table
 class ReportTable extends Equatable {
-  final String title;
-  final List<String> headers;
-  final List<List<String>> rows;
 
   const ReportTable({
     required this.title,
     required this.headers,
     required this.rows,
   });
+  final String title;
+  final List<String> headers;
+  final List<List<String>> rows;
 
   @override
   List<Object?> get props => [title, headers, rows];
@@ -181,11 +181,6 @@ class ReportTable extends Equatable {
 
 /// System settings
 class SystemSettings extends Equatable {
-  final bool allowSelfRegistration;
-  final bool requireApproval;
-  final int defaultSessionDuration;
-  final String? systemNotice;
-  final Map<String, dynamic>? customSettings;
 
   const SystemSettings({
     this.allowSelfRegistration = true,
@@ -194,6 +189,11 @@ class SystemSettings extends Equatable {
     this.systemNotice,
     this.customSettings,
   });
+  final bool allowSelfRegistration;
+  final bool requireApproval;
+  final int defaultSessionDuration;
+  final String? systemNotice;
+  final Map<String, dynamic>? customSettings;
 
   @override
   List<Object?> get props => [

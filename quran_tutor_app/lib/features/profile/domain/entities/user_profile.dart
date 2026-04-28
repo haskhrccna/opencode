@@ -1,41 +1,19 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/constants/app_constants.dart';
+import 'package:quran_tutor_app/core/constants/app_constants.dart';
 
 /// Extended user profile entity with detailed information
 ///
 /// This is separate from AuthUser and contains additional
 /// profile information not needed for authentication.
 class UserProfile extends Equatable {
-  final String id;
-  final String email;
-  final String? displayName;
-  final String? arabicName;
-  final String? photoUrl;
-  final UserRole role;
-  final UserStatus status;
-  final DateTime createdAt;
-  final DateTime? updatedAt;
-  final String? phoneNumber;
-  final DateTime? dateOfBirth;
-  final String? teacherId;
-  final String? bio;
-  final String? websiteUrl;
-  final String? address;
-  final String? emergencyContact;
-  final Map<String, dynamic>? preferences;
-  final int? sessionsCompleted;
-  final int? sessionsScheduled;
 
   const UserProfile({
     required this.id,
     required this.email,
-    this.displayName,
+    required this.role, required this.status, required this.createdAt, this.displayName,
     this.arabicName,
     this.photoUrl,
-    required this.role,
-    required this.status,
-    required this.createdAt,
     this.updatedAt,
     this.phoneNumber,
     this.dateOfBirth,
@@ -57,6 +35,25 @@ class UserProfile extends Equatable {
         status: UserStatus.pending,
         createdAt: DateTime.now(),
       );
+  final String id;
+  final String email;
+  final String? displayName;
+  final String? arabicName;
+  final String? photoUrl;
+  final UserRole role;
+  final UserStatus status;
+  final DateTime createdAt;
+  final DateTime? updatedAt;
+  final String? phoneNumber;
+  final DateTime? dateOfBirth;
+  final String? teacherId;
+  final String? bio;
+  final String? websiteUrl;
+  final String? address;
+  final String? emergencyContact;
+  final Map<String, dynamic>? preferences;
+  final int? sessionsCompleted;
+  final int? sessionsScheduled;
 
   /// Get display name (Arabic preferred, fallback to English)
   String get displayNameOrEmail =>

@@ -1,10 +1,11 @@
 import 'dart:io';
 
+import 'package:injectable/injectable.dart';
+import 'package:quran_tutor_app/core/constants/app_constants.dart';
+import 'package:quran_tutor_app/core/error/exceptions.dart';
+import 'package:quran_tutor_app/features/grading/data/models/grade_model.dart';
+import 'package:quran_tutor_app/features/grading/domain/repositories/grading_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../../../../core/constants/app_constants.dart';
-import '../../../../core/error/exceptions.dart';
-import '../../domain/repositories/grading_repository.dart';
-import '../models/grade_model.dart';
 
 /// Abstract remote datasource for grading
 abstract class GradingRemoteDataSource {
@@ -57,14 +58,18 @@ abstract class GradingRemoteDataSource {
 
   /// Get class progress
   Future<List<StudentProgress>> getClassProgress(String teacherId);
+
+  /// Stream of grade changes
+  Stream<List<GradeModel>> gradesStream({String? studentId});
 }
 
 /// Supabase implementation
+@Singleton(as: GradingRemoteDataSource)
 class SupabaseGradingDataSource implements GradingRemoteDataSource {
-  final SupabaseClient _supabase;
 
   SupabaseGradingDataSource({SupabaseClient? supabase})
       : _supabase = supabase ?? Supabase.instance.client;
+  final SupabaseClient _supabase;
 
   @override
   Future<GradeModel?> getGrade(String gradeId) async {
@@ -249,14 +254,14 @@ class SupabaseGradingDataSource implements GradingRemoteDataSource {
       final response = await _supabase
         .rpc<Map<String, dynamic>>('get_student_progress_summary', params: {
         'student_id': studentId,
-      });
+      },);
 
       return ProgressSummary(
         studentId: studentId,
         totalSessions: (response['total_sessions'] as num?)?.toInt() ?? 0,
         sessionsGraded: (response['sessions_graded'] as num?)?.toInt() ?? 0,
         averageGrade: (response['average_grade'] as num?)?.toDouble() ?? 0.0,
-        categoryAverages: {},
+        categoryAverages: const {},
         currentStreak: (response['current_streak'] as num?)?.toInt() ?? 0,
         longestStreak: (response['longest_streak'] as num?)?.toInt() ?? 0,
         lastSessionDate: response['last_session_date'] != null
@@ -277,20 +282,20 @@ class SupabaseGradingDataSource implements GradingRemoteDataSource {
     required DateTime endDate,
   }) async {
     try {
-      final response = await _supabase
-        .rpc<List>('get_progress_timeline', params: {
-        'student_id': studentId,
-        'start_date': startDate.toIso8601String(),
-        'end_date': endDate.toIso8601String(),
-      });
+    final response = await _supabase
+        .rpc<List<dynamic>>('get_progress_timeline', params: {
+      'student_id': studentId,
+      'start_date': startDate.toIso8601String(),
+      'end_date': endDate.toIso8601String(),
+    },);
 
-      final points = (response as List)
-          .map((e) => ProgressPoint(
-                date: DateTime.parse((e as Map<String, dynamic>)['date'] as String),
-                averageGrade: (e['average_grade'] as num?)?.toDouble() ?? 0.0,
-                sessionsCount: (e['sessions_count'] as num?)?.toInt() ?? 0,
-              ))
-          .toList();
+    final points = response
+        .map((e) => ProgressPoint(
+              date: DateTime.parse((e as Map<String, dynamic>)['date'] as String),
+              averageGrade: (e['average_grade'] as num?)?.toDouble() ?? 0.0,
+              sessionsCount: (e['sessions_count'] as num?)?.toInt() ?? 0,
+            ),)
+        .toList();
 
       return ProgressTimeline(
         studentId: studentId,
@@ -304,26 +309,41 @@ class SupabaseGradingDataSource implements GradingRemoteDataSource {
   @override
   Future<List<StudentProgress>> getClassProgress(String teacherId) async {
     try {
-      final response = await _supabase
-        .rpc<List>('get_class_progress', params: {
-        'teacher_id': teacherId,
-      });
+    final response = await _supabase
+        .rpc<List<dynamic>>('get_class_progress', params: {
+      'teacher_id': teacherId,
+    },);
 
-      return (response as List)
-          .map((e) => StudentProgress(
-                studentId: (e as Map<String, dynamic>)['student_id'] as String,
-                studentName: e['student_name'] as String? ?? '',
-                averageGrade: (e['average_grade'] as num?)?.toDouble() ?? 0.0,
-                sessionsAttended: (e['sessions_attended'] as num?)?.toInt() ?? 0,
-                sessionsTotal: (e['sessions_total'] as num?)?.toInt() ?? 0,
-                lastSession: e['last_session'] != null
-                    ? DateTime.parse(e['last_session'] as String)
-                    : null,
-                isOnTrack: (e['is_on_track'] as bool?) ?? true,
-              ))
-          .toList();
+    return response
+        .map((e) => StudentProgress(
+              studentId: (e as Map<String, dynamic>)['student_id'] as String,
+              studentName: e['student_name'] as String? ?? '',
+              averageGrade: (e['average_grade'] as num?)?.toDouble() ?? 0.0,
+              sessionsAttended: (e['sessions_attended'] as num?)?.toInt() ?? 0,
+              sessionsTotal: (e['sessions_total'] as num?)?.toInt() ?? 0,
+              lastSession: e['last_session'] != null
+                  ? DateTime.parse(e['last_session'] as String)
+                  : null,
+              isOnTrack: (e['is_on_track'] as bool?) ?? true,
+            ),)
+        .toList();
     } catch (e) {
       throw ServerException.internalError();
     }
+  }
+
+  @override
+  Stream<List<GradeModel>> gradesStream({String? studentId}) {
+    final query = _supabase.from('grades').stream(primaryKey: ['id']);
+    if (studentId != null && studentId.isNotEmpty) {
+      return query.eq('student_id', studentId).map(
+            (data) => data
+                .map((e) => GradeModel.fromSupabase(e as Map<String, dynamic>))
+                .toList(),
+          );
+    }
+    return query.map((data) => data
+        .map((e) => GradeModel.fromSupabase(e as Map<String, dynamic>))
+        .toList());
   }
 }

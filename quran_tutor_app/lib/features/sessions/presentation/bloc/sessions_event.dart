@@ -8,27 +8,27 @@ abstract class SessionsEvent extends Equatable {
 }
 
 class LoadSessions extends SessionsEvent {
-  final String? userId;
 
   const LoadSessions({this.userId});
+  final String? userId;
 
   @override
   List<Object?> get props => [userId];
 }
 
 class LoadTeacherSessions extends SessionsEvent {
-  final String teacherId;
 
   const LoadTeacherSessions(this.teacherId);
+  final String teacherId;
 
   @override
   List<Object?> get props => [teacherId];
 }
 
 class LoadStudentSessions extends SessionsEvent {
-  final String studentId;
 
   const LoadStudentSessions(this.studentId);
+  final String studentId;
 
   @override
   List<Object?> get props => [studentId];
@@ -39,40 +39,33 @@ class LoadAllSessions extends SessionsEvent {
 }
 
 class LoadUpcomingSessions extends SessionsEvent {
-  final String? userId;
 
   const LoadUpcomingSessions({this.userId});
+  final String? userId;
 
   @override
   List<Object?> get props => [userId];
 }
 
 class LoadPastSessions extends SessionsEvent {
-  final String? userId;
 
   const LoadPastSessions({this.userId});
+  final String? userId;
 
   @override
   List<Object?> get props => [userId];
 }
 
 class GetSession extends SessionsEvent {
-  final String sessionId;
 
   const GetSession(this.sessionId);
+  final String sessionId;
 
   @override
   List<Object?> get props => [sessionId];
 }
 
 class CreateSession extends SessionsEvent {
-  final String teacherId;
-  final DateTime scheduledAt;
-  final int durationMinutes;
-  final String? topic;
-  final String? notes;
-  final String? location;
-  final bool isOnline;
 
   const CreateSession({
     required this.teacherId,
@@ -83,6 +76,13 @@ class CreateSession extends SessionsEvent {
     this.location,
     this.isOnline = true,
   });
+  final String teacherId;
+  final DateTime scheduledAt;
+  final int durationMinutes;
+  final String? topic;
+  final String? notes;
+  final String? location;
+  final bool isOnline;
 
   @override
   List<Object?> get props => [
@@ -97,35 +97,28 @@ class CreateSession extends SessionsEvent {
 }
 
 class AssignStudent extends SessionsEvent {
-  final String sessionId;
-  final String studentId;
 
   const AssignStudent({
     required this.sessionId,
     required this.studentId,
   });
+  final String sessionId;
+  final String studentId;
 
   @override
   List<Object?> get props => [sessionId, studentId];
 }
 
 class UnassignStudent extends SessionsEvent {
-  final String sessionId;
 
   const UnassignStudent(this.sessionId);
+  final String sessionId;
 
   @override
   List<Object?> get props => [sessionId];
 }
 
 class UpdateSession extends SessionsEvent {
-  final String sessionId;
-  final DateTime? scheduledAt;
-  final int? durationMinutes;
-  final String? topic;
-  final String? notes;
-  final String? location;
-  final bool? isOnline;
 
   const UpdateSession({
     required this.sessionId,
@@ -136,6 +129,13 @@ class UpdateSession extends SessionsEvent {
     this.location,
     this.isOnline,
   });
+  final String sessionId;
+  final DateTime? scheduledAt;
+  final int? durationMinutes;
+  final String? topic;
+  final String? notes;
+  final String? location;
+  final bool? isOnline;
 
   @override
   List<Object?> get props => [
@@ -150,59 +150,59 @@ class UpdateSession extends SessionsEvent {
 }
 
 class CancelSession extends SessionsEvent {
-  final String sessionId;
-  final String? reason;
 
   const CancelSession({
     required this.sessionId,
     this.reason,
   });
+  final String sessionId;
+  final String? reason;
 
   @override
   List<Object?> get props => [sessionId, reason];
 }
 
 class RescheduleSession extends SessionsEvent {
-  final String sessionId;
-  final DateTime newScheduledAt;
 
   const RescheduleSession({
     required this.sessionId,
     required this.newScheduledAt,
   });
+  final String sessionId;
+  final DateTime newScheduledAt;
 
   @override
   List<Object?> get props => [sessionId, newScheduledAt];
 }
 
 class StartSession extends SessionsEvent {
-  final String sessionId;
 
   const StartSession(this.sessionId);
+  final String sessionId;
 
   @override
   List<Object?> get props => [sessionId];
 }
 
 class CompleteSession extends SessionsEvent {
-  final String sessionId;
 
   const CompleteSession(this.sessionId);
+  final String sessionId;
 
   @override
   List<Object?> get props => [sessionId];
 }
 
 class LoadSessionsInRange extends SessionsEvent {
-  final DateTime start;
-  final DateTime end;
-  final String? userId;
 
   const LoadSessionsInRange({
     required this.start,
     required this.end,
     this.userId,
   });
+  final DateTime start;
+  final DateTime end;
+  final String? userId;
 
   @override
   List<Object?> get props => [start, end, userId];

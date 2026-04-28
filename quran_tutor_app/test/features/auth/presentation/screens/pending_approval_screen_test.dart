@@ -38,7 +38,7 @@ void main() {
   }
 
   group('PendingApprovalScreen', () {
-    testWidgets('should render pending approval UI', (WidgetTester tester) async {
+    testWidgets('should render pending approval UI', (tester) async {
       // act
       await tester.pumpWidget(createWidgetUnderTest());
 
@@ -49,7 +49,7 @@ void main() {
       expect(find.text('تسجيل الخروج'), findsOneWidget);
     });
 
-    testWidgets('should call SignOutRequested when logout tapped', (WidgetTester tester) async {
+    testWidgets('should call SignOutRequested when logout tapped', (tester) async {
       // act
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.tap(find.text('تسجيل الخروج'));

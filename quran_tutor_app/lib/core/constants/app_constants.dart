@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../environment/app_environment.dart';
+import 'package:quran_tutor_app/core/environment/app_environment.dart';
 
 /// App-wide constants
 class AppConstants {
@@ -78,12 +78,12 @@ class AppConstants {
   static const Duration tokenRefreshThreshold = Duration(minutes: 5);
 
   // UI Constants
-  static const double defaultPadding = 16.0;
-  static const double smallPadding = 8.0;
-  static const double largePadding = 24.0;
-  static const double defaultRadius = 12.0;
-  static const double defaultElevation = 2.0;
-  static const double minTouchTarget = 48.0;
+  static const double defaultPadding = 16;
+  static const double smallPadding = 8;
+  static const double largePadding = 24;
+  static const double defaultRadius = 12;
+  static const double defaultElevation = 2;
+  static const double minTouchTarget = 48;
 
   // Animation Durations
   static const Duration shortAnimationDuration = Duration(milliseconds: 200);
@@ -95,7 +95,7 @@ class AppConstants {
   static const String timeFormat = 'hh:mm a';
   static const String dateTimeFormat = 'dd/MM/yyyy hh:mm a';
   static const String serverDateFormat = 'yyyy-MM-dd';
-  static const String serverDateTimeFormat = 'yyyy-MM-dd\'T\'HH:mm:ss';
+  static const String serverDateTimeFormat = "yyyy-MM-dd'T'HH:mm:ss";
 
   // Regex Patterns
   static final RegExp emailRegex = RegExp(

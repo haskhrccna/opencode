@@ -1,31 +1,31 @@
-import '../../../../core/error/failures.dart';
-import '../repositories/auth_repository.dart';
+import 'package:quran_tutor_app/core/error/failures.dart';
+import 'package:quran_tutor_app/features/auth/domain/repositories/auth_repository.dart';
 
 /// Use case for resetting password
 class ResetPasswordUseCase {
-  final AuthRepository repository;
 
   const ResetPasswordUseCase(this.repository);
+  final AuthRepository repository;
 
   /// Execute password reset
   ///
   /// Sends password reset email
   Future<Failure?> call(String email) async {
-    return await repository.resetPassword(email);
+    return repository.resetPassword(email);
   }
 }
 
 /// Use case for updating password
 class UpdatePasswordUseCase {
-  final AuthRepository repository;
 
   const UpdatePasswordUseCase(this.repository);
+  final AuthRepository repository;
 
   /// Execute password update
   ///
   /// Updates the current user's password
   Future<Failure?> call(UpdatePasswordParams params) async {
-    return await repository.updatePassword(
+    return repository.updatePassword(
       currentPassword: params.currentPassword,
       newPassword: params.newPassword,
     );
@@ -34,11 +34,11 @@ class UpdatePasswordUseCase {
 
 /// Parameters for password update
 class UpdatePasswordParams {
-  final String currentPassword;
-  final String newPassword;
 
   const UpdatePasswordParams({
     required this.currentPassword,
     required this.newPassword,
   });
+  final String currentPassword;
+  final String newPassword;
 }

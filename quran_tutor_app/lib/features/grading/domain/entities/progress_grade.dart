@@ -1,23 +1,9 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/constants/app_constants.dart' show GradingCategory;
+import 'package:quran_tutor_app/core/constants/app_constants.dart' show GradingCategory;
 
 /// Progress grade entity for tracking student progress
 class ProgressGrade extends Equatable {
-  final String id;
-  final String sessionId;
-  final String studentId;
-  final String teacherId;
-  final GradingCategory category;
-  final int grade; // 1-5
-  final String? notes;
-  final String? audioFeedbackUrl;
-  final DateTime createdAt;
-  final DateTime? updatedAt;
-  final List<String>? surahs;
-  final String? verses;
-  final int? pagesMemorized;
-  final Map<String, dynamic>? metadata;
 
   const ProgressGrade({
     required this.id,
@@ -26,9 +12,8 @@ class ProgressGrade extends Equatable {
     required this.teacherId,
     required this.category,
     required this.grade,
-    this.notes,
+    required this.createdAt, this.notes,
     this.audioFeedbackUrl,
-    required this.createdAt,
     this.updatedAt,
     this.surahs,
     this.verses,
@@ -46,6 +31,20 @@ class ProgressGrade extends Equatable {
         grade: 1,
         createdAt: DateTime.now(),
       );
+  final String id;
+  final String sessionId;
+  final String studentId;
+  final String teacherId;
+  final GradingCategory category;
+  final int grade; // 1-5
+  final String? notes;
+  final String? audioFeedbackUrl;
+  final DateTime createdAt;
+  final DateTime? updatedAt;
+  final List<String>? surahs;
+  final String? verses;
+  final int? pagesMemorized;
+  final Map<String, dynamic>? metadata;
 
   /// Check if has audio feedback
   bool get hasAudioFeedback => audioFeedbackUrl != null && audioFeedbackUrl!.isNotEmpty;

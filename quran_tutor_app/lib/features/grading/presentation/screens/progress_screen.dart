@@ -2,9 +2,9 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/grading_bloc.dart';
-import '../bloc/grading_event.dart';
-import '../bloc/grading_state.dart';
+import 'package:quran_tutor_app/features/grading/presentation/bloc/grading_bloc.dart';
+import 'package:quran_tutor_app/features/grading/presentation/bloc/grading_event.dart';
+import 'package:quran_tutor_app/features/grading/presentation/bloc/grading_state.dart';
 
 class ProgressScreen extends StatefulWidget {
   const ProgressScreen({super.key});
@@ -119,9 +119,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
       height: 200,
       child: LineChart(
         LineChartData(
-          gridData: FlGridData(show: true),
           titlesData: FlTitlesData(
-            leftTitles: AxisTitles(
+            leftTitles: const AxisTitles(
               sideTitles: SideTitles(showTitles: true),
             ),
             bottomTitles: AxisTitles(
@@ -135,7 +134,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                     'أسبوع 4',
                     'أسبوع 5',
                     'أسبوع 6',
-                    'الحالي'
+                    'الحالي',
                   ];
                   if (value >= 0 && value < weekLabels.length) {
                     return Text(
@@ -155,7 +154,6 @@ class _ProgressScreenState extends State<ProgressScreen> {
               isCurved: true,
               color: Colors.green,
               barWidth: 3,
-              dotData: FlDotData(show: true),
             ),
           ],
         ),
@@ -234,8 +232,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
   }
 
   Widget _buildRadialChart(double percentage, List<String> completedSurahs) {
-    final completedPercent = (percentage * 100).clamp(0, 100);
-    final remainingPercent = 100 - completedPercent;
+    final completedPercent = (percentage * 100).clamp(0, 100).toDouble();
+    final remainingPercent = (100 - completedPercent);
 
     return SizedBox(
       height: 200,

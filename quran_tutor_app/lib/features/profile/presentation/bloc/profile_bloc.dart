@@ -1,13 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../domain/repositories/profile_repository.dart';
-import 'profile_event.dart';
-import 'profile_state.dart';
+import 'package:quran_tutor_app/features/profile/domain/repositories/profile_repository.dart';
+import 'package:quran_tutor_app/features/profile/presentation/bloc/profile_event.dart';
+import 'package:quran_tutor_app/features/profile/presentation/bloc/profile_state.dart';
 
 @injectable
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-  final ProfileRepository _repository;
 
   ProfileBloc(this._repository) : super(ProfileState.initial()) {
     on<LoadProfile>(_onLoadProfile);
@@ -22,6 +21,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<UnlinkStudentFromTeacher>(_onUnlinkStudentFromTeacher);
     on<RefreshProfile>(_onRefreshProfile);
   }
+  final ProfileRepository _repository;
 
   Future<void> _onLoadProfile(
     LoadProfile event,
@@ -35,13 +35,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(state.copyWith(
         status: ProfileStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       emit(state.copyWith(
         status: ProfileStatus.loaded,
         profile: profile,
         lastUpdated: DateTime.now(),
-      ));
+      ),);
     }
   }
 
@@ -57,13 +57,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(state.copyWith(
         status: ProfileStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       emit(state.copyWith(
         status: ProfileStatus.loaded,
         profile: profile,
         lastUpdated: DateTime.now(),
-      ));
+      ),);
     }
   }
 
@@ -78,7 +78,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(state.copyWith(
         status: ProfileStatus.error,
         errorMessage: 'No profile loaded',
-      ));
+      ),);
       return;
     }
 
@@ -98,13 +98,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(state.copyWith(
         status: ProfileStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       emit(state.copyWith(
         status: ProfileStatus.loaded,
         profile: profile,
         lastUpdated: DateTime.now(),
-      ));
+      ),);
     }
   }
 
@@ -120,13 +120,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(state.copyWith(
         status: ProfileStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       emit(state.copyWith(
         status: ProfileStatus.loaded,
         profile: profile,
         lastUpdated: DateTime.now(),
-      ));
+      ),);
     }
   }
 
@@ -142,7 +142,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(state.copyWith(
         status: ProfileStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       // Refresh profile
       add(const LoadProfile());
@@ -164,12 +164,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(state.copyWith(
         status: ProfileStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       emit(state.copyWith(
         status: ProfileStatus.loaded,
         lastUpdated: DateTime.now(),
-      ));
+      ),);
     }
   }
 
@@ -185,13 +185,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(state.copyWith(
         status: ProfileStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       emit(state.copyWith(
         status: ProfileStatus.loaded,
         teachers: teachers,
         lastUpdated: DateTime.now(),
-      ));
+      ),);
     }
   }
 
@@ -207,13 +207,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(state.copyWith(
         status: ProfileStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       emit(state.copyWith(
         status: ProfileStatus.loaded,
         students: students,
         lastUpdated: DateTime.now(),
-      ));
+      ),);
     }
   }
 
@@ -232,7 +232,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(state.copyWith(
         status: ProfileStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       // Refresh students list
       add(LoadStudentsByTeacher(event.teacherId));
@@ -251,7 +251,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(state.copyWith(
         status: ProfileStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       // Refresh profile
       add(const LoadProfile());
@@ -270,13 +270,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(state.copyWith(
         status: ProfileStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       emit(state.copyWith(
         status: ProfileStatus.loaded,
         profile: profile,
         lastUpdated: DateTime.now(),
-      ));
+      ),);
     }
   }
 }

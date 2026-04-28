@@ -1,13 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../domain/repositories/grading_repository.dart';
-import 'grading_event.dart';
-import 'grading_state.dart';
+import 'package:quran_tutor_app/features/grading/domain/repositories/grading_repository.dart';
+import 'package:quran_tutor_app/features/grading/presentation/bloc/grading_event.dart';
+import 'package:quran_tutor_app/features/grading/presentation/bloc/grading_state.dart';
 
 @injectable
 class GradingBloc extends Bloc<GradingEvent, GradingState> {
-  final GradingRepository _repository;
 
   GradingBloc(this._repository) : super(GradingState.initial()) {
     on<LoadGrades>(_onLoadGrades);
@@ -23,6 +22,7 @@ class GradingBloc extends Bloc<GradingEvent, GradingState> {
     on<UploadAudioFeedback>(_onUploadAudioFeedback);
     on<RefreshGrades>(_onRefreshGrades);
   }
+  final GradingRepository _repository;
 
   Future<void> _onLoadGrades(
     LoadGrades event,
@@ -34,7 +34,7 @@ class GradingBloc extends Bloc<GradingEvent, GradingState> {
       emit(state.copyWith(
         status: GradingStatus.error,
         errorMessage: 'Student ID required',
-      ));
+      ),);
       return;
     }
 
@@ -44,7 +44,7 @@ class GradingBloc extends Bloc<GradingEvent, GradingState> {
       emit(state.copyWith(
         status: GradingStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       final chartData = grades != null ? ChartData.fromGrades(grades) : null;
       emit(state.copyWith(
@@ -52,7 +52,7 @@ class GradingBloc extends Bloc<GradingEvent, GradingState> {
         grades: grades,
         chartData: chartData,
         lastUpdated: DateTime.now(),
-      ));
+      ),);
     }
   }
 
@@ -68,13 +68,13 @@ class GradingBloc extends Bloc<GradingEvent, GradingState> {
       emit(state.copyWith(
         status: GradingStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       emit(state.copyWith(
         status: GradingStatus.loaded,
         grades: grades,
         lastUpdated: DateTime.now(),
-      ));
+      ),);
     }
   }
 
@@ -90,13 +90,13 @@ class GradingBloc extends Bloc<GradingEvent, GradingState> {
       emit(state.copyWith(
         status: GradingStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       emit(state.copyWith(
         status: GradingStatus.loaded,
         grades: grades,
         lastUpdated: DateTime.now(),
-      ));
+      ),);
     }
   }
 
@@ -112,13 +112,13 @@ class GradingBloc extends Bloc<GradingEvent, GradingState> {
       emit(state.copyWith(
         status: GradingStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       emit(state.copyWith(
         status: GradingStatus.loaded,
         selectedGrade: grade,
         lastUpdated: DateTime.now(),
-      ));
+      ),);
     }
   }
 
@@ -144,13 +144,13 @@ class GradingBloc extends Bloc<GradingEvent, GradingState> {
       emit(state.copyWith(
         status: GradingStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       emit(state.copyWith(
         status: GradingStatus.loaded,
         selectedGrade: grade,
         lastUpdated: DateTime.now(),
-      ));
+      ),);
     }
   }
 
@@ -166,7 +166,7 @@ class GradingBloc extends Bloc<GradingEvent, GradingState> {
       emit(state.copyWith(
         status: GradingStatus.error,
         errorMessage: 'Grade not found',
-      ));
+      ),);
       return;
     }
 
@@ -185,13 +185,13 @@ class GradingBloc extends Bloc<GradingEvent, GradingState> {
       emit(state.copyWith(
         status: GradingStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       emit(state.copyWith(
         status: GradingStatus.loaded,
         selectedGrade: grade,
         lastUpdated: DateTime.now(),
-      ));
+      ),);
     }
   }
 
@@ -207,13 +207,12 @@ class GradingBloc extends Bloc<GradingEvent, GradingState> {
       emit(state.copyWith(
         status: GradingStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       emit(state.copyWith(
         status: GradingStatus.loaded,
-        selectedGrade: null,
         lastUpdated: DateTime.now(),
-      ));
+      ),);
     }
   }
 
@@ -229,13 +228,13 @@ class GradingBloc extends Bloc<GradingEvent, GradingState> {
       emit(state.copyWith(
         status: GradingStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       emit(state.copyWith(
         status: GradingStatus.loaded,
         progressSummary: summary,
         lastUpdated: DateTime.now(),
-      ));
+      ),);
     }
   }
 
@@ -255,13 +254,13 @@ class GradingBloc extends Bloc<GradingEvent, GradingState> {
       emit(state.copyWith(
         status: GradingStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       emit(state.copyWith(
         status: GradingStatus.loaded,
         progressTimeline: timeline,
         lastUpdated: DateTime.now(),
-      ));
+      ),);
     }
   }
 
@@ -277,13 +276,13 @@ class GradingBloc extends Bloc<GradingEvent, GradingState> {
       emit(state.copyWith(
         status: GradingStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       emit(state.copyWith(
         status: GradingStatus.loaded,
         classProgress: progress,
         lastUpdated: DateTime.now(),
-      ));
+      ),);
     }
   }
 
@@ -302,7 +301,7 @@ class GradingBloc extends Bloc<GradingEvent, GradingState> {
       emit(state.copyWith(
         status: GradingStatus.error,
         errorMessage: failure.message,
-      ));
+      ),);
     } else {
       // Refresh the grade
       add(GetGrade(event.gradeId));

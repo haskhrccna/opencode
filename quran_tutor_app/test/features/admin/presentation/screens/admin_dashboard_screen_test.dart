@@ -2,18 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-
 import 'package:quran_tutor_app/core/constants/app_constants.dart';
+import 'package:quran_tutor_app/features/admin/domain/repositories/admin_repository.dart';
 import 'package:quran_tutor_app/features/admin/presentation/bloc/admin_bloc.dart';
+import 'package:quran_tutor_app/features/admin/presentation/bloc/admin_event.dart';
 import 'package:quran_tutor_app/features/admin/presentation/bloc/admin_state.dart';
 import 'package:quran_tutor_app/features/admin/presentation/screens/admin_dashboard_screen.dart';
-import 'package:quran_tutor_app/features/admin/domain/repositories/admin_repository.dart';
 import 'package:quran_tutor_app/features/auth/domain/entities/auth_user.dart';
 
 class MockAdminBloc extends Mock implements AdminBloc {}
 
+class FakeAdminEvent extends Fake implements AdminEvent {}
+
 void main() {
   late MockAdminBloc mockAdminBloc;
+
+  setUpAll(() {
+    registerFallbackValue(FakeAdminEvent());
+  });
 
   setUp(() {
     mockAdminBloc = MockAdminBloc();
@@ -33,7 +39,7 @@ void main() {
   }
 
   group('AdminDashboardScreen', () {
-    testWidgets('should show loading indicator when loading', (WidgetTester tester) async {
+    testWidgets('should show loading indicator when loading', (tester) async {
       final state = AdminState.initial().copyWith(status: AdminStatus.loading);
 
       await tester.pumpWidget(createWidgetUnderTest(state));
@@ -41,10 +47,10 @@ void main() {
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
 
-    testWidgets('should render stats cards with correct values', (WidgetTester tester) async {
+    testWidgets('should render stats cards with correct values', (tester) async {
       final state = AdminState.initial().copyWith(
         status: AdminStatus.loaded,
-        systemStats: SystemStats(
+        systemStats: const SystemStats(
           totalUsers: 100,
           totalStudents: 80,
           totalTeachers: 15,
@@ -53,7 +59,7 @@ void main() {
           totalSessions: 200,
           completedSessions: 150,
           cancelledSessions: 10,
-          averageSessionDuration: 45.0,
+          averageSessionDuration: 45,
           averageGrade: 4.2,
           newUsersThisWeek: 5,
           activeUsersToday: 20,
@@ -68,7 +74,7 @@ void main() {
       expect(find.text('12'), findsOneWidget); // pendingApprovals
     });
 
-    testWidgets('should show pending users list', (WidgetTester tester) async {
+    testWidgets('should show pending users list', (tester) async {
       final pendingUsers = [
         AuthUser(
           id: 'user-1',
@@ -99,7 +105,7 @@ void main() {
       expect(find.text('Teacher One'), findsOneWidget);
     });
 
-    testWidgets('should call ApproveUser when approve button tapped', (WidgetTester tester) async {
+    testWidgets('should call ApproveUser when approve button tapped', (tester) async {
       final pendingUsers = [
         AuthUser(
           id: 'user-1',
@@ -123,7 +129,7 @@ void main() {
       expect(find.text('Student One'), findsOneWidget);
     });
 
-    testWidgets('should show error message on error state', (WidgetTester tester) async {
+    testWidgets('should show error message on error state', (tester) async {
       final state = AdminState.initial().copyWith(
         status: AdminStatus.error,
         errorMessage: 'Failed to load dashboard',

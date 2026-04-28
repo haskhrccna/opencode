@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import '../../../../core/error/failures.dart';
-import '../entities/user_profile.dart';
+import 'package:quran_tutor_app/core/error/failures.dart';
+import 'package:quran_tutor_app/features/profile/domain/entities/user_profile.dart';
 
 /// Repository interface for profile operations
 abstract class ProfileRepository {

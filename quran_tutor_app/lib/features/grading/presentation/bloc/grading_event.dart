@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/constants/app_constants.dart';
+import 'package:quran_tutor_app/core/constants/app_constants.dart';
 
 abstract class GradingEvent extends Equatable {
   const GradingEvent();
@@ -10,51 +10,42 @@ abstract class GradingEvent extends Equatable {
 }
 
 class LoadGrades extends GradingEvent {
-  final String? studentId;
 
   const LoadGrades({this.studentId});
+  final String? studentId;
 
   @override
   List<Object?> get props => [studentId];
 }
 
 class LoadGradesBySession extends GradingEvent {
-  final String sessionId;
 
   const LoadGradesBySession(this.sessionId);
+  final String sessionId;
 
   @override
   List<Object?> get props => [sessionId];
 }
 
 class LoadGradesByTeacher extends GradingEvent {
-  final String teacherId;
 
   const LoadGradesByTeacher(this.teacherId);
+  final String teacherId;
 
   @override
   List<Object?> get props => [teacherId];
 }
 
 class GetGrade extends GradingEvent {
-  final String gradeId;
 
   const GetGrade(this.gradeId);
+  final String gradeId;
 
   @override
   List<Object?> get props => [gradeId];
 }
 
 class CreateGrade extends GradingEvent {
-  final String sessionId;
-  final String studentId;
-  final String teacherId;
-  final GradingCategory category;
-  final int grade;
-  final String? notes;
-  final List<String>? surahs;
-  final String? verses;
-  final int? pagesMemorized;
 
   const CreateGrade({
     required this.sessionId,
@@ -67,6 +58,15 @@ class CreateGrade extends GradingEvent {
     this.verses,
     this.pagesMemorized,
   });
+  final String sessionId;
+  final String studentId;
+  final String teacherId;
+  final GradingCategory category;
+  final int grade;
+  final String? notes;
+  final List<String>? surahs;
+  final String? verses;
+  final int? pagesMemorized;
 
   @override
   List<Object?> get props => [
@@ -83,12 +83,6 @@ class CreateGrade extends GradingEvent {
 }
 
 class UpdateGrade extends GradingEvent {
-  final String gradeId;
-  final int? grade;
-  final String? notes;
-  final List<String>? surahs;
-  final String? verses;
-  final int? pagesMemorized;
 
   const UpdateGrade({
     required this.gradeId,
@@ -98,6 +92,12 @@ class UpdateGrade extends GradingEvent {
     this.verses,
     this.pagesMemorized,
   });
+  final String gradeId;
+  final int? grade;
+  final String? notes;
+  final List<String>? surahs;
+  final String? verses;
+  final int? pagesMemorized;
 
   @override
   List<Object?> get props => [
@@ -111,55 +111,55 @@ class UpdateGrade extends GradingEvent {
 }
 
 class DeleteGrade extends GradingEvent {
-  final String gradeId;
 
   const DeleteGrade(this.gradeId);
+  final String gradeId;
 
   @override
   List<Object?> get props => [gradeId];
 }
 
 class LoadStudentProgress extends GradingEvent {
-  final String studentId;
 
   const LoadStudentProgress(this.studentId);
+  final String studentId;
 
   @override
   List<Object?> get props => [studentId];
 }
 
 class LoadProgressTimeline extends GradingEvent {
-  final String studentId;
-  final DateTime startDate;
-  final DateTime endDate;
 
   const LoadProgressTimeline({
     required this.studentId,
     required this.startDate,
     required this.endDate,
   });
+  final String studentId;
+  final DateTime startDate;
+  final DateTime endDate;
 
   @override
   List<Object?> get props => [studentId, startDate, endDate];
 }
 
 class LoadClassProgress extends GradingEvent {
-  final String teacherId;
 
   const LoadClassProgress(this.teacherId);
+  final String teacherId;
 
   @override
   List<Object?> get props => [teacherId];
 }
 
 class UploadAudioFeedback extends GradingEvent {
-  final String gradeId;
-  final String audioFilePath;
 
   const UploadAudioFeedback({
     required this.gradeId,
     required this.audioFilePath,
   });
+  final String gradeId;
+  final String audioFilePath;
 
   @override
   List<Object?> get props => [gradeId, audioFilePath];

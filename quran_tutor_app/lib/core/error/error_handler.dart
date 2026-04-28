@@ -3,9 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
-import '../utils/logging/app_logger.dart';
-import 'failures.dart';
+import 'package:quran_tutor_app/core/error/failures.dart';
+import 'package:quran_tutor_app/core/utils/logging/app_logger.dart';
 
 /// Centralized error handler for the application
 ///
@@ -195,13 +194,13 @@ class ErrorHandler {
 
 /// Error boundary widget
 class _ErrorBoundary extends StatefulWidget {
-  final Widget child;
-  final Widget Function(Failure failure) errorBuilder;
 
   const _ErrorBoundary({
     required this.child,
     required this.errorBuilder,
   });
+  final Widget child;
+  final Widget Function(Failure failure) errorBuilder;
 
   @override
   State<_ErrorBoundary> createState() => _ErrorBoundaryState();

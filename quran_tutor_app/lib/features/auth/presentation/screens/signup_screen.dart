@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/utils/validators/arabic_validators.dart';
-import '../bloc/auth_bloc.dart';
-import '../bloc/auth_event.dart';
-import '../bloc/auth_state.dart';
+import 'package:quran_tutor_app/core/utils/validators/arabic_validators.dart';
+import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_event.dart';
+import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_state.dart';
 
 class SignupScreen extends StatefulWidget {
-  final String? teacherInviteCode;
 
   const SignupScreen({super.key, this.teacherInviteCode});
+  final String? teacherInviteCode;
 
   @override
   State<SignupScreen> createState() => _SignupScreenState();
@@ -53,7 +53,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 const Icon(Icons.menu_book, size: 64, color: Colors.green),
                 const SizedBox(height: 16),
                 Text('إنشاء حساب',
-                    style: Theme.of(context).textTheme.headlineMedium),
+                    style: Theme.of(context).textTheme.headlineMedium,),
                 if (widget.teacherInviteCode != null) ...[
                   const SizedBox(height: 8),
                   Container(
@@ -140,7 +140,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   obscureText: true,
                   validator: (v) =>
                       ArabicValidators.validatePasswordConfirmation(
-                          v, _passwordController.text),
+                          v, _passwordController.text,),
                 ),
                 const SizedBox(height: 24),
                 BlocConsumer<AuthBloc, AuthState>(
@@ -178,7 +178,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           ? const SizedBox(
                               width: 20,
                               height: 20,
-                              child: CircularProgressIndicator(strokeWidth: 2))
+                              child: CircularProgressIndicator(strokeWidth: 2),)
                           : const Text('تسجيل'),
                     );
                   },

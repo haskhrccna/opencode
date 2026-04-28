@@ -1,7 +1,7 @@
+import 'package:injectable/injectable.dart';
+import 'package:quran_tutor_app/core/error/exceptions.dart';
+import 'package:quran_tutor_app/features/auth/data/models/user_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
-import '../../../../core/error/exceptions.dart';
-import '../models/user_model.dart';
 
 /// Abstract remote datasource interface
 abstract class AuthRemoteDataSource {
@@ -53,11 +53,12 @@ abstract class AuthRemoteDataSource {
 }
 
 /// Supabase implementation of AuthRemoteDataSource
+@Singleton(as: AuthRemoteDataSource)
 class SupabaseAuthDataSource implements AuthRemoteDataSource {
-  final SupabaseClient _supabase;
 
   SupabaseAuthDataSource({SupabaseClient? supabase})
       : _supabase = supabase ?? Supabase.instance.client;
+  final SupabaseClient _supabase;
 
   @override
   Future<UserModel?> getCurrentUser() async {
@@ -298,7 +299,7 @@ class SupabaseAuthDataSource implements AuthRemoteDataSource {
       final session = event.session;
       if (session == null) return null;
 
-      return await getCurrentUser();
+      return getCurrentUser();
     });
   }
 }
