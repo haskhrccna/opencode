@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:quran_tutor_app/core/constants/app_constants.dart';
@@ -22,12 +23,25 @@ import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  const supabaseUrl = String.fromEnvironment('SUPABASE_URL');
-  const supabaseAnonKey = String.fromEnvironment('SUPABASE_ANON_KEY');
-  assert(supabaseUrl.isNotEmpty,
-      'SUPABASE_URL must be provided via --dart-define=SUPABASE_URL=...',);
-  assert(supabaseAnonKey.isNotEmpty,
-      'SUPABASE_ANON_KEY must be provided via --dart-define=SUPABASE_ANON_KEY=...',);
+  // Load .env (bundled as an asset). Tolerate a missing file so that
+  // --dart-define-only setups (e.g. CI) keep working.
+  try {
+    await dotenv.load();
+  } catch (_) {
+    // No .env bundled — fall back to compile-time --dart-define values.
+  }
+
+  final supabaseUrl = _envOrDefine('SUPABASE_URL');
+  final supabaseAnonKey = _envOrDefine('SUPABASE_ANON_KEY');
+  assert(
+    supabaseUrl.isNotEmpty,
+    'SUPABASE_URL must be set in .env or via --dart-define=SUPABASE_URL=...',
+  );
+  assert(
+    supabaseAnonKey.isNotEmpty,
+    'SUPABASE_ANON_KEY must be set in .env or via '
+    '--dart-define=SUPABASE_ANON_KEY=...',
+  );
 
   await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
   await EasyLocalization.ensureInitialized();
@@ -92,6 +106,28 @@ void main() async {
       child: const QuranTutorApp(),
     ),
   );
+}
+
+/// Read [key] from `.env` first, then fall back to a compile-time
+/// `--dart-define`. Returns an empty string when neither is set.
+String _envOrDefine(String key) {
+  final fromEnv = dotenv.maybeGet(key);
+  if (fromEnv != null && fromEnv.isNotEmpty) return fromEnv;
+  // String.fromEnvironment requires a const key — branch per known key.
+  switch (key) {
+    case 'SUPABASE_URL':
+      return const String.fromEnvironment('SUPABASE_URL');
+    case 'SUPABASE_ANON_KEY':
+      return const String.fromEnvironment('SUPABASE_ANON_KEY');
+    case 'ONESIGNAL_APP_ID':
+      return const String.fromEnvironment('ONESIGNAL_APP_ID');
+    case 'POSTHOG_API_KEY':
+      return const String.fromEnvironment('POSTHOG_API_KEY');
+    case 'POSTHOG_HOST':
+      return const String.fromEnvironment('POSTHOG_HOST');
+    default:
+      return '';
+  }
 }
 
 class QuranTutorApp extends StatelessWidget {
