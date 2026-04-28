@@ -222,7 +222,7 @@ class SupabaseAdminDataSource implements AdminRemoteDataSource {
   @override
   Future<SystemStats> getSystemStats() async {
     try {
-      final response = await _supabase.rpc('get_system_stats');
+      final response = await _supabase.rpc<Map<String, dynamic>>('get_system_stats');
 
       return SystemStats(
         totalUsers: (response['total_users'] as num?)?.toInt() ?? 0,
@@ -249,7 +249,7 @@ class SupabaseAdminDataSource implements AdminRemoteDataSource {
     required DateTime endDate,
   }) async {
     try {
-      final response = await _supabase.rpc('get_report_data', params: {
+      final response = await _supabase.rpc<Map<String, dynamic>>('get_report_data', params: {
         'start_date': startDate.toIso8601String(),
         'end_date': endDate.toIso8601String(),
       });

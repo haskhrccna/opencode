@@ -160,7 +160,7 @@ class ErrorHandler {
     Failure failure, {
     VoidCallback? onRetry,
   }) {
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
         title: Text(_getErrorTitle(failure)),

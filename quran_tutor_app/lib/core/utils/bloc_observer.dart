@@ -11,7 +11,7 @@ class AppBlocObserver extends BlocObserver {
   final AppLogger _logger = AppLogger();
 
   @override
-  void onCreate(BlocBase bloc) {
+  void onCreate(BlocBase<dynamic> bloc) {
     super.onCreate(bloc);
     // Only log in debug mode
     if (kDebugMode) {
@@ -20,7 +20,7 @@ class AppBlocObserver extends BlocObserver {
   }
 
   @override
-  void onEvent(Bloc bloc, Object? event) {
+  void onEvent(Bloc<dynamic, dynamic> bloc, Object? event) {
     super.onEvent(bloc, event);
     // Only log in debug mode - strip verbose BLoC logs in release
     if (kDebugMode) {
@@ -29,7 +29,7 @@ class AppBlocObserver extends BlocObserver {
   }
 
   @override
-  void onChange(BlocBase bloc, Change change) {
+  void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
     super.onChange(bloc, change);
     // Only log in debug mode - strip verbose BLoC logs in release
     if (kDebugMode) {
@@ -40,7 +40,7 @@ class AppBlocObserver extends BlocObserver {
   }
 
   @override
-  void onTransition(Bloc bloc, Transition transition) {
+  void onTransition(Bloc<dynamic, dynamic> bloc, Transition<dynamic, dynamic> transition) {
     super.onTransition(bloc, transition);
     // Only log in debug mode - strip verbose BLoC logs in release
     if (kDebugMode) {
@@ -52,7 +52,7 @@ class AppBlocObserver extends BlocObserver {
   }
 
   @override
-  void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
+  void onError(BlocBase<dynamic> bloc, Object error, StackTrace stackTrace) {
     super.onError(bloc, error, stackTrace);
     // Always log errors, regardless of mode
     _logger.e('🔴 Error in ${bloc.runtimeType}',
@@ -63,7 +63,7 @@ class AppBlocObserver extends BlocObserver {
   }
 
   @override
-  void onClose(BlocBase bloc) {
+  void onClose(BlocBase<dynamic> bloc) {
     super.onClose(bloc);
     // Only log in debug mode
     if (kDebugMode) {

@@ -1,6 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../../../core/constants/app_constants.dart';
 import '../../../../core/error/exceptions.dart';
 import '../models/session_model.dart';
 
@@ -68,7 +67,6 @@ class SupabaseSessionsDataSource implements SessionsRemoteDataSource {
           .eq('id', sessionId)
           .single();
 
-      if (response == null) return null;
       return SessionModel.fromSupabase(response);
     } catch (e) {
       throw ServerException.internalError();

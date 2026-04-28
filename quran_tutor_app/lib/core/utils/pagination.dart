@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
-
 import '../constants/app_constants.dart';
 
 /// Pagination state for infinite scroll

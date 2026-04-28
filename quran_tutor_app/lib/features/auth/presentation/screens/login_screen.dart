@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -75,7 +74,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           ? null
                           : () {
                               if (_formKey.currentState!.validate()) {
-                                debugPrint('🔐 Login pressed: ${_emailController.text.trim()}');
                                 context.read<AuthBloc>().add(
                                       SignInRequested(
                                         email: _emailController.text.trim(),

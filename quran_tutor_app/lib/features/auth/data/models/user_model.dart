@@ -70,9 +70,7 @@ class UserModel {
           user.userMetadata?['avatar_url'] as String?,
       role: profileData?['role'] as String? ?? 'student',
       status: profileData?['status'] as String? ?? 'pending',
-      createdAt: user.createdAt != null
-          ? DateTime.parse(user.createdAt!)
-          : DateTime.now(),
+createdAt: DateTime.parse(user.createdAt),
       updatedAt: user.updatedAt != null ? DateTime.parse(user.updatedAt!) : null,
       phoneNumber: profileData?['phone_number'] as String? ??
           profileData?['phone'] as String?,
