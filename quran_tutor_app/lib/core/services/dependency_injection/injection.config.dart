@@ -103,6 +103,8 @@ _i174.GetIt $initGetIt(
       _i412.SupabaseProfileDataSource(supabase: gh<_i454.SupabaseClient>()));
   gh.singleton<_i854.RealtimeService>(
       () => _i854.RealtimeService(supabase: gh<_i454.SupabaseClient>()));
+  gh.singleton<_i998.GradingRemoteDataSource>(() =>
+      _i998.SupabaseGradingDataSource(supabase: gh<_i454.SupabaseClient>()));
   gh.singleton<_i642.OfflineService>(() => _i642.OfflineService(
         db: gh<_i95.OfflineDatabase>(),
         connectivity: gh<_i895.Connectivity>(),
@@ -113,8 +115,6 @@ _i174.GetIt $initGetIt(
       _i1043.SupabaseAuthDataSource(supabase: gh<_i454.SupabaseClient>()));
   gh.singleton<_i612.AdminRemoteDataSource>(() =>
       _i612.SupabaseAdminDataSource(supabase: gh<_i454.SupabaseClient>()));
-  gh.singleton<_i998.GradingRemoteDataSource>(() =>
-      _i998.SupabaseGradingDataSource(supabase: gh<_i454.SupabaseClient>()));
   gh.singleton<_i916.GradingRepository>(
       () => _i430.GradingRepositoryImpl(gh<_i998.GradingRemoteDataSource>()));
   gh.factory<_i241.AdminRepository>(() => _i839.AdminRepositoryImpl(
