@@ -43,10 +43,17 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
               final session = state.selectedSession;
               if (session == null) return const SizedBox.shrink();
 
-              final authRole = context.read<AuthBloc>().state.user?.role;
-              final isOwner = authRole == UserRole.teacher || authRole == UserRole.admin;
+              final authUser = context.read<AuthBloc>().state.user;
+              final authRole = authUser?.role;
+              final isAdmin = authRole == UserRole.admin;
+              final isOwningTeacher = authRole == UserRole.teacher &&
+                  authUser != null &&
+                  session.teacherId == authUser.id;
+              final canManage = isAdmin || isOwningTeacher;
 
-              if (!isOwner || session.status == SessionStatus.completed || session.status == SessionStatus.cancelled) {
+              if (!canManage ||
+                  session.status == SessionStatus.completed ||
+                  session.status == SessionStatus.cancelled) {
                 return const SizedBox.shrink();
               }
 
@@ -248,6 +255,8 @@ class _StatusBanner extends StatelessWidget {
         return Colors.green;
       case SessionStatus.cancelled:
         return AppColors.error;
+      case SessionStatus.rescheduled:
+        return Colors.purple;
     }
   }
 
@@ -261,6 +270,8 @@ class _StatusBanner extends StatelessWidget {
         return 'مكتملة';
       case SessionStatus.cancelled:
         return 'ملغاة';
+      case SessionStatus.rescheduled:
+        return 'معاد جدولتها';
     }
   }
 
@@ -274,6 +285,8 @@ class _StatusBanner extends StatelessWidget {
         return Icons.check_circle;
       case SessionStatus.cancelled:
         return Icons.cancel;
+      case SessionStatus.rescheduled:
+        return Icons.update;
     }
   }
 

@@ -135,4 +135,59 @@ void main() {
       expect(failure, isNull);
     });
   });
+
+  group('startSession', () {
+    const tSessionId = 'session-1';
+
+    test('should call datasource.startSession on the in-progress path',
+        () async {
+      // Regression: previously startSession called completeSession first,
+      // which marked the session as completed on the server.
+      final inProgressModel = tSessionModel.copyWith(status: 'in_progress');
+      when(() => mockRemoteDataSource.startSession(tSessionId))
+          .thenAnswer((_) async => inProgressModel);
+
+      final (session, failure) = await repository.startSession(tSessionId);
+
+      expect(failure, isNull);
+      expect(session, isNotNull);
+      expect(session!.status, SessionStatus.inProgress);
+      verify(() => mockRemoteDataSource.startSession(tSessionId)).called(1);
+    });
+
+    test('should return ServerFailure on ServerException', () async {
+      when(() => mockRemoteDataSource.startSession(tSessionId))
+          .thenThrow(ServerException.internalError());
+
+      final (session, failure) = await repository.startSession(tSessionId);
+
+      expect(session, isNull);
+      expect(failure, isA<ServerFailure>());
+    });
+  });
+
+  group('unassignStudent', () {
+    const tSessionId = 'session-1';
+
+    test('should call datasource.unassignStudent', () async {
+      // Regression: previously unassignStudent called assignStudent with
+      // an empty string, which violates the student_id UUID column type.
+      when(() => mockRemoteDataSource.unassignStudent(tSessionId))
+          .thenAnswer((_) async {});
+
+      final failure = await repository.unassignStudent(tSessionId);
+
+      expect(failure, isNull);
+      verify(() => mockRemoteDataSource.unassignStudent(tSessionId)).called(1);
+    });
+
+    test('should return ServerFailure on ServerException', () async {
+      when(() => mockRemoteDataSource.unassignStudent(tSessionId))
+          .thenThrow(ServerException.internalError());
+
+      final failure = await repository.unassignStudent(tSessionId);
+
+      expect(failure, isA<ServerFailure>());
+    });
+  });
 }

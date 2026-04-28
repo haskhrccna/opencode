@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
+import 'package:quran_tutor_app/core/utils/logging/app_logger.dart';
 import 'package:quran_tutor_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_event.dart';
 import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_state.dart';
@@ -26,7 +27,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(state.copyWith(status: AuthStatus.loading));
     try {
-      final user = await _authRepository.getCurrentUser();
+      final user = await _authRepository.getCurrentUser()
+          .timeout(const Duration(seconds: 5));
       if (user.isAuthenticated) {
         emit(state.copyWith(
           status: AuthStatus.authenticated,
@@ -35,7 +37,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       } else {
         emit(state.copyWith(status: AuthStatus.unauthenticated));
       }
-    } catch (_) {
+    } catch (e, stackTrace) {
+      AppLogger().e(
+        'AuthBloc.AppStarted: getCurrentUser failed',
+        error: e,
+        stackTrace: stackTrace,
+      );
       emit(state.copyWith(status: AuthStatus.unauthenticated));
     }
   }
@@ -160,26 +167,43 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           user: user,
         ),);
       }
+      return;
     }
+    AppLogger().w(
+      'AuthBloc.RefreshUserRequested: refresh failed: '
+      '${failure?.message ?? 'unknown'}',
+    );
   }
 
   Future<void> _onResetPasswordRequested(
     ResetPasswordRequested event,
     Emitter<AuthState> emit,
   ) async {
+    final previousStatus = state.status;
+    emit(state.copyWith(status: AuthStatus.loading));
     final failure = await _authRepository.resetPassword(event.email);
     if (failure != null) {
       emit(state.copyWith(
         status: AuthStatus.error,
         errorMessage: failure.message,
       ),);
+      return;
     }
+    // Success: drop the spinner. Reset is requested while logged out, so fall
+    // back to unauthenticated unless we were already in another resting state.
+    final restingStatus = previousStatus == AuthStatus.loading ||
+            previousStatus == AuthStatus.initial
+        ? AuthStatus.unauthenticated
+        : previousStatus;
+    emit(AuthState(status: restingStatus, user: state.user));
   }
 
   Future<void> _onUpdatePasswordRequested(
     UpdatePasswordRequested event,
     Emitter<AuthState> emit,
   ) async {
+    final previousStatus = state.status;
+    emit(state.copyWith(status: AuthStatus.loading));
     final failure = await _authRepository.updatePassword(
       currentPassword: event.currentPassword,
       newPassword: event.newPassword,
@@ -189,6 +213,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         status: AuthStatus.error,
         errorMessage: failure.message,
       ),);
+      return;
     }
+    // Success: drop the spinner. Update is requested while authenticated.
+    final restingStatus = previousStatus == AuthStatus.loading ||
+            previousStatus == AuthStatus.initial
+        ? AuthStatus.authenticated
+        : previousStatus;
+    emit(AuthState(status: restingStatus, user: state.user));
   }
 }

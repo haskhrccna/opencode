@@ -177,6 +177,7 @@ class _SessionsScreenState extends State<SessionsScreen> {
       );
     }
 
+    final role = context.read<AuthBloc>().state.user?.role;
     return ListView.builder(
       padding: const EdgeInsets.all(16),
       itemCount: daySessions.length,
@@ -184,10 +185,21 @@ class _SessionsScreenState extends State<SessionsScreen> {
         final session = daySessions[index];
         return _SessionCard(
           session: session,
-          onTap: () => context.go('/student/sessions/${session.id}'),
+          onTap: () => context.go(_detailRouteFor(role, session.id)),
         );
       },
     );
+  }
+
+  String _detailRouteFor(UserRole? role, String sessionId) {
+    switch (role) {
+      case UserRole.teacher:
+        return '/teacher/sessions/$sessionId';
+      case UserRole.admin:
+      case UserRole.student:
+      case null:
+        return '/student/sessions/$sessionId';
+    }
   }
 
   void _showCreateSessionSheet(BuildContext context) {
@@ -215,6 +227,8 @@ class _SessionCard extends StatelessWidget {
         return Colors.green;
       case SessionStatus.cancelled:
         return AppColors.error;
+      case SessionStatus.rescheduled:
+        return Colors.purple;
     }
   }
 
@@ -228,6 +242,8 @@ class _SessionCard extends StatelessWidget {
         return 'مكتملة';
       case SessionStatus.cancelled:
         return 'ملغاة';
+      case SessionStatus.rescheduled:
+        return 'معاد جدولتها';
     }
   }
 

@@ -174,7 +174,7 @@ class SessionsRepositoryImpl implements SessionsRepository {
   @override
   Future<Failure?> unassignStudent(String sessionId) async {
     try {
-      await remoteDataSource.assignStudent(sessionId, '');
+      await remoteDataSource.unassignStudent(sessionId);
       return null;
     } on ServerException catch (e) {
       return _mapServerException(e);
@@ -237,12 +237,8 @@ class SessionsRepositoryImpl implements SessionsRepository {
   @override
   Future<(Session?, Failure?)> startSession(String sessionId) async {
     try {
-      final model = await remoteDataSource.completeSession(sessionId);
-      // TODO: Add dedicated startSession to datasource if needed
-      // For now, update status via updateSession
-      final updatedModel = model.copyWith(status: 'in_progress');
-      final result = await remoteDataSource.updateSession(updatedModel);
-      return (result.toEntity(), null);
+      final model = await remoteDataSource.startSession(sessionId);
+      return (model.toEntity(), null);
     } on ServerException catch (e) {
       return (null, _mapServerException(e));
     } on NetworkException catch (e) {

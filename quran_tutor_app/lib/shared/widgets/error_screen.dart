@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -19,7 +20,7 @@ class ErrorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.maybeOf(context);
     final errorData = _getErrorData(context, l10n);
     
     return Scaffold(
@@ -69,7 +70,7 @@ class ErrorScreen extends StatelessWidget {
                   child: ElevatedButton.icon(
                     onPressed: onRetry,
                     icon: const Icon(Icons.refresh),
-                    label: Text(l10n.t('error.retry')),
+                    label: Text(l10n?.t('error.retry') ?? 'Retry'),
                   ),
                 ),
               
@@ -79,8 +80,8 @@ class ErrorScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: OutlinedButton(
-                  onPressed: () => context.go('/'),
-                  child: Text(l10n.t('error.go_home')),
+                  onPressed: () => context.go('/splash'),
+                  child: Text(l10n?.t('error.go_home') ?? 'Go Home'),
                 ),
               ),
             ],
@@ -90,7 +91,7 @@ class ErrorScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTechnicalDetails(BuildContext context, AppLocalizations l10n) {
+  Widget _buildTechnicalDetails(BuildContext context, AppLocalizations? l10n) {
     return Container(
       margin: const EdgeInsets.only(top: 16),
       padding: const EdgeInsets.all(12),
@@ -102,7 +103,7 @@ class ErrorScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            l10n.isArabic ? 'تفاصيل تقنية:' : 'Technical Details:',
+            (l10n?.isArabic ?? false) ? 'تفاصيل تقنية:' : 'Technical Details:',
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).colorScheme.error,
@@ -131,7 +132,7 @@ class ErrorScreen extends StatelessWidget {
   }
 
   /// Get error data based on failure type
-  _ErrorData _getErrorData(BuildContext context, AppLocalizations l10n) {
+  _ErrorData _getErrorData(BuildContext context, AppLocalizations? l10n) {
     if (failure == null) {
       return _ErrorData.unknown(l10n);
     }
@@ -142,7 +143,7 @@ class ErrorScreen extends StatelessWidget {
       return _ErrorData(
         icon: Icons.wifi_off,
         iconColor: Colors.orange,
-        title: l10n.t('error.network'),
+        title: l10n?.t('error.network') ?? 'Network Error',
         message: failure!.message,
       );
     }
@@ -151,7 +152,7 @@ class ErrorScreen extends StatelessWidget {
       return _ErrorData(
         icon: Icons.lock_outline,
         iconColor: colorScheme.primary,
-        title: l10n.t('error.auth'),
+        title: l10n?.t('error.auth') ?? 'Authentication Error',
         message: failure!.message,
       );
     }
@@ -160,7 +161,7 @@ class ErrorScreen extends StatelessWidget {
       return _ErrorData(
         icon: Icons.cloud_off,
         iconColor: Colors.red,
-        title: l10n.t('error.server'),
+        title: l10n?.t('error.server') ?? 'Server Error',
         message: failure!.message,
       );
     }
@@ -169,7 +170,7 @@ class ErrorScreen extends StatelessWidget {
       return _ErrorData(
         icon: Icons.storage_outlined,
         iconColor: Colors.amber,
-        title: l10n.t('error.cache'),
+        title: l10n?.t('error.cache') ?? 'Cache Error',
         message: failure!.message,
       );
     }
@@ -178,7 +179,7 @@ class ErrorScreen extends StatelessWidget {
       return _ErrorData(
         icon: Icons.error_outline,
         iconColor: Colors.orange,
-        title: l10n.t('error.validation'),
+        title: l10n?.t('error.validation') ?? 'Validation Error',
         message: failure!.message,
       );
     }
@@ -186,8 +187,9 @@ class ErrorScreen extends StatelessWidget {
     return _ErrorData.unknown(l10n);
   }
 
-  /// Whether to show technical details (always true in debug mode)
-  bool get _showTechnicalDetails => true; // Set to false in production
+  /// Whether to show technical details (only in debug mode — never leak
+  /// raw server/exception messages to end users in release builds).
+  bool get _showTechnicalDetails => kDebugMode;
 }
 
 /// Error data holder
@@ -200,11 +202,11 @@ class _ErrorData {
     required this.message,
   });
 
-  factory _ErrorData.unknown(AppLocalizations l10n) => _ErrorData(
+  factory _ErrorData.unknown(AppLocalizations? l10n) => _ErrorData(
         icon: Icons.error_outline,
         iconColor: Colors.grey,
-        title: l10n.t('error.title'),
-        message: l10n.t('error.unknown'),
+        title: l10n?.t('error.title') ?? 'Error',
+        message: l10n?.t('error.unknown') ?? 'Something went wrong',
       );
   final IconData icon;
   final Color iconColor;

@@ -212,10 +212,20 @@ class AppRouter {
   }
 
   static bool _hasAccess(UserRole role, String path) {
+    // Deep-link routes are reachable by any authenticated role.
+    if (_isDeepLinkPath(path)) return true;
     if (role == UserRole.admin) return true;
     if (path.startsWith('/student') && role == UserRole.student) return true;
     if (path.startsWith('/teacher') && role == UserRole.teacher) return true;
     if (path.startsWith('/auth') || path == '/splash') return true;
     return false;
+  }
+
+  static bool _isDeepLinkPath(String path) {
+    // [path] is the matched GoRoute pattern (e.g. "/session/:id"), not the URI.
+    return path == '/session/:id' ||
+        path.startsWith('/session/') ||
+        path == '/invite/:code' ||
+        path.startsWith('/invite/');
   }
 }
