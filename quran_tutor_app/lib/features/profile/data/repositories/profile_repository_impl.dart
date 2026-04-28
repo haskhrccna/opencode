@@ -51,9 +51,5 @@ class ProfileRepositoryImpl implements ProfileRepository {
       const ServerFailure(message: 'Not implemented');
 
   @override
-  Future<(UserProfile?, Failure?)> assignTeacher(String studentId, String teacherId) async =>
-      (null, const ServerFailure(message: 'Not implemented'));
-
-  @override
   Stream<UserProfile> get profileUpdates => Stream<UserProfile>.empty();
 }

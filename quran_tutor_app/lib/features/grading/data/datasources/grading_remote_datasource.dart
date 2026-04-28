@@ -75,7 +75,6 @@ class SupabaseGradingDataSource implements GradingRemoteDataSource {
           .eq('id', gradeId)
           .single();
 
-      if (response == null) return null;
       return GradeModel.fromSupabase(response);
     } catch (e) {
       throw ServerException.internalError();
@@ -248,7 +247,7 @@ class SupabaseGradingDataSource implements GradingRemoteDataSource {
     try {
       // Call Supabase RPC function
       final response = await _supabase
-          .rpc('get_student_progress_summary', params: {
+        .rpc<Map<String, dynamic>>('get_student_progress_summary', params: {
         'student_id': studentId,
       });
 
@@ -279,7 +278,7 @@ class SupabaseGradingDataSource implements GradingRemoteDataSource {
   }) async {
     try {
       final response = await _supabase
-          .rpc('get_progress_timeline', params: {
+        .rpc<List>('get_progress_timeline', params: {
         'student_id': studentId,
         'start_date': startDate.toIso8601String(),
         'end_date': endDate.toIso8601String(),
@@ -306,7 +305,7 @@ class SupabaseGradingDataSource implements GradingRemoteDataSource {
   Future<List<StudentProgress>> getClassProgress(String teacherId) async {
     try {
       final response = await _supabase
-          .rpc('get_class_progress', params: {
+        .rpc<List>('get_class_progress', params: {
         'teacher_id': teacherId,
       });
 

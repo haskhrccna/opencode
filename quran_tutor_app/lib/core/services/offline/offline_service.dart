@@ -44,7 +44,7 @@ class OfflineService {
 
   void _initConnectivity() {
     _connectivity.onConnectivityChanged.listen((result) {
-      _isOnline = result != ConnectivityResult.none;
+      _isOnline = !result.contains(ConnectivityResult.none);
       if (_isOnline) {
         syncPendingChanges();
       }

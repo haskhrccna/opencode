@@ -121,8 +121,7 @@ class GradingRepositoryImpl implements GradingRepository {
     required String audioFilePath,
   }) async {
     try {
-      final url = await _remoteDataSource.uploadAudioFeedback(gradeId, audioFilePath);
-      // Get updated grade
+      await _remoteDataSource.uploadAudioFeedback(gradeId, audioFilePath);
       final grade = await _remoteDataSource.getGrade(gradeId);
       return (grade?.toEntity(), null);
     } catch (e) {

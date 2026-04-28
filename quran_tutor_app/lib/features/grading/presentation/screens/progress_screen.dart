@@ -72,7 +72,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
               children: [
                 // Sessions per week chart
                 _buildSectionTitle('الجلسات الأسبوعية'),
-                _buildLineChart(chartData!.weeklySessionsSpots),
+                _buildLineChart(chartData.weeklySessionsSpots),
                 const SizedBox(height: 24),
 
                 // Grade distribution chart
@@ -234,8 +234,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
   }
 
   Widget _buildRadialChart(double percentage, List<String> completedSurahs) {
-    final completedPercent = ((percentage * 100).clamp(0, 100) as double);
-    final remainingPercent = (100 - completedPercent) as double;
+    final completedPercent = (percentage * 100).clamp(0, 100);
+    final remainingPercent = 100 - completedPercent;
 
     return SizedBox(
       height: 200,

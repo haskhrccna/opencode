@@ -1,7 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/constants/app_constants.dart';
-import '../../../auth/domain/entities/auth_user.dart';
 import '../../domain/repositories/admin_repository.dart';
 
 abstract class AdminEvent extends Equatable {

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/error/exceptions.dart';
@@ -84,32 +83,28 @@ class SupabaseAuthDataSource implements AuthRemoteDataSource {
   @override
   Future<UserModel> signIn(String email, String password) async {
     try {
-      debugPrint('🔐 RemoteDS: signInWithPassword for $email');
       final response = await _supabase.auth.signInWithPassword(
         email: email,
         password: password,
       );
-      debugPrint('🔐 RemoteDS: auth response user=${response.user?.id}');
-
       if (response.user == null) {
         throw const ServerException(message: 'Invalid credentials');
       }
 
-      // Fetch user profile
-      debugPrint('🔐 RemoteDS: querying users table for ${response.user!.id}');
       final userData = await _supabase
           .from('users')
           .select()
           .eq('id', response.user!.id)
-          .single();
-      debugPrint('🔐 RemoteDS: users table returned $userData');
+          .maybeSingle();
+
+      if (userData == null) {
+        return UserModel.fromSupabaseUser(response.user!, null);
+      }
 
       return UserModel.fromSupabaseUser(response.user!, userData);
     } on PostgrestException catch (e) {
-      debugPrint('🔐 RemoteDS: PostgrestException: ${e.message}');
       throw ServerException(message: e.message);
     } catch (e) {
-      debugPrint('🔐 RemoteDS: Exception: $e');
       throw ServerException(message: e.toString());
     }
   }

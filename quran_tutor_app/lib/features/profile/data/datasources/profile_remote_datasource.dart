@@ -50,7 +50,6 @@ class SupabaseProfileDataSource implements ProfileRemoteDataSource {
           .eq('id', userId)
           .single();
 
-      if (response == null) return null;
       return ProfileModel.fromSupabase(response);
     } catch (e) {
       throw ServerException.internalError();

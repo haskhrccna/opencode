@@ -7,8 +7,6 @@ import 'package:record/record.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../../constants/app_constants.dart';
-
 /// Service for handling audio recording and playback
 @singleton
 class AudioService {

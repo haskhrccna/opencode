@@ -1,8 +1,6 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../../core/constants/app_constants.dart';
-import '../../domain/entities/progress_grade.dart';
-import '../../domain/repositories/grading_repository.dart';
 
 abstract class GradingEvent extends Equatable {
   const GradingEvent();

@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
 import '../../domain/entities/auth_user.dart';
@@ -39,19 +37,14 @@ class AuthRepositoryImpl implements AuthRepository {
     required String password,
   }) async {
     try {
-      debugPrint('🔐 AuthRepo: calling remote signIn');
       final userModel = await remoteDataSource.signIn(email, password);
-      debugPrint('🔐 AuthRepo: remote returned ${userModel.email}');
       await localDataSource.cacheUserData(userModel.toJson());
       return (userModel.toEntity(), null);
     } on ServerException catch (e) {
-      debugPrint('🔐 AuthRepo: ServerException: ${e.message}');
       return (null, _mapServerExceptionToFailure(e));
     } on NetworkException catch (e) {
-      debugPrint('🔐 AuthRepo: NetworkException: ${e.message}');
       return (null, _mapNetworkExceptionToFailure(e));
     } catch (e) {
-      debugPrint('🔐 AuthRepo: Unknown error: $e');
       return (null, UnknownFailure(message: e.toString()));
     }
   }
