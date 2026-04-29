@@ -8,7 +8,7 @@ import 'package:quran_tutor_app/features/sessions/domain/entities/session.dart';
 import 'package:quran_tutor_app/features/sessions/domain/repositories/sessions_repository.dart';
 
 /// Implementation of SessionsRepository using remote datasource
-@Injectable(as: SessionsRepository)
+@Singleton(as: SessionsRepository)
 class SessionsRepositoryImpl implements SessionsRepository {
 
   SessionsRepositoryImpl({required this.remoteDataSource});

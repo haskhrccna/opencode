@@ -27,15 +27,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(state.copyWith(status: AuthStatus.loading));
     try {
-      final user = await _authRepository.getCurrentUser()
-          .timeout(const Duration(seconds: 5));
+      final user = await _authRepository.getCurrentUser();
       if (user.isAuthenticated) {
         emit(state.copyWith(
           status: AuthStatus.authenticated,
           user: user,
+          errorMessage: null,
         ),);
       } else {
-        emit(state.copyWith(status: AuthStatus.unauthenticated));
+        emit(state.copyWith(
+          status: AuthStatus.unauthenticated,
+          errorMessage: null,
+        ));
       }
     } catch (e, stackTrace) {
       AppLogger().e(
@@ -43,7 +46,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         error: e,
         stackTrace: stackTrace,
       );
-      emit(state.copyWith(status: AuthStatus.unauthenticated));
+      emit(state.copyWith(
+        status: AuthStatus.unauthenticated,
+        errorMessage: null,
+      ));
     }
   }
 
@@ -60,6 +66,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(state.copyWith(
         status: AuthStatus.authenticated,
         user: user,
+        errorMessage: null,
       ),);
     } else {
       emit(state.copyWith(
@@ -88,11 +95,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(state.copyWith(
           status: AuthStatus.pendingApproval,
           user: user,
+          errorMessage: null,
         ),);
       } else {
         emit(state.copyWith(
           status: AuthStatus.authenticated,
           user: user,
+          errorMessage: null,
         ),);
       }
     } else {
@@ -122,11 +131,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(state.copyWith(
           status: AuthStatus.pendingApproval,
           user: user,
+          errorMessage: null,
         ),);
       } else {
         emit(state.copyWith(
           status: AuthStatus.authenticated,
           user: user,
+          errorMessage: null,
         ),);
       }
     } else {
@@ -141,30 +152,39 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     SignOutRequested event,
     Emitter<AuthState> emit,
   ) async {
+    emit(state.copyWith(status: AuthStatus.loading));
     await _authRepository.signOut();
-    emit(state.copyWith(status: AuthStatus.unauthenticated));
+    emit(state.copyWith(
+      status: AuthStatus.unauthenticated,
+      user: null,
+      errorMessage: null,
+    ));
   }
 
   Future<void> _onRefreshUserRequested(
     RefreshUserRequested event,
     Emitter<AuthState> emit,
   ) async {
+    emit(state.copyWith(status: AuthStatus.loading));
     final (user, failure) = await _authRepository.refreshUser();
     if (user != null && failure == null) {
       if (user.isPending) {
         emit(state.copyWith(
           status: AuthStatus.pendingApproval,
           user: user,
+          errorMessage: null,
         ),);
       } else if (user.isRejected) {
         emit(state.copyWith(
           status: AuthStatus.rejected,
           user: user,
+          errorMessage: null,
         ),);
       } else if (user.isAuthenticated) {
         emit(state.copyWith(
           status: AuthStatus.authenticated,
           user: user,
+          errorMessage: null,
         ),);
       }
       return;
@@ -173,6 +193,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       'AuthBloc.RefreshUserRequested: refresh failed: '
       '${failure?.message ?? 'unknown'}',
     );
+    // Emit error so UI knows refresh failed
+    emit(state.copyWith(
+      status: AuthStatus.error,
+      errorMessage: failure?.message ?? 'Failed to refresh user',
+    ));
   }
 
   Future<void> _onResetPasswordRequested(
@@ -195,7 +220,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             previousStatus == AuthStatus.initial
         ? AuthStatus.unauthenticated
         : previousStatus;
-    emit(AuthState(status: restingStatus, user: state.user));
+    emit(state.copyWith(
+      status: restingStatus,
+      errorMessage: null,
+    ));
   }
 
   Future<void> _onUpdatePasswordRequested(
@@ -220,6 +248,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             previousStatus == AuthStatus.initial
         ? AuthStatus.authenticated
         : previousStatus;
-    emit(AuthState(status: restingStatus, user: state.user));
+    emit(state.copyWith(
+      status: restingStatus,
+      errorMessage: null,
+    ));
   }
 }

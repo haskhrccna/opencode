@@ -16,22 +16,22 @@ class TeacherSignupScreen extends StatefulWidget {
 
 class _TeacherSignupScreenState extends State<TeacherSignupScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
+  final _arabicNameController = TextEditingController();
+  final _englishNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _phoneController = TextEditingController();
   final _bioController = TextEditingController();
-  final _inviteCodeController = TextEditingController();
   bool _obscurePassword = true;
 
   @override
   void dispose() {
-    _nameController.dispose();
+    _arabicNameController.dispose();
+    _englishNameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     _phoneController.dispose();
     _bioController.dispose();
-    _inviteCodeController.dispose();
     super.dispose();
   }
 
@@ -41,8 +41,8 @@ class _TeacherSignupScreenState extends State<TeacherSignupScreen> {
           SignUpTeacherRequested(
             email: _emailController.text.trim(),
             password: _passwordController.text,
-            arabicName: _nameController.text.trim(),
-            englishName: '',
+            arabicName: _arabicNameController.text.trim(),
+            englishName: _englishNameController.text.trim(),
             phoneNumber: _phoneController.text.trim(),
             bio: _bioController.text.trim().isEmpty
                 ? null
@@ -72,9 +72,21 @@ class _TeacherSignupScreenState extends State<TeacherSignupScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TextFormField(
-                    controller: _nameController,
+                    controller: _arabicNameController,
                     decoration: const InputDecoration(
-                      labelText: 'الاسم الكامل',
+                      labelText: 'الاسم بالعربية',
+                      prefixIcon: Icon(Icons.person_outline),
+                    ),
+                    validator: (v) =>
+                        v == null || v.trim().length < 2
+                            ? 'الاسم يجب أن يكون حرفين على الأقل'
+                            : null,
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _englishNameController,
+                    decoration: const InputDecoration(
+                      labelText: 'الاسم بالإنجليزية',
                       prefixIcon: Icon(Icons.person_outline),
                     ),
                     validator: (v) =>
@@ -110,15 +122,6 @@ class _TeacherSignupScreenState extends State<TeacherSignupScreen> {
                       ),
                     ),
                     validator: ArabicValidators.validatePassword,
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _inviteCodeController,
-                    decoration: const InputDecoration(
-                      labelText: 'رمز الدعوة',
-                      prefixIcon: Icon(Icons.vpn_key_outlined),
-                    ),
-                    validator: ArabicValidators.validateInviteCode,
                   ),
                   const SizedBox(height: 16),
                   TextFormField(

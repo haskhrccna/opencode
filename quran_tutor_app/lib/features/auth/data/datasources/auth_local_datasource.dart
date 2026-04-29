@@ -133,6 +133,10 @@ class SecureStorageAuthDataSource implements AuthLocalDataSource {
 
   @override
   Future<void> clearAll() async {
-    await _storage.deleteAll();
+    // Only delete auth-specific keys to avoid wiping other features' data
+    await deleteToken();
+    await deleteRefreshToken();
+    await deleteUserData();
+    await _storage.delete(key: _userRoleKey);
   }
 }

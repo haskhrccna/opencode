@@ -149,7 +149,7 @@ class AuthRepositoryImpl implements AuthRepository {
     required String newPassword,
   }) async {
     try {
-      await remoteDataSource.updatePassword(currentPassword, newPassword);
+      await remoteDataSource.updatePassword(newPassword);
       return null;
     } on ServerException catch (e) {
       return _mapServerExceptionToFailure(e);
@@ -176,12 +176,12 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Stream<AuthUser> get authStateChanges {
-    return remoteDataSource.authStateChanges.map((userModel) {
+    return remoteDataSource.authStateChanges.asyncMap((userModel) async {
       if (userModel != null) {
-        localDataSource.cacheUserData(userModel.toJson());
+        await localDataSource.cacheUserData(userModel.toJson());
         return userModel.toEntity();
       }
-      localDataSource.clearAll();
+      await localDataSource.clearAll();
       return AuthUser.empty();
     });
   }

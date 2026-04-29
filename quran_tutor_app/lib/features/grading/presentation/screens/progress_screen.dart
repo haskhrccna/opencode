@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:quran_tutor_app/features/grading/presentation/bloc/grading_bloc.dart';
 import 'package:quran_tutor_app/features/grading/presentation/bloc/grading_event.dart';
 import 'package:quran_tutor_app/features/grading/presentation/bloc/grading_state.dart';
@@ -17,8 +18,12 @@ class _ProgressScreenState extends State<ProgressScreen> {
   @override
   void initState() {
     super.initState();
-    // Trigger loading grades when screen opens
-    context.read<GradingBloc>().add(const LoadGrades());
+    // Trigger loading grades when screen opens, passing the current user's ID
+    final authState = context.read<AuthBloc>().state;
+    final studentId = authState.user?.id;
+    if (studentId != null) {
+      context.read<GradingBloc>().add(LoadGrades(studentId: studentId));
+    }
   }
 
   @override
@@ -42,7 +47,11 @@ class _ProgressScreenState extends State<ProgressScreen> {
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () {
-                      context.read<GradingBloc>().add(const LoadGrades());
+                      final authState = context.read<AuthBloc>().state;
+                      final studentId = authState.user?.id;
+                      if (studentId != null) {
+                        context.read<GradingBloc>().add(LoadGrades(studentId: studentId));
+                      }
                     },
                     child: const Text('إعادة المحاولة'),
                   ),

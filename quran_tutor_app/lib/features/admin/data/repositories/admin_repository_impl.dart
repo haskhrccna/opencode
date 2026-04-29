@@ -7,7 +7,7 @@ import 'package:quran_tutor_app/features/admin/domain/repositories/admin_reposit
 import 'package:quran_tutor_app/features/auth/domain/entities/auth_user.dart';
 
 /// Implementation of AdminRepository using remote datasource
-@Injectable(as: AdminRepository)
+@Singleton(as: AdminRepository)
 class AdminRepositoryImpl implements AdminRepository {
 
   AdminRepositoryImpl({required this.remoteDataSource});

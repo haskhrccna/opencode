@@ -80,7 +80,7 @@ class ErrorScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: OutlinedButton(
-                  onPressed: () => context.go('/splash'),
+                  onPressed: () => context.go('/auth/login'),
                   child: Text(l10n?.t('error.go_home') ?? 'Go Home'),
                 ),
               ),

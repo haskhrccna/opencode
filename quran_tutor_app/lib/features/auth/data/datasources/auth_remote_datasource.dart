@@ -40,7 +40,7 @@ abstract class AuthRemoteDataSource {
   Future<void> resetPassword(String email);
 
   /// Update password
-  Future<void> updatePassword(String currentPassword, String newPassword);
+  Future<void> updatePassword(String newPassword);
 
   /// Resend verification email
   Future<void> resendVerificationEmail(String email);
@@ -259,7 +259,7 @@ class SupabaseAuthDataSource implements AuthRemoteDataSource {
   }
 
   @override
-  Future<void> updatePassword(String currentPassword, String newPassword) async {
+  Future<void> updatePassword(String newPassword) async {
     await _supabase.auth.updateUser(
       UserAttributes(password: newPassword),
     );
