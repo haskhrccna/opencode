@@ -13,7 +13,6 @@ import 'package:quran_tutor_app/features/sessions/domain/entities/session.dart';
 /// Service that manages offline caching and sync
 @lazySingleton
 class OfflineService {
-
   OfflineService({
     required OfflineDatabase db,
     required Connectivity connectivity,
@@ -164,7 +163,9 @@ class OfflineService {
       throw Exception('Sessions data source not configured');
     }
 
-    final data = item.data != null ? jsonDecode(item.data!) as Map<String, dynamic> : null;
+    final data = item.data != null
+        ? jsonDecode(item.data!) as Map<String, dynamic>
+        : null;
 
     switch (item.operation) {
       case 'create':
@@ -198,7 +199,9 @@ class OfflineService {
       throw Exception('Grading data source not configured');
     }
 
-    final data = item.data != null ? jsonDecode(item.data!) as Map<String, dynamic> : null;
+    final data = item.data != null
+        ? jsonDecode(item.data!) as Map<String, dynamic>
+        : null;
 
     switch (item.operation) {
       case 'create':

@@ -59,7 +59,9 @@ class _TeacherSignupScreenState extends State<TeacherSignupScreen> {
         listener: (context, state) {
           if (state.status == AuthStatus.error) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.errorMessage ?? 'حدث خطأ'), backgroundColor: Colors.red),
+              SnackBar(
+                  content: Text(state.errorMessage ?? 'حدث خطأ'),
+                  backgroundColor: Colors.red),
             );
           }
         },
@@ -77,10 +79,9 @@ class _TeacherSignupScreenState extends State<TeacherSignupScreen> {
                       labelText: 'الاسم بالعربية',
                       prefixIcon: Icon(Icons.person_outline),
                     ),
-                    validator: (v) =>
-                        v == null || v.trim().length < 2
-                            ? 'الاسم يجب أن يكون حرفين على الأقل'
-                            : null,
+                    validator: (v) => v == null || v.trim().length < 2
+                        ? 'الاسم يجب أن يكون حرفين على الأقل'
+                        : null,
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
@@ -89,10 +90,9 @@ class _TeacherSignupScreenState extends State<TeacherSignupScreen> {
                       labelText: 'الاسم بالإنجليزية',
                       prefixIcon: Icon(Icons.person_outline),
                     ),
-                    validator: (v) =>
-                        v == null || v.trim().length < 2
-                            ? 'الاسم يجب أن يكون حرفين على الأقل'
-                            : null,
+                    validator: (v) => v == null || v.trim().length < 2
+                        ? 'الاسم يجب أن يكون حرفين على الأقل'
+                        : null,
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
@@ -117,8 +117,8 @@ class _TeacherSignupScreenState extends State<TeacherSignupScreen> {
                               ? Icons.visibility_outlined
                               : Icons.visibility_off_outlined,
                         ),
-                        onPressed: () =>
-                            setState(() => _obscurePassword = !_obscurePassword),
+                        onPressed: () => setState(
+                            () => _obscurePassword = !_obscurePassword),
                       ),
                     ),
                     validator: ArabicValidators.validatePassword,
@@ -131,10 +131,9 @@ class _TeacherSignupScreenState extends State<TeacherSignupScreen> {
                       labelText: 'رقم الهاتف (اختياري)',
                       prefixIcon: Icon(Icons.phone_outlined),
                     ),
-                    validator: (v) =>
-                        v == null || v.trim().isEmpty
-                            ? null
-                            : ArabicValidators.validatePhone(v),
+                    validator: (v) => v == null || v.trim().isEmpty
+                        ? null
+                        : ArabicValidators.validatePhone(v),
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
@@ -151,12 +150,14 @@ class _TeacherSignupScreenState extends State<TeacherSignupScreen> {
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       return FilledButton(
-                        onPressed: state.status == AuthStatus.loading ? null : _submit,
+                        onPressed:
+                            state.status == AuthStatus.loading ? null : _submit,
                         child: state.status == AuthStatus.loading
                             ? const SizedBox(
                                 height: 20,
                                 width: 20,
-                                child: CircularProgressIndicator(strokeWidth: 2),
+                                child:
+                                    CircularProgressIndicator(strokeWidth: 2),
                               )
                             : const Text('إنشاء حساب المعلم'),
                       );

@@ -47,7 +47,8 @@ void main() {
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
 
-    testWidgets('should render stats cards with correct values', (tester) async {
+    testWidgets('should render stats cards with correct values',
+        (tester) async {
       final state = AdminState.initial().copyWith(
         status: AdminStatus.loaded,
         systemStats: const SystemStats(
@@ -105,7 +106,8 @@ void main() {
       expect(find.text('Teacher One'), findsOneWidget);
     });
 
-    testWidgets('should call ApproveUser when approve button tapped', (tester) async {
+    testWidgets('should call ApproveUser when approve button tapped',
+        (tester) async {
       final pendingUsers = [
         AuthUser(
           id: 'user-1',

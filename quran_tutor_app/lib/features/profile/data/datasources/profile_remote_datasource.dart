@@ -38,7 +38,6 @@ abstract class ProfileRemoteDataSource {
 /// Supabase implementation
 @Singleton(as: ProfileRemoteDataSource)
 class SupabaseProfileDataSource implements ProfileRemoteDataSource {
-
   SupabaseProfileDataSource({SupabaseClient? supabase})
       : _supabase = supabase ?? Supabase.instance.client;
   final SupabaseClient _supabase;
@@ -46,11 +45,8 @@ class SupabaseProfileDataSource implements ProfileRemoteDataSource {
   @override
   Future<ProfileModel?> getProfile(String userId) async {
     try {
-      final response = await _supabase
-          .from('users')
-          .select()
-          .eq('id', userId)
-          .single();
+      final response =
+          await _supabase.from('users').select().eq('id', userId).single();
 
       return ProfileModel.fromSupabase(response);
     } catch (e) {
@@ -83,14 +79,10 @@ class SupabaseProfileDataSource implements ProfileRemoteDataSource {
   Future<String> uploadAvatar(String userId, File imageFile) async {
     try {
       final fileName = 'avatars/$userId.jpg';
-      
-      await _supabase.storage
-          .from('profiles')
-          .upload(fileName, imageFile);
 
-      final url = _supabase.storage
-          .from('profiles')
-          .getPublicUrl(fileName);
+      await _supabase.storage.from('profiles').upload(fileName, imageFile);
+
+      final url = _supabase.storage.from('profiles').getPublicUrl(fileName);
 
       return url;
     } catch (e) {
@@ -147,8 +139,7 @@ class SupabaseProfileDataSource implements ProfileRemoteDataSource {
     try {
       await _supabase
           .from('users')
-          .update({'teacher_id': teacherId})
-          .eq('id', studentId);
+          .update({'teacher_id': teacherId}).eq('id', studentId);
     } catch (e) {
       throw ServerException.internalError();
     }
@@ -159,8 +150,7 @@ class SupabaseProfileDataSource implements ProfileRemoteDataSource {
     try {
       await _supabase
           .from('users')
-          .update({'teacher_id': null})
-          .eq('id', studentId);
+          .update({'teacher_id': null}).eq('id', studentId);
     } catch (e) {
       throw ServerException.internalError();
     }

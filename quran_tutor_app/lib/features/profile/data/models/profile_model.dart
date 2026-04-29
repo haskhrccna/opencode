@@ -3,11 +3,13 @@ import 'package:quran_tutor_app/features/profile/domain/entities/user_profile.da
 
 /// Data model for user profile
 class ProfileModel {
-
   ProfileModel({
     required this.id,
     required this.email,
-    required this.role, required this.status, required this.createdAt, this.displayName,
+    required this.role,
+    required this.status,
+    required this.createdAt,
+    this.displayName,
     this.arabicName,
     this.photoUrl,
     this.updatedAt,

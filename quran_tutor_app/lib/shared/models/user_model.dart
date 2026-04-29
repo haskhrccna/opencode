@@ -3,12 +3,15 @@ import 'package:equatable/equatable.dart';
 import 'package:quran_tutor_app/core/constants/app_constants.dart';
 
 /// User model representing all user types in the application
-class UserModel extends Equatable { // For teachers - list of student IDs
+class UserModel extends Equatable {
+  // For teachers - list of student IDs
 
   const UserModel({
     required this.id,
     required this.name,
-    required this.role, required this.createdAt, this.email,
+    required this.role,
+    required this.createdAt,
+    this.email,
     this.phone,
     this.age,
     this.photoUrl,
@@ -174,12 +177,12 @@ class UserModel extends Equatable { // For teachers - list of student IDs
 
 /// Student signup request
 class StudentSignupRequest {
-
   const StudentSignupRequest({
     required this.name,
     required this.email,
     required this.password,
-    required this.age, this.phone,
+    required this.age,
+    this.phone,
     this.preferredLevel,
   });
   final String name;
@@ -202,7 +205,6 @@ class StudentSignupRequest {
 
 /// Teacher signup request
 class TeacherSignupRequest {
-
   const TeacherSignupRequest({
     required this.name,
     required this.email,

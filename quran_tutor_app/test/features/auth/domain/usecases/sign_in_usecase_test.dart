@@ -30,10 +30,12 @@ void main() {
 
     test('should return AuthUser when sign in is successful', () async {
       // Arrange
-      when(() => mockRepository.signIn(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-          ),).thenAnswer((_) async => (tAuthUser, null));
+      when(
+        () => mockRepository.signIn(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenAnswer((_) async => (tAuthUser, null));
 
       // Act
       final (result, failure) = await useCase(
@@ -51,10 +53,12 @@ void main() {
     test('should return AuthFailure when credentials are invalid', () async {
       // Arrange
       final tFailure = AuthFailure.invalidCredentials();
-      when(() => mockRepository.signIn(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-          ),).thenAnswer((_) async => (null, tFailure));
+      when(
+        () => mockRepository.signIn(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenAnswer((_) async => (null, tFailure));
 
       // Act
       final (result, failure) = await useCase(
@@ -71,10 +75,12 @@ void main() {
     test('should return NetworkFailure when no connection', () async {
       // Arrange
       final tFailure = NetworkFailure.noConnection();
-      when(() => mockRepository.signIn(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-          ),).thenAnswer((_) async => (null, tFailure));
+      when(
+        () => mockRepository.signIn(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenAnswer((_) async => (null, tFailure));
 
       // Act
       final (result, failure) = await useCase(
@@ -89,10 +95,12 @@ void main() {
     test('should return AuthFailure when user is disabled', () async {
       // Arrange
       final tFailure = AuthFailure.userDisabled();
-      when(() => mockRepository.signIn(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-          ),).thenAnswer((_) async => (null, tFailure));
+      when(
+        () => mockRepository.signIn(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenAnswer((_) async => (null, tFailure));
 
       // Act
       final (result, failure) = await useCase(
@@ -108,10 +116,12 @@ void main() {
     test('should return AuthFailure when too many requests', () async {
       // Arrange
       final tFailure = AuthFailure.tooManyRequests();
-      when(() => mockRepository.signIn(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-          ),).thenAnswer((_) async => (null, tFailure));
+      when(
+        () => mockRepository.signIn(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenAnswer((_) async => (null, tFailure));
 
       // Act
       final (result, failure) = await useCase(

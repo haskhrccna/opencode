@@ -3,7 +3,7 @@ import 'package:quran_tutor_app/core/constants/app_constants.dart';
 import 'package:quran_tutor_app/core/localization/app_localizations.dart';
 
 /// Arabic-specific validators for the Quran Tutor app
-/// 
+///
 /// All validation messages are now localized using translation keys
 /// Format: validation.<field>_<error_type>
 class ArabicValidators {
@@ -82,15 +82,17 @@ class ArabicValidators {
     return null;
   }
 
-  /// Validates phone numbers (Saudi format: +9665XXXXXXXX or 05XXXXXXXX)
+  /// Validates international phone numbers in E.164-ish format.
+  /// Accepts an optional leading "+" and any country code; strips
+  /// whitespace, dashes, and parentheses before matching.
   static String? validatePhone(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'رقم الجوال مطلوب';
+      return 'validation.phone_required';
     }
 
-    final cleanPhone = value.trim().replaceAll(RegExp(r'[\s\-]'), '');
+    final cleanPhone = value.trim().replaceAll(RegExp(r'[\s\-()]'), '');
     if (!AppConstants.phoneRegex.hasMatch(cleanPhone)) {
-      return 'رقم الجوال يجب أن يكون بصيغة +9665XXXXXXXX أو 05XXXXXXXX';
+      return 'validation.phone_invalid';
     }
     return null;
   }
@@ -167,7 +169,8 @@ class ArabicValidators {
   }
 
   /// Validates a required field
-  static String? validateRequired(String? value, {String fieldKey = 'validation.required'}) {
+  static String? validateRequired(String? value,
+      {String fieldKey = 'validation.required'}) {
     if (value == null || value.trim().isEmpty) {
       return fieldKey;
     }
@@ -175,7 +178,8 @@ class ArabicValidators {
   }
 
   /// Validates minimum length
-  static String? validateMinLength(String? value, int minLength, {String fieldKey = 'validation.min_length'}) {
+  static String? validateMinLength(String? value, int minLength,
+      {String fieldKey = 'validation.min_length'}) {
     if (value == null || value.length < minLength) {
       return fieldKey;
     }
@@ -183,7 +187,8 @@ class ArabicValidators {
   }
 
   /// Validates maximum length
-  static String? validateMaxLength(String? value, int maxLength, {String fieldKey = 'validation.max_length'}) {
+  static String? validateMaxLength(String? value, int maxLength,
+      {String fieldKey = 'validation.max_length'}) {
     if (value != null && value.length > maxLength) {
       return fieldKey;
     }
@@ -244,7 +249,7 @@ class ArabicValidators {
   }
 
   /// Get localized validation message with arguments
-  /// 
+  ///
   /// Usage:
   /// ```dart
   /// final localizedError = ArabicValidators.getLocalizedMessage(
@@ -265,7 +270,6 @@ class ArabicValidators {
 
 /// Form input validation result
 class ValidationResult {
-
   const ValidationResult._({
     required this.isValid,
     this.errorKey,

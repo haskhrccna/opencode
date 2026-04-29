@@ -47,17 +47,17 @@ abstract class AuthLocalDataSource {
 /// Secure storage implementation of AuthLocalDataSource
 @Singleton(as: AuthLocalDataSource)
 class SecureStorageAuthDataSource implements AuthLocalDataSource {
-
   const SecureStorageAuthDataSource({
     FlutterSecureStorage? storage,
-  }) : _storage = storage ?? const FlutterSecureStorage(
-          aOptions: AndroidOptions(
-            encryptedSharedPreferences: true,
-          ),
-          iOptions: IOSOptions(
-            accountName: 'quran_tutor_auth',
-          ),
-        );
+  }) : _storage = storage ??
+            const FlutterSecureStorage(
+              aOptions: AndroidOptions(
+                encryptedSharedPreferences: true,
+              ),
+              iOptions: IOSOptions(
+                accountName: 'quran_tutor_auth',
+              ),
+            );
   final FlutterSecureStorage _storage;
 
   // Keys for secure storage

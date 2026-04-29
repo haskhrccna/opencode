@@ -25,7 +25,7 @@ void main() {
     const tPhoneNumber = '0509876543';
     const tBio = 'Experienced Quran teacher';
     const tWebsiteUrl = 'https://teacher.example.com';
-    
+
     final tPendingTeacher = AuthUser(
       id: 'teacher123',
       email: tEmail,
@@ -37,17 +37,20 @@ void main() {
       phoneNumber: tPhoneNumber,
     );
 
-    test('should return AuthUser with teacher role and pending status', () async {
+    test('should return AuthUser with teacher role and pending status',
+        () async {
       // Arrange
-      when(() => mockRepository.signUpTeacher(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-            arabicName: any(named: 'arabicName'),
-            englishName: any(named: 'englishName'),
-            phoneNumber: any(named: 'phoneNumber'),
-            bio: any(named: 'bio'),
-            websiteUrl: any(named: 'websiteUrl'),
-          ),).thenAnswer((_) async => (tPendingTeacher, null));
+      when(
+        () => mockRepository.signUpTeacher(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+          arabicName: any(named: 'arabicName'),
+          englishName: any(named: 'englishName'),
+          phoneNumber: any(named: 'phoneNumber'),
+          bio: any(named: 'bio'),
+          websiteUrl: any(named: 'websiteUrl'),
+        ),
+      ).thenAnswer((_) async => (tPendingTeacher, null));
 
       // Act
       final (result, failure) = await useCase(
@@ -72,15 +75,17 @@ void main() {
 
     test('should create teacher without optional fields', () async {
       // Arrange
-      when(() => mockRepository.signUpTeacher(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-            arabicName: any(named: 'arabicName'),
-            englishName: any(named: 'englishName'),
-            phoneNumber: any(named: 'phoneNumber'),
-            bio: any(named: 'bio'),
-            websiteUrl: any(named: 'websiteUrl'),
-          ),).thenAnswer((_) async => (tPendingTeacher, null));
+      when(
+        () => mockRepository.signUpTeacher(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+          arabicName: any(named: 'arabicName'),
+          englishName: any(named: 'englishName'),
+          phoneNumber: any(named: 'phoneNumber'),
+          bio: any(named: 'bio'),
+          websiteUrl: any(named: 'websiteUrl'),
+        ),
+      ).thenAnswer((_) async => (tPendingTeacher, null));
 
       // Act
       final (result, failure) = await useCase(
@@ -102,15 +107,17 @@ void main() {
     test('should return AuthFailure when email already exists', () async {
       // Arrange
       final tFailure = AuthFailure.emailAlreadyInUse();
-      when(() => mockRepository.signUpTeacher(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-            arabicName: any(named: 'arabicName'),
-            englishName: any(named: 'englishName'),
-            phoneNumber: any(named: 'phoneNumber'),
-            bio: any(named: 'bio'),
-            websiteUrl: any(named: 'websiteUrl'),
-          ),).thenAnswer((_) async => (null, tFailure));
+      when(
+        () => mockRepository.signUpTeacher(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+          arabicName: any(named: 'arabicName'),
+          englishName: any(named: 'englishName'),
+          phoneNumber: any(named: 'phoneNumber'),
+          bio: any(named: 'bio'),
+          websiteUrl: any(named: 'websiteUrl'),
+        ),
+      ).thenAnswer((_) async => (null, tFailure));
 
       // Act
       final (result, failure) = await useCase(
@@ -132,15 +139,17 @@ void main() {
     test('should return ValidationFailure when weak password', () async {
       // Arrange
       final tFailure = AuthFailure.weakPassword();
-      when(() => mockRepository.signUpTeacher(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-            arabicName: any(named: 'arabicName'),
-            englishName: any(named: 'englishName'),
-            phoneNumber: any(named: 'phoneNumber'),
-            bio: any(named: 'bio'),
-            websiteUrl: any(named: 'websiteUrl'),
-          ),).thenAnswer((_) async => (null, tFailure));
+      when(
+        () => mockRepository.signUpTeacher(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+          arabicName: any(named: 'arabicName'),
+          englishName: any(named: 'englishName'),
+          phoneNumber: any(named: 'phoneNumber'),
+          bio: any(named: 'bio'),
+          websiteUrl: any(named: 'websiteUrl'),
+        ),
+      ).thenAnswer((_) async => (null, tFailure));
 
       // Act
       final (result, failure) = await useCase(

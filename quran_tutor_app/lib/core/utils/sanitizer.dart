@@ -182,7 +182,8 @@ class Sanitizer {
   }
 
   /// Sanitize bio text
-  static String sanitizeBio(String bio, {int maxLength = AppConstants.maxBioLength}) {
+  static String sanitizeBio(String bio,
+      {int maxLength = AppConstants.maxBioLength}) {
     return sanitizeText(
       bio,
       maxLength: maxLength,
@@ -349,7 +350,8 @@ class Sanitizer {
     if (input.isEmpty) return false;
 
     final sqlPatterns = [
-      RegExp(r'(\b(SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER)\b)', caseSensitive: false),
+      RegExp(r'(\b(SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER)\b)',
+          caseSensitive: false),
       RegExp(r'(\-\-|\/\*|\*\/)'),
       RegExp(r'(\b(OR|AND)\b\s*\d\s*=\s*\d)', caseSensitive: false),
     ];

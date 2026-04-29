@@ -49,7 +49,8 @@ void main() {
       expect(find.text('تسجيل الخروج'), findsOneWidget);
     });
 
-    testWidgets('should call SignOutRequested when logout tapped', (tester) async {
+    testWidgets('should call SignOutRequested when logout tapped',
+        (tester) async {
       // act
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.tap(find.text('تسجيل الخروج'));

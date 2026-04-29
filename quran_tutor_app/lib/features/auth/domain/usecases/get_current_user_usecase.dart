@@ -4,7 +4,6 @@ import 'package:quran_tutor_app/features/auth/domain/repositories/auth_repositor
 
 /// Use case for getting the current authenticated user
 class GetCurrentUserUseCase {
-
   const GetCurrentUserUseCase(this.repository);
   final AuthRepository repository;
 
@@ -18,7 +17,6 @@ class GetCurrentUserUseCase {
 
 /// Use case for refreshing user data from backend
 class RefreshUserUseCase {
-
   const RefreshUserUseCase(this.repository);
   final AuthRepository repository;
 

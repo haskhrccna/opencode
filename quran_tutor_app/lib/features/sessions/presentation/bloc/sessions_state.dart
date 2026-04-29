@@ -13,7 +13,6 @@ enum SessionsStatus {
 }
 
 class SessionsState extends Equatable {
-
   const SessionsState({
     required this.status,
     this.sessions,

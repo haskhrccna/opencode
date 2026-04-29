@@ -7,7 +7,6 @@ import 'package:quran_tutor_app/features/admin/presentation/bloc/admin_state.dar
 
 @injectable
 class AdminBloc extends Bloc<AdminEvent, AdminState> {
-
   AdminBloc(this._repository) : super(AdminState.initial()) {
     on<LoadDashboard>(_onLoadDashboard);
     on<LoadPendingUsers>(_onLoadPendingUsers);
@@ -39,19 +38,25 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     final (pending, pendingFailure) = await _repository.getPendingUsers();
 
     if (statsFailure != null || pendingFailure != null) {
-      emit(state.copyWith(
-        status: AdminStatus.error,
-        errorMessage: statsFailure?.message ?? pendingFailure?.message ?? 'Failed to load dashboard',
-      ),);
+      emit(
+        state.copyWith(
+          status: AdminStatus.error,
+          errorMessage: statsFailure?.message ??
+              pendingFailure?.message ??
+              'Failed to load dashboard',
+        ),
+      );
       return;
     }
 
-    emit(state.copyWith(
-      status: AdminStatus.loaded,
-      systemStats: stats,
-      pendingUsers: pending,
-      lastUpdated: DateTime.now(),
-    ),);
+    emit(
+      state.copyWith(
+        status: AdminStatus.loaded,
+        systemStats: stats,
+        pendingUsers: pending,
+        lastUpdated: DateTime.now(),
+      ),
+    );
   }
 
   Future<void> _onLoadPendingUsers(
@@ -63,16 +68,20 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     final (users, failure) = await _repository.getPendingUsers();
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: AdminStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: AdminStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: AdminStatus.loaded,
-        pendingUsers: users,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: AdminStatus.loaded,
+          pendingUsers: users,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -85,16 +94,20 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     final (users, failure) = await _repository.getRejectedUsers();
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: AdminStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: AdminStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: AdminStatus.loaded,
-        rejectedUsers: users,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: AdminStatus.loaded,
+          rejectedUsers: users,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -107,16 +120,20 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     final (users, failure) = await _repository.getAllUsers();
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: AdminStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: AdminStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: AdminStatus.loaded,
-        allUsers: users,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: AdminStatus.loaded,
+          allUsers: users,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -129,16 +146,20 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     final (users, failure) = await _repository.getUsersByRole(event.role);
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: AdminStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: AdminStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: AdminStatus.loaded,
-        usersByRole: users,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: AdminStatus.loaded,
+          usersByRole: users,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -151,10 +172,12 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     final failure = await _repository.approveUser(event.userId);
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: AdminStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: AdminStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
       // Refresh pending users
       add(const LoadPendingUsers());
@@ -173,10 +196,12 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     );
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: AdminStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: AdminStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
       // Refresh pending users
       add(const LoadPendingUsers());
@@ -195,10 +220,12 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     );
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: AdminStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: AdminStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
       // Refresh all users
       add(const LoadAllUsers());
@@ -214,10 +241,12 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     final failure = await _repository.reactivateUser(event.userId);
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: AdminStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: AdminStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
       // Refresh all users
       add(const LoadAllUsers());
@@ -236,10 +265,12 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     );
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: AdminStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: AdminStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
       // Refresh all users
       add(const LoadAllUsers());
@@ -255,10 +286,12 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     final failure = await _repository.removeTeacher(event.studentId);
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: AdminStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: AdminStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
       // Refresh all users
       add(const LoadAllUsers());
@@ -274,16 +307,20 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     final (stats, failure) = await _repository.getSystemStats();
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: AdminStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: AdminStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: AdminStatus.loaded,
-        systemStats: stats,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: AdminStatus.loaded,
+          systemStats: stats,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -299,16 +336,20 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     );
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: AdminStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: AdminStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: AdminStatus.loaded,
-        reportData: report,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: AdminStatus.loaded,
+          reportData: report,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -321,16 +362,20 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     final (settings, failure) = await _repository.getSystemSettings();
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: AdminStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: AdminStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: AdminStatus.loaded,
-        systemSettings: settings,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: AdminStatus.loaded,
+          systemSettings: settings,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -343,16 +388,20 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     final failure = await _repository.updateSystemSettings(event.settings);
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: AdminStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: AdminStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: AdminStatus.loaded,
-        systemSettings: event.settings,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: AdminStatus.loaded,
+          systemSettings: event.settings,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 

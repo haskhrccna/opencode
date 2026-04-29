@@ -8,7 +8,6 @@ import 'package:quran_tutor_app/core/environment/app_environment.dart';
 /// In debug mode: logs everything to console with colors
 /// In release mode: logs only errors/warnings, sends to analytics
 class AppLogger {
-
   factory AppLogger({bool enableDetailedLogging = true}) {
     _instance ??= AppLogger._internal(
       enableDetailedLogging: enableDetailedLogging,
@@ -81,7 +80,6 @@ class AppLogger {
 
 /// Custom log filter
 class _LogFilter extends LogFilter {
-
   _LogFilter({required this.enableDetailedLogging});
   final bool enableDetailedLogging;
 

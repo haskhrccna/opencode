@@ -9,7 +9,6 @@ import 'package:quran_tutor_app/features/auth/domain/entities/auth_user.dart';
 /// Implementation of AdminRepository using remote datasource
 @Singleton(as: AdminRepository)
 class AdminRepositoryImpl implements AdminRepository {
-
   AdminRepositoryImpl({required this.remoteDataSource});
   final AdminRemoteDataSource remoteDataSource;
 
@@ -199,10 +198,13 @@ class AdminRepositoryImpl implements AdminRepository {
     // PDF generation is handled by PdfService in core/services/pdf/
     // This repository method returns the report data for PDF conversion
     // The actual PDF creation happens in the presentation layer or use case
-    return (null, const BusinessFailure(
-      message: 'Use PdfService directly for PDF generation',
-      code: 'pdf_generation_not_implemented_in_repo',
-    ));
+    return (
+      null,
+      const BusinessFailure(
+        message: 'Use PdfService directly for PDF generation',
+        code: 'pdf_generation_not_implemented_in_repo',
+      )
+    );
   }
 
   @override

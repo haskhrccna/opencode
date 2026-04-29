@@ -63,11 +63,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void _saveProfile(UserProfile current) {
     context.read<ProfileBloc>().add(UpdateProfile(
-      arabicName: _arabicNameController.text.trim(),
-      englishName: _englishNameController.text.trim(),
-      phoneNumber: _phoneController.text.trim(),
-      bio: _bioController.text.trim(),
-    ));
+          arabicName: _arabicNameController.text.trim(),
+          englishName: _englishNameController.text.trim(),
+          phoneNumber: _phoneController.text.trim(),
+          bio: _bioController.text.trim(),
+        ));
     setState(() => _isEditing = false);
   }
 
@@ -79,7 +79,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         actions: [
           BlocBuilder<ProfileBloc, ProfileState>(
             builder: (context, state) {
-              if (state.status != ProfileStatus.loaded || state.profile == null) {
+              if (state.status != ProfileStatus.loaded ||
+                  state.profile == null) {
                 return const SizedBox.shrink();
               }
               return IconButton(
@@ -97,14 +98,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       body: BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state) {
-          if (state.status == ProfileStatus.error && state.errorMessage != null) {
+          if (state.status == ProfileStatus.error &&
+              state.errorMessage != null) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.errorMessage!)),
             );
           }
         },
         builder: (context, state) {
-          if (state.status == ProfileStatus.loading || state.status == ProfileStatus.initial) {
+          if (state.status == ProfileStatus.loading ||
+              state.status == ProfileStatus.initial) {
             return const Center(child: CircularProgressIndicator());
           }
 
@@ -132,18 +135,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
             profile: profile,
             isUploading: state.status == ProfileStatus.uploading,
             onPickAvatar: _pickAvatar,
-            onDeleteAvatar: () => context.read<ProfileBloc>().add(const DeleteAvatar()),
+            onDeleteAvatar: () =>
+                context.read<ProfileBloc>().add(const DeleteAvatar()),
           ),
           const SizedBox(height: 24),
           _InfoCard(
             title: 'المعلومات الشخصية',
             children: [
-              _InfoRow(icon: Icons.person, label: 'الاسم بالعربية', value: profile.arabicName ?? '-'),
-              _InfoRow(icon: Icons.person_outline, label: 'الاسم بالإنجليزية', value: profile.displayName ?? '-'),
-              _InfoRow(icon: Icons.email, label: 'البريد الإلكتروني', value: profile.email),
-              _InfoRow(icon: Icons.phone, label: 'رقم الجوال', value: profile.phoneNumber ?? '-'),
+              _InfoRow(
+                  icon: Icons.person,
+                  label: 'الاسم بالعربية',
+                  value: profile.arabicName ?? '-'),
+              _InfoRow(
+                  icon: Icons.person_outline,
+                  label: 'الاسم بالإنجليزية',
+                  value: profile.displayName ?? '-'),
+              _InfoRow(
+                  icon: Icons.email,
+                  label: 'البريد الإلكتروني',
+                  value: profile.email),
+              _InfoRow(
+                  icon: Icons.phone,
+                  label: 'رقم الجوال',
+                  value: profile.phoneNumber ?? '-'),
               if (profile.bio != null && profile.bio!.isNotEmpty)
-                _InfoRow(icon: Icons.info_outline, label: 'نبذة', value: profile.bio!),
+                _InfoRow(
+                    icon: Icons.info_outline,
+                    label: 'نبذة',
+                    value: profile.bio!),
             ],
           ),
           const SizedBox(height: 16),
@@ -164,7 +183,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 _InfoRow(
                   icon: Icons.cake,
                   label: 'تاريخ الميلاد',
-                  value: '${profile.dateOfBirth!.day}/${profile.dateOfBirth!.month}/${profile.dateOfBirth!.year}',
+                  value:
+                      '${profile.dateOfBirth!.day}/${profile.dateOfBirth!.month}/${profile.dateOfBirth!.year}',
                 ),
             ],
           ),
@@ -273,7 +293,8 @@ class _AvatarSection extends StatelessWidget {
           CircleAvatar(
             radius: 60,
             backgroundColor: AppColors.primaryContainer,
-            backgroundImage: profile.hasAvatar ? NetworkImage(profile.photoUrl!) : null,
+            backgroundImage:
+                profile.hasAvatar ? NetworkImage(profile.photoUrl!) : null,
             child: !profile.hasAvatar
                 ? Text(
                     profile.initials,
@@ -296,9 +317,11 @@ class _AvatarSection extends StatelessWidget {
                 if (value == 'delete') onDeleteAvatar();
               },
               itemBuilder: (context) => [
-                const PopupMenuItem(value: 'change', child: Text('تغيير الصورة')),
+                const PopupMenuItem(
+                    value: 'change', child: Text('تغيير الصورة')),
                 if (profile.hasAvatar)
-                  const PopupMenuItem(value: 'delete', child: Text('حذف الصورة')),
+                  const PopupMenuItem(
+                      value: 'delete', child: Text('حذف الصورة')),
               ],
               child: Container(
                 padding: const EdgeInsets.all(8),
@@ -306,7 +329,8 @@ class _AvatarSection extends StatelessWidget {
                   color: AppColors.primary,
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.camera_alt, color: Colors.white, size: 20),
+                child:
+                    const Icon(Icons.camera_alt, color: Colors.white, size: 20),
               ),
             ),
           ),
@@ -346,7 +370,8 @@ class _InfoCard extends StatelessWidget {
 }
 
 class _InfoRow extends StatelessWidget {
-  const _InfoRow({required this.icon, required this.label, required this.value});
+  const _InfoRow(
+      {required this.icon, required this.label, required this.value});
 
   final IconData icon;
   final String label;

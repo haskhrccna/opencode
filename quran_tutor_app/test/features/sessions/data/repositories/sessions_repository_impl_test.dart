@@ -8,7 +8,8 @@ import 'package:quran_tutor_app/features/sessions/data/models/session_model.dart
 import 'package:quran_tutor_app/features/sessions/data/repositories/sessions_repository_impl.dart';
 import 'package:quran_tutor_app/features/sessions/domain/entities/session.dart';
 
-class MockSessionsRemoteDataSource extends Mock implements SessionsRemoteDataSource {}
+class MockSessionsRemoteDataSource extends Mock
+    implements SessionsRemoteDataSource {}
 
 void main() {
   late SessionsRepositoryImpl repository;
@@ -62,7 +63,8 @@ void main() {
       when(() => mockRemoteDataSource.getTeacherSessions(tTeacherId))
           .thenAnswer((_) async => [tSessionModel]);
 
-      final (sessions, failure) = await repository.getTeacherSessions(tTeacherId);
+      final (sessions, failure) =
+          await repository.getTeacherSessions(tTeacherId);
 
       expect(sessions, isNotNull);
       expect(sessions!.length, 1);
@@ -73,14 +75,14 @@ void main() {
   group('createSession', () {
     test('should return Session on success', () async {
       when(() => mockRemoteDataSource.createSession(
-        teacherId: any(named: 'teacherId'),
-        scheduledAt: any(named: 'scheduledAt'),
-        durationMinutes: any(named: 'durationMinutes'),
-        topic: any(named: 'topic'),
-        notes: any(named: 'notes'),
-        location: any(named: 'location'),
-        isOnline: any(named: 'isOnline'),
-      )).thenAnswer((_) async => tSessionModel);
+            teacherId: any(named: 'teacherId'),
+            scheduledAt: any(named: 'scheduledAt'),
+            durationMinutes: any(named: 'durationMinutes'),
+            topic: any(named: 'topic'),
+            notes: any(named: 'notes'),
+            location: any(named: 'location'),
+            isOnline: any(named: 'isOnline'),
+          )).thenAnswer((_) async => tSessionModel);
 
       final (session, failure) = await repository.createSession(
         teacherId: 'teacher-1',
@@ -97,10 +99,11 @@ void main() {
     const tSessionId = 'session-1';
 
     test('should return null on success', () async {
-      when(() => mockRemoteDataSource.cancelSession(tSessionId, reason: any(named: 'reason')))
-          .thenAnswer((_) async {});
+      when(() => mockRemoteDataSource.cancelSession(tSessionId,
+          reason: any(named: 'reason'))).thenAnswer((_) async {});
 
-      final failure = await repository.cancelSession(tSessionId, reason: 'Test reason');
+      final failure =
+          await repository.cancelSession(tSessionId, reason: 'Test reason');
 
       expect(failure, isNull);
     });

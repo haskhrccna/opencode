@@ -66,17 +66,53 @@ void main() {
     });
   });
 
-  group('validatePhone', () {
-    test('returns null for +966 format', () {
+  group('validatePhone (international)', () {
+    test('returns null for +966 (Saudi)', () {
       expect(ArabicValidators.validatePhone('+966501234567'), isNull);
     });
 
-    test('returns null for 05 format', () {
-      expect(ArabicValidators.validatePhone('0501234567'), isNull);
+    test('returns null for +1 (US)', () {
+      expect(ArabicValidators.validatePhone('+14155552671'), isNull);
     });
 
-    test('rejects non-Saudi numbers', () {
-      expect(ArabicValidators.validatePhone('1234567890'), isNotNull);
+    test('returns null for +44 (UK) with spaces and dashes', () {
+      expect(ArabicValidators.validatePhone('+44 20 7946-0958'), isNull);
+    });
+
+    test('returns null for +20 (Egypt) with parentheses', () {
+      expect(ArabicValidators.validatePhone('+20 (10) 1234 5678'), isNull);
+    });
+
+    test('returns null for digits without leading + (10-digit local)', () {
+      expect(ArabicValidators.validatePhone('1234567890'), isNull);
+    });
+
+    test('rejects empty', () {
+      expect(
+        ArabicValidators.validatePhone(''),
+        'validation.phone_required',
+      );
+    });
+
+    test('rejects too-short numbers (<7 digits)', () {
+      expect(
+        ArabicValidators.validatePhone('+1234'),
+        'validation.phone_invalid',
+      );
+    });
+
+    test('rejects numbers starting with 0 after the +', () {
+      expect(
+        ArabicValidators.validatePhone('+0123456789'),
+        'validation.phone_invalid',
+      );
+    });
+
+    test('rejects non-digit characters (letters)', () {
+      expect(
+        ArabicValidators.validatePhone('+1-abc-defg-hij'),
+        'validation.phone_invalid',
+      );
     });
   });
 

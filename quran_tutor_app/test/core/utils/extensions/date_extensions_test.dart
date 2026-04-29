@@ -69,8 +69,7 @@ void main() {
   group('DateTimeExtensions.isSameDay', () {
     test('same calendar day returns true regardless of time', () {
       expect(
-        DateTime(2026, 4, 29, 1)
-            .isSameDay(DateTime(2026, 4, 29, 23, 59)),
+        DateTime(2026, 4, 29, 1).isSameDay(DateTime(2026, 4, 29, 23, 59)),
         isTrue,
       );
     });

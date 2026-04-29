@@ -66,7 +66,6 @@ abstract class GradingRemoteDataSource {
 /// Supabase implementation
 @Singleton(as: GradingRemoteDataSource)
 class SupabaseGradingDataSource implements GradingRemoteDataSource {
-
   SupabaseGradingDataSource({SupabaseClient? supabase})
       : _supabase = supabase ?? Supabase.instance.client;
   final SupabaseClient _supabase;
@@ -74,11 +73,8 @@ class SupabaseGradingDataSource implements GradingRemoteDataSource {
   @override
   Future<GradeModel?> getGrade(String gradeId) async {
     try {
-      final response = await _supabase
-          .from('grades')
-          .select()
-          .eq('id', gradeId)
-          .single();
+      final response =
+          await _supabase.from('grades').select().eq('id', gradeId).single();
 
       return GradeModel.fromSupabase(response);
     } catch (e) {
@@ -163,11 +159,8 @@ class SupabaseGradingDataSource implements GradingRemoteDataSource {
         'created_at': DateTime.now().toUtc().toIso8601String(),
       };
 
-      final response = await _supabase
-          .from('grades')
-          .insert(data)
-          .select()
-          .single();
+      final response =
+          await _supabase.from('grades').insert(data).select().single();
 
       return GradeModel.fromSupabase(response);
     } catch (e) {
@@ -197,34 +190,27 @@ class SupabaseGradingDataSource implements GradingRemoteDataSource {
   @override
   Future<void> deleteGrade(String gradeId) async {
     try {
-      await _supabase
-          .from('grades')
-          .delete()
-          .eq('id', gradeId);
+      await _supabase.from('grades').delete().eq('id', gradeId);
     } catch (e) {
       throw ServerException.internalError();
     }
   }
 
   @override
-  Future<String> uploadAudioFeedback(String gradeId, String audioFilePath) async {
+  Future<String> uploadAudioFeedback(
+      String gradeId, String audioFilePath) async {
     try {
       final file = File(audioFilePath);
       final fileName = 'feedback/$gradeId.mp3';
 
-      await _supabase.storage
-          .from('grades')
-          .upload(fileName, file);
+      await _supabase.storage.from('grades').upload(fileName, file);
 
-      final url = _supabase.storage
-          .from('grades')
-          .getPublicUrl(fileName);
+      final url = _supabase.storage.from('grades').getPublicUrl(fileName);
 
       // Update grade with audio URL
       await _supabase
           .from('grades')
-          .update({'audio_feedback_url': url})
-          .eq('id', gradeId);
+          .update({'audio_feedback_url': url}).eq('id', gradeId);
 
       return url;
     } catch (e) {
@@ -240,8 +226,7 @@ class SupabaseGradingDataSource implements GradingRemoteDataSource {
 
       await _supabase
           .from('grades')
-          .update({'audio_feedback_url': null})
-          .eq('id', gradeId);
+          .update({'audio_feedback_url': null}).eq('id', gradeId);
     } catch (e) {
       throw ServerException.internalError();
     }
@@ -251,10 +236,12 @@ class SupabaseGradingDataSource implements GradingRemoteDataSource {
   Future<ProgressSummary> getStudentProgressSummary(String studentId) async {
     try {
       // Call Supabase RPC function
-      final response = await _supabase
-        .rpc<Map<String, dynamic>>('get_student_progress_summary', params: {
-        'student_id': studentId,
-      },);
+      final response = await _supabase.rpc<Map<String, dynamic>>(
+        'get_student_progress_summary',
+        params: {
+          'student_id': studentId,
+        },
+      );
 
       return ProgressSummary(
         studentId: studentId,
@@ -267,8 +254,10 @@ class SupabaseGradingDataSource implements GradingRemoteDataSource {
         lastSessionDate: response['last_session_date'] != null
             ? DateTime.parse(response['last_session_date'] as String)
             : null,
-        totalPagesMemorized: (response['total_pages_memorized'] as num?)?.toInt() ?? 0,
-        surahsMemorized: List<String>.from((response['surahs_memorized'] as List?) ?? []),
+        totalPagesMemorized:
+            (response['total_pages_memorized'] as num?)?.toInt() ?? 0,
+        surahsMemorized:
+            List<String>.from((response['surahs_memorized'] as List?) ?? []),
       );
     } catch (e) {
       throw ServerException.internalError();
@@ -282,20 +271,25 @@ class SupabaseGradingDataSource implements GradingRemoteDataSource {
     required DateTime endDate,
   }) async {
     try {
-    final response = await _supabase
-        .rpc<List<dynamic>>('get_progress_timeline', params: {
-      'student_id': studentId,
-      'start_date': startDate.toIso8601String(),
-      'end_date': endDate.toIso8601String(),
-    },);
+      final response = await _supabase.rpc<List<dynamic>>(
+        'get_progress_timeline',
+        params: {
+          'student_id': studentId,
+          'start_date': startDate.toIso8601String(),
+          'end_date': endDate.toIso8601String(),
+        },
+      );
 
-    final points = response
-        .map((e) => ProgressPoint(
-              date: DateTime.parse((e as Map<String, dynamic>)['date'] as String),
+      final points = response
+          .map(
+            (e) => ProgressPoint(
+              date:
+                  DateTime.parse((e as Map<String, dynamic>)['date'] as String),
               averageGrade: (e['average_grade'] as num?)?.toDouble() ?? 0.0,
               sessionsCount: (e['sessions_count'] as num?)?.toInt() ?? 0,
-            ),)
-        .toList();
+            ),
+          )
+          .toList();
 
       return ProgressTimeline(
         studentId: studentId,
@@ -309,13 +303,16 @@ class SupabaseGradingDataSource implements GradingRemoteDataSource {
   @override
   Future<List<StudentProgress>> getClassProgress(String teacherId) async {
     try {
-    final response = await _supabase
-        .rpc<List<dynamic>>('get_class_progress', params: {
-      'teacher_id': teacherId,
-    },);
+      final response = await _supabase.rpc<List<dynamic>>(
+        'get_class_progress',
+        params: {
+          'teacher_id': teacherId,
+        },
+      );
 
-    return response
-        .map((e) => StudentProgress(
+      return response
+          .map(
+            (e) => StudentProgress(
               studentId: (e as Map<String, dynamic>)['student_id'] as String,
               studentName: e['student_name'] as String? ?? '',
               averageGrade: (e['average_grade'] as num?)?.toDouble() ?? 0.0,
@@ -325,8 +322,9 @@ class SupabaseGradingDataSource implements GradingRemoteDataSource {
                   ? DateTime.parse(e['last_session'] as String)
                   : null,
               isOnTrack: (e['is_on_track'] as bool?) ?? true,
-            ),)
-        .toList();
+            ),
+          )
+          .toList();
     } catch (e) {
       throw ServerException.internalError();
     }

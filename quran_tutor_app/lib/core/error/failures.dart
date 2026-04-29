@@ -1,11 +1,10 @@
 import 'package:equatable/equatable.dart';
 
 /// Base class for all failures in the application
-/// 
+///
 /// Failures represent expected error states that can occur
 /// and should be handled gracefully by the UI
 abstract class Failure extends Equatable {
-
   const Failure({
     required this.message,
     this.code,
@@ -219,7 +218,6 @@ class CacheFailure extends Failure {
 
 /// Validation failures (form validation, business logic, etc.)
 class ValidationFailure extends Failure {
-
   const ValidationFailure({
     required super.message,
     String? code,
@@ -229,7 +227,8 @@ class ValidationFailure extends Failure {
           code: code ?? 'validation_error',
         );
 
-  factory ValidationFailure.invalidInput({String? message}) => ValidationFailure(
+  factory ValidationFailure.invalidInput({String? message}) =>
+      ValidationFailure(
         message: message ?? 'Invalid input',
         code: 'invalid_input',
       );

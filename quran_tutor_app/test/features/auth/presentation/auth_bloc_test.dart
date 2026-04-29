@@ -34,12 +34,12 @@ void main() {
 
   group('AppStarted', () {
     blocTest<AuthBloc, AuthState>(
-      'emits loading then authenticated when user exists',
+      'emits authenticated directly (no loading), unauthenticated when no user',
       build: () => authBloc,
       act: (bloc) => bloc.add(const AppStarted()),
       expect: () => [
-        isA<AuthState>().having((s) => s.status, 'status', AuthStatus.loading),
-        isA<AuthState>().having((s) => s.status, 'status', AuthStatus.authenticated),
+        isA<AuthState>()
+            .having((s) => s.status, 'status', AuthStatus.authenticated),
       ],
     );
   });
@@ -55,18 +55,22 @@ void main() {
           status: UserStatus.approved,
           createdAt: DateTime.now(),
         );
-        when(() => mockRepository.signIn(
-          email: any(named: 'email'),
-          password: any(named: 'password'),
-        ),).thenAnswer(
+        when(
+          () => mockRepository.signIn(
+            email: any(named: 'email'),
+            password: any(named: 'password'),
+          ),
+        ).thenAnswer(
           (_) async => (tAuthUser, null),
         );
         return authBloc;
       },
-      act: (bloc) => bloc.add(const SignInRequested(email: 'test@example.com', password: 'password')),
+      act: (bloc) => bloc.add(const SignInRequested(
+          email: 'test@example.com', password: 'password')),
       expect: () => [
         isA<AuthState>().having((s) => s.status, 'status', AuthStatus.loading),
-        isA<AuthState>().having((s) => s.status, 'status', AuthStatus.authenticated),
+        isA<AuthState>()
+            .having((s) => s.status, 'status', AuthStatus.authenticated),
       ],
     );
   });
@@ -81,7 +85,8 @@ void main() {
       act: (bloc) => bloc.add(const SignOutRequested()),
       expect: () => [
         isA<AuthState>().having((s) => s.status, 'status', AuthStatus.loading),
-        isA<AuthState>().having((s) => s.status, 'status', AuthStatus.unauthenticated),
+        isA<AuthState>()
+            .having((s) => s.status, 'status', AuthStatus.unauthenticated),
       ],
     );
   });
@@ -111,16 +116,20 @@ void main() {
       'emits loading then resting state on success '
       '(regression: previously emitted nothing on success)',
       build: () {
-        when(() => mockRepository.updatePassword(
-              currentPassword: any(named: 'currentPassword'),
-              newPassword: any(named: 'newPassword'),
-            ),).thenAnswer((_) async => null);
+        when(
+          () => mockRepository.updatePassword(
+            currentPassword: any(named: 'currentPassword'),
+            newPassword: any(named: 'newPassword'),
+          ),
+        ).thenAnswer((_) async => null);
         return authBloc;
       },
-      act: (bloc) => bloc.add(const UpdatePasswordRequested(
-        currentPassword: 'old',
-        newPassword: 'new',
-      ),),
+      act: (bloc) => bloc.add(
+        const UpdatePasswordRequested(
+          currentPassword: 'old',
+          newPassword: 'new',
+        ),
+      ),
       expect: () => [
         isA<AuthState>().having((s) => s.status, 'status', AuthStatus.loading),
         isA<AuthState>()

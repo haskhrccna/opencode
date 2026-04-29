@@ -42,7 +42,8 @@ void main() {
       },
       act: (bloc) => bloc.add(const LoadSessions()),
       expect: () => [
-        isA<SessionsState>().having((s) => s.status, 'status', SessionsStatus.loading),
+        isA<SessionsState>()
+            .having((s) => s.status, 'status', SessionsStatus.loading),
         isA<SessionsState>()
             .having((s) => s.status, 'status', SessionsStatus.loaded)
             .having((s) => s.sessions?.length, 'sessions.length', 1),
@@ -58,10 +59,12 @@ void main() {
       },
       act: (bloc) => bloc.add(const LoadSessions()),
       expect: () => [
-        isA<SessionsState>().having((s) => s.status, 'status', SessionsStatus.loading),
+        isA<SessionsState>()
+            .having((s) => s.status, 'status', SessionsStatus.loading),
         isA<SessionsState>()
             .having((s) => s.status, 'status', SessionsStatus.error)
-            .having((s) => s.errorMessage, 'errorMessage', 'Internal server error'),
+            .having(
+                (s) => s.errorMessage, 'errorMessage', 'Internal server error'),
       ],
     );
   });
@@ -76,10 +79,12 @@ void main() {
       },
       act: (bloc) => bloc.add(const GetSession('session-1')),
       expect: () => [
-        isA<SessionsState>().having((s) => s.status, 'status', SessionsStatus.loading),
+        isA<SessionsState>()
+            .having((s) => s.status, 'status', SessionsStatus.loading),
         isA<SessionsState>()
             .having((s) => s.status, 'status', SessionsStatus.loaded)
-            .having((s) => s.selectedSession?.id, 'selectedSession.id', 'session-1'),
+            .having((s) => s.selectedSession?.id, 'selectedSession.id',
+                'session-1'),
       ],
     );
   });
@@ -89,14 +94,14 @@ void main() {
       'emits creating then dispatches LoadSessions after success',
       build: () {
         when(() => mockRepository.createSession(
-          teacherId: any(named: 'teacherId'),
-          scheduledAt: any(named: 'scheduledAt'),
-          durationMinutes: any(named: 'durationMinutes'),
-          topic: any(named: 'topic'),
-          notes: any(named: 'notes'),
-          location: any(named: 'location'),
-          isOnline: any(named: 'isOnline'),
-        )).thenAnswer((_) async => (tSession, null));
+              teacherId: any(named: 'teacherId'),
+              scheduledAt: any(named: 'scheduledAt'),
+              durationMinutes: any(named: 'durationMinutes'),
+              topic: any(named: 'topic'),
+              notes: any(named: 'notes'),
+              location: any(named: 'location'),
+              isOnline: any(named: 'isOnline'),
+            )).thenAnswer((_) async => (tSession, null));
         when(() => mockRepository.getAllSessions())
             .thenAnswer((_) async => ([tSession], null));
         return bloc;
@@ -107,8 +112,10 @@ void main() {
         topic: 'Test',
       )),
       expect: () => [
-        isA<SessionsState>().having((s) => s.status, 'status', SessionsStatus.creating),
-        isA<SessionsState>().having((s) => s.status, 'status', SessionsStatus.loading),
+        isA<SessionsState>()
+            .having((s) => s.status, 'status', SessionsStatus.creating),
+        isA<SessionsState>()
+            .having((s) => s.status, 'status', SessionsStatus.loading),
         isA<SessionsState>()
             .having((s) => s.status, 'status', SessionsStatus.loaded)
             .having((s) => s.sessions?.length, 'sessions.length', 1),
@@ -120,19 +127,22 @@ void main() {
     blocTest<SessionsBloc, SessionsState>(
       'emits updating then reloads session',
       build: () {
-        when(() => mockRepository.cancelSession('session-1', reason: any(named: 'reason')))
-            .thenAnswer((_) async => null);
+        when(() => mockRepository.cancelSession('session-1',
+            reason: any(named: 'reason'))).thenAnswer((_) async => null);
         when(() => mockRepository.getSession('session-1'))
             .thenAnswer((_) async => (tSession, null));
         return bloc;
       },
       act: (bloc) => bloc.add(const CancelSession(sessionId: 'session-1')),
       expect: () => [
-        isA<SessionsState>().having((s) => s.status, 'status', SessionsStatus.updating),
-        isA<SessionsState>().having((s) => s.status, 'status', SessionsStatus.loading),
+        isA<SessionsState>()
+            .having((s) => s.status, 'status', SessionsStatus.updating),
+        isA<SessionsState>()
+            .having((s) => s.status, 'status', SessionsStatus.loading),
         isA<SessionsState>()
             .having((s) => s.status, 'status', SessionsStatus.loaded)
-            .having((s) => s.selectedSession?.id, 'selectedSession.id', 'session-1'),
+            .having((s) => s.selectedSession?.id, 'selectedSession.id',
+                'session-1'),
       ],
     );
   });

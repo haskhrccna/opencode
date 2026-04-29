@@ -11,8 +11,8 @@ void main() {
     return Session(
       id: 's-1',
       teacherId: 't-1',
-      scheduledAt: scheduledAt ??
-          DateTime.now().toUtc().add(const Duration(hours: 1)),
+      scheduledAt:
+          scheduledAt ?? DateTime.now().toUtc().add(const Duration(hours: 1)),
       status: status,
       createdAt: DateTime.utc(2026, 4, 29),
       durationMinutes: durationMinutes,
@@ -80,8 +80,7 @@ void main() {
     });
 
     test('false when current time is after endAt', () {
-      final start =
-          DateTime.now().toUtc().subtract(const Duration(hours: 5));
+      final start = DateTime.now().toUtc().subtract(const Duration(hours: 5));
       expect(
         sample(scheduledAt: start, durationMinutes: 60).isNow,
         isFalse,

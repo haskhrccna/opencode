@@ -16,7 +16,6 @@ enum GradingStatus {
 
 /// Chart data for progress visualization
 class ChartData extends Equatable {
-
   const ChartData({
     this.weeklySessionsSpots = const [],
     this.gradeDistribution = const {},
@@ -100,7 +99,6 @@ class ChartData extends Equatable {
 }
 
 class GradingState extends Equatable {
-
   const GradingState({
     required this.status,
     this.grades,

@@ -59,7 +59,8 @@ void main() {
       },
       act: (bloc) => bloc.add(const LoadDashboard()),
       expect: () => [
-        isA<AdminState>().having((s) => s.status, 'status', AdminStatus.loading),
+        isA<AdminState>()
+            .having((s) => s.status, 'status', AdminStatus.loading),
         isA<AdminState>()
             .having((s) => s.status, 'status', AdminStatus.loaded)
             .having((s) => s.systemStats, 'systemStats', tStats)
@@ -78,10 +79,12 @@ void main() {
       },
       act: (bloc) => bloc.add(const LoadDashboard()),
       expect: () => [
-        isA<AdminState>().having((s) => s.status, 'status', AdminStatus.loading),
+        isA<AdminState>()
+            .having((s) => s.status, 'status', AdminStatus.loading),
         isA<AdminState>()
             .having((s) => s.status, 'status', AdminStatus.error)
-            .having((s) => s.errorMessage, 'errorMessage', 'Internal server error'),
+            .having(
+                (s) => s.errorMessage, 'errorMessage', 'Internal server error'),
       ],
     );
   });
@@ -98,8 +101,10 @@ void main() {
       },
       act: (bloc) => bloc.add(const ApproveUser('user-1')),
       expect: () => [
-        isA<AdminState>().having((s) => s.status, 'status', AdminStatus.approving),
-        isA<AdminState>().having((s) => s.status, 'status', AdminStatus.loading),
+        isA<AdminState>()
+            .having((s) => s.status, 'status', AdminStatus.approving),
+        isA<AdminState>()
+            .having((s) => s.status, 'status', AdminStatus.loading),
         isA<AdminState>()
             .having((s) => s.status, 'status', AdminStatus.loaded)
             .having((s) => s.pendingUsers, 'pendingUsers', <AuthUser>[]),
@@ -123,7 +128,8 @@ void main() {
       },
       act: (bloc) => bloc.add(const LoadSystemSettings()),
       expect: () => [
-        isA<AdminState>().having((s) => s.status, 'status', AdminStatus.loading),
+        isA<AdminState>()
+            .having((s) => s.status, 'status', AdminStatus.loading),
         isA<AdminState>()
             .having((s) => s.status, 'status', AdminStatus.loaded)
             .having((s) => s.systemSettings, 'systemSettings', tSettings),

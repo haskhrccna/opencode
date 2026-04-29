@@ -50,7 +50,9 @@ class _ProgressScreenState extends State<ProgressScreen> {
                       final authState = context.read<AuthBloc>().state;
                       final studentId = authState.user?.id;
                       if (studentId != null) {
-                        context.read<GradingBloc>().add(LoadGrades(studentId: studentId));
+                        context
+                            .read<GradingBloc>()
+                            .add(LoadGrades(studentId: studentId));
                       }
                     },
                     child: const Text('إعادة المحاولة'),

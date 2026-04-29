@@ -38,7 +38,8 @@ abstract class SessionsRemoteDataSource {
   Future<void> cancelSession(String sessionId, {String? reason});
 
   /// Reschedule session
-  Future<SessionModel> rescheduleSession(String sessionId, DateTime newScheduledAt);
+  Future<SessionModel> rescheduleSession(
+      String sessionId, DateTime newScheduledAt);
 
   /// Start session (mark as in_progress)
   Future<SessionModel> startSession(String sessionId);
@@ -60,7 +61,6 @@ abstract class SessionsRemoteDataSource {
 /// Supabase implementation with UTC handling
 @Singleton(as: SessionsRemoteDataSource)
 class SupabaseSessionsDataSource implements SessionsRemoteDataSource {
-
   SupabaseSessionsDataSource({SupabaseClient? supabase})
       : _supabase = supabase ?? Supabase.instance.client;
   final SupabaseClient _supabase;
@@ -156,11 +156,8 @@ class SupabaseSessionsDataSource implements SessionsRemoteDataSource {
         'created_at': DateTime.now().toUtc().toIso8601String(),
       };
 
-      final response = await _supabase
-          .from('sessions')
-          .insert(data)
-          .select()
-          .single();
+      final response =
+          await _supabase.from('sessions').insert(data).select().single();
 
       return SessionModel.fromSupabase(response);
     } catch (e) {
@@ -173,8 +170,7 @@ class SupabaseSessionsDataSource implements SessionsRemoteDataSource {
     try {
       await _supabase
           .from('sessions')
-          .update({'student_id': studentId})
-          .eq('id', sessionId);
+          .update({'student_id': studentId}).eq('id', sessionId);
     } catch (e) {
       throw ServerException.internalError();
     }
@@ -203,14 +199,11 @@ class SupabaseSessionsDataSource implements SessionsRemoteDataSource {
   @override
   Future<void> cancelSession(String sessionId, {String? reason}) async {
     try {
-      await _supabase
-          .from('sessions')
-          .update({
-            'status': 'cancelled',
-            'cancellation_reason': reason,
-            'updated_at': DateTime.now().toUtc().toIso8601String(),
-          })
-          .eq('id', sessionId);
+      await _supabase.from('sessions').update({
+        'status': 'cancelled',
+        'cancellation_reason': reason,
+        'updated_at': DateTime.now().toUtc().toIso8601String(),
+      }).eq('id', sessionId);
     } catch (e) {
       throw ServerException.internalError();
     }
@@ -286,8 +279,7 @@ class SupabaseSessionsDataSource implements SessionsRemoteDataSource {
     try {
       await _supabase
           .from('sessions')
-          .update({'student_id': null})
-          .eq('id', sessionId);
+          .update({'student_id': null}).eq('id', sessionId);
     } catch (e) {
       throw ServerException.internalError();
     }

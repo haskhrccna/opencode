@@ -55,7 +55,8 @@ void main() {
       },
       act: (bloc) => bloc.add(const LoadProfile()),
       expect: () => [
-        isA<ProfileState>().having((s) => s.status, 'status', ProfileStatus.loading),
+        isA<ProfileState>()
+            .having((s) => s.status, 'status', ProfileStatus.loading),
         isA<ProfileState>()
             .having((s) => s.status, 'status', ProfileStatus.loaded)
             .having((s) => s.profile?.id, 'profile.id', 'user-1'),
@@ -71,10 +72,12 @@ void main() {
       },
       act: (bloc) => bloc.add(const LoadProfile()),
       expect: () => [
-        isA<ProfileState>().having((s) => s.status, 'status', ProfileStatus.loading),
+        isA<ProfileState>()
+            .having((s) => s.status, 'status', ProfileStatus.loading),
         isA<ProfileState>()
             .having((s) => s.status, 'status', ProfileStatus.error)
-            .having((s) => s.errorMessage, 'errorMessage', 'Internal server error'),
+            .having(
+                (s) => s.errorMessage, 'errorMessage', 'Internal server error'),
       ],
     );
   });
@@ -100,10 +103,12 @@ void main() {
       expect: () => [
         isA<ProfileState>()
             .having((s) => s.status, 'status', ProfileStatus.updating)
-            .having((s) => s.profile?.displayName, 'profile.displayName', 'Test User'),
+            .having((s) => s.profile?.displayName, 'profile.displayName',
+                'Test User'),
         isA<ProfileState>()
             .having((s) => s.status, 'status', ProfileStatus.loaded)
-            .having((s) => s.profile?.displayName, 'profile.displayName', 'Updated Name'),
+            .having((s) => s.profile?.displayName, 'profile.displayName',
+                'Updated Name'),
       ],
     );
   });
@@ -126,11 +131,13 @@ void main() {
       },
       act: (bloc) => bloc.add(const LoadTeachers()),
       expect: () => [
-        isA<ProfileState>().having((s) => s.status, 'status', ProfileStatus.loading),
+        isA<ProfileState>()
+            .having((s) => s.status, 'status', ProfileStatus.loading),
         isA<ProfileState>()
             .having((s) => s.status, 'status', ProfileStatus.loaded)
             .having((s) => s.teachers?.length, 'teachers.length', 1)
-            .having((s) => s.teachers?.first.role, 'teachers.first.role', UserRole.teacher),
+            .having((s) => s.teachers?.first.role, 'teachers.first.role',
+                UserRole.teacher),
       ],
     );
   });
@@ -153,11 +160,13 @@ void main() {
       },
       act: (bloc) => bloc.add(const LoadStudentsByTeacher('teacher-1')),
       expect: () => [
-        isA<ProfileState>().having((s) => s.status, 'status', ProfileStatus.loading),
+        isA<ProfileState>()
+            .having((s) => s.status, 'status', ProfileStatus.loading),
         isA<ProfileState>()
             .having((s) => s.status, 'status', ProfileStatus.loaded)
             .having((s) => s.students?.length, 'students.length', 1)
-            .having((s) => s.students?.first.role, 'students.first.role', UserRole.student),
+            .having((s) => s.students?.first.role, 'students.first.role',
+                UserRole.student),
       ],
     );
   });
@@ -166,16 +175,17 @@ void main() {
     blocTest<ProfileBloc, ProfileState>(
       'reloads profile after avatar deletion',
       build: () {
-        when(() => mockRepository.deleteAvatar())
-            .thenAnswer((_) async => null);
+        when(() => mockRepository.deleteAvatar()).thenAnswer((_) async => null);
         when(() => mockRepository.getCurrentProfile())
             .thenAnswer((_) async => (tProfile, null));
         return bloc;
       },
       act: (bloc) => bloc.add(const DeleteAvatar()),
       expect: () => [
-        isA<ProfileState>().having((s) => s.status, 'status', ProfileStatus.updating),
-        isA<ProfileState>().having((s) => s.status, 'status', ProfileStatus.loading),
+        isA<ProfileState>()
+            .having((s) => s.status, 'status', ProfileStatus.updating),
+        isA<ProfileState>()
+            .having((s) => s.status, 'status', ProfileStatus.loading),
         isA<ProfileState>()
             .having((s) => s.status, 'status', ProfileStatus.loaded)
             .having((s) => s.profile?.id, 'profile.id', 'user-1'),

@@ -4,12 +4,11 @@ import 'package:quran_tutor_app/features/auth/domain/repositories/auth_repositor
 
 /// Use case for signing in with email and password
 class SignInUseCase {
-
   const SignInUseCase(this.repository);
   final AuthRepository repository;
 
   /// Execute sign in
-  /// 
+  ///
   /// Returns [AuthUser] on success, [Failure] on error
   Future<(AuthUser?, Failure?)> call(SignInParams params) async {
     return repository.signIn(
@@ -21,7 +20,6 @@ class SignInUseCase {
 
 /// Parameters for sign in
 class SignInParams {
-
   const SignInParams({
     required this.email,
     required this.password,

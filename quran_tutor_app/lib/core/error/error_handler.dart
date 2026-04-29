@@ -95,7 +95,8 @@ class ErrorHandler {
   }
 
   /// Convert exceptions to Failures
-  static Failure _convertExceptionToFailure(Exception exception, StackTrace? stack) {
+  static Failure _convertExceptionToFailure(
+      Exception exception, StackTrace? stack) {
     if (exception is SocketException) {
       return NetworkFailure.noConnection();
     }
@@ -194,7 +195,6 @@ class ErrorHandler {
 
 /// Error boundary widget
 class _ErrorBoundary extends StatefulWidget {
-
   const _ErrorBoundary({
     required this.child,
     required this.errorBuilder,

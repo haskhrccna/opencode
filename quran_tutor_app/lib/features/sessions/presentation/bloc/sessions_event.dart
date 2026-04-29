@@ -8,7 +8,6 @@ abstract class SessionsEvent extends Equatable {
 }
 
 class LoadSessions extends SessionsEvent {
-
   const LoadSessions({this.userId});
   final String? userId;
 
@@ -17,7 +16,6 @@ class LoadSessions extends SessionsEvent {
 }
 
 class LoadTeacherSessions extends SessionsEvent {
-
   const LoadTeacherSessions(this.teacherId);
   final String teacherId;
 
@@ -26,7 +24,6 @@ class LoadTeacherSessions extends SessionsEvent {
 }
 
 class LoadStudentSessions extends SessionsEvent {
-
   const LoadStudentSessions(this.studentId);
   final String studentId;
 
@@ -39,7 +36,6 @@ class LoadAllSessions extends SessionsEvent {
 }
 
 class LoadUpcomingSessions extends SessionsEvent {
-
   const LoadUpcomingSessions({this.userId});
   final String? userId;
 
@@ -48,7 +44,6 @@ class LoadUpcomingSessions extends SessionsEvent {
 }
 
 class LoadPastSessions extends SessionsEvent {
-
   const LoadPastSessions({this.userId});
   final String? userId;
 
@@ -57,7 +52,6 @@ class LoadPastSessions extends SessionsEvent {
 }
 
 class GetSession extends SessionsEvent {
-
   const GetSession(this.sessionId);
   final String sessionId;
 
@@ -66,7 +60,6 @@ class GetSession extends SessionsEvent {
 }
 
 class CreateSession extends SessionsEvent {
-
   const CreateSession({
     required this.teacherId,
     required this.scheduledAt,
@@ -97,7 +90,6 @@ class CreateSession extends SessionsEvent {
 }
 
 class AssignStudent extends SessionsEvent {
-
   const AssignStudent({
     required this.sessionId,
     required this.studentId,
@@ -110,7 +102,6 @@ class AssignStudent extends SessionsEvent {
 }
 
 class UnassignStudent extends SessionsEvent {
-
   const UnassignStudent(this.sessionId);
   final String sessionId;
 
@@ -119,7 +110,6 @@ class UnassignStudent extends SessionsEvent {
 }
 
 class UpdateSession extends SessionsEvent {
-
   const UpdateSession({
     required this.sessionId,
     this.scheduledAt,
@@ -150,7 +140,6 @@ class UpdateSession extends SessionsEvent {
 }
 
 class CancelSession extends SessionsEvent {
-
   const CancelSession({
     required this.sessionId,
     this.reason,
@@ -163,7 +152,6 @@ class CancelSession extends SessionsEvent {
 }
 
 class RescheduleSession extends SessionsEvent {
-
   const RescheduleSession({
     required this.sessionId,
     required this.newScheduledAt,
@@ -176,7 +164,6 @@ class RescheduleSession extends SessionsEvent {
 }
 
 class StartSession extends SessionsEvent {
-
   const StartSession(this.sessionId);
   final String sessionId;
 
@@ -185,7 +172,6 @@ class StartSession extends SessionsEvent {
 }
 
 class CompleteSession extends SessionsEvent {
-
   const CompleteSession(this.sessionId);
   final String sessionId;
 
@@ -194,7 +180,6 @@ class CompleteSession extends SessionsEvent {
 }
 
 class LoadSessionsInRange extends SessionsEvent {
-
   const LoadSessionsInRange({
     required this.start,
     required this.end,

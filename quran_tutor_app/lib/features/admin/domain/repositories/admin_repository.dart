@@ -63,7 +63,6 @@ abstract class AdminRepository {
 
 /// System statistics
 class SystemStats extends Equatable {
-
   const SystemStats({
     required this.totalUsers,
     required this.totalStudents,
@@ -110,7 +109,6 @@ class SystemStats extends Equatable {
 
 /// Report data for PDF export
 class ReportData extends Equatable {
-
   const ReportData({
     required this.title,
     required this.startDate,
@@ -127,12 +125,12 @@ class ReportData extends Equatable {
   final List<ReportTable> tables;
 
   @override
-  List<Object?> get props => [title, startDate, endDate, sections, charts, tables];
+  List<Object?> get props =>
+      [title, startDate, endDate, sections, charts, tables];
 }
 
 /// Report section
 class ReportSection extends Equatable {
-
   const ReportSection({
     required this.title,
     required this.content,
@@ -146,7 +144,6 @@ class ReportSection extends Equatable {
 
 /// Report chart
 class ReportChart extends Equatable {
-
   const ReportChart({
     required this.title,
     required this.type,
@@ -165,7 +162,6 @@ enum ChartType { bar, line, pie, radar }
 
 /// Report table
 class ReportTable extends Equatable {
-
   const ReportTable({
     required this.title,
     required this.headers,
@@ -181,7 +177,6 @@ class ReportTable extends Equatable {
 
 /// System settings
 class SystemSettings extends Equatable {
-
   const SystemSettings({
     this.allowSelfRegistration = true,
     this.requireApproval = true,

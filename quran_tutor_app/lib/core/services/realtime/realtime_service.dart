@@ -3,17 +3,18 @@ import 'dart:async';
 import 'package:injectable/injectable.dart';
 import 'package:quran_tutor_app/core/constants/app_constants.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
 /// Service for handling Supabase Realtime subscriptions
 @singleton
 class RealtimeService {
-
   RealtimeService({SupabaseClient? supabase})
       : _supabase = supabase ?? Supabase.instance.client;
   final SupabaseClient _supabase;
 
   // Stream controllers for different events
   final _sessionUpdatesController = StreamController<SessionUpdate>.broadcast();
-  final _adminNotificationsController = StreamController<AdminNotification>.broadcast();
+  final _adminNotificationsController =
+      StreamController<AdminNotification>.broadcast();
   final _studentJoinsController = StreamController<StudentJoin>.broadcast();
 
   // Store subscriptions for proper cleanup
@@ -25,7 +26,8 @@ class RealtimeService {
   Stream<SessionUpdate> get sessionUpdates => _sessionUpdatesController.stream;
 
   /// Stream for admin notifications (e.g., new registrations)
-  Stream<AdminNotification> get adminNotifications => _adminNotificationsController.stream;
+  Stream<AdminNotification> get adminNotifications =>
+      _adminNotificationsController.stream;
 
   /// Stream for student joins to sessions (teacher view)
   Stream<StudentJoin> get studentJoins => _studentJoinsController.stream;
@@ -46,12 +48,14 @@ class RealtimeService {
           .eq('teacher_id', userId)
           .listen((data) {
             for (final change in data) {
-              _sessionUpdatesController.add(SessionUpdate(
-                sessionId: change['id'] as String,
-                status: change['status'] as String,
-                studentId: change['student_id'] as String?,
-                updatedAt: DateTime.parse(change['updated_at'] as String),
-              ),);
+              _sessionUpdatesController.add(
+                SessionUpdate(
+                  sessionId: change['id'] as String,
+                  status: change['status'] as String,
+                  studentId: change['student_id'] as String?,
+                  updatedAt: DateTime.parse(change['updated_at'] as String),
+                ),
+              );
             }
           });
       _sessionSubscriptions.add(subscription);
@@ -63,30 +67,32 @@ class RealtimeService {
           .eq('student_id', userId)
           .listen((data) {
             for (final change in data) {
-              _sessionUpdatesController.add(SessionUpdate(
-                sessionId: change['id'] as String,
-                status: change['status'] as String,
-                studentId: change['student_id'] as String?,
-                updatedAt: DateTime.parse(change['updated_at'] as String),
-              ),);
+              _sessionUpdatesController.add(
+                SessionUpdate(
+                  sessionId: change['id'] as String,
+                  status: change['status'] as String,
+                  studentId: change['student_id'] as String?,
+                  updatedAt: DateTime.parse(change['updated_at'] as String),
+                ),
+              );
             }
           });
       _sessionSubscriptions.add(subscription);
     } else {
       // Admin: listen to all sessions
-      final subscription = _supabase
-          .from('sessions')
-          .stream(primaryKey: ['id'])
-          .listen((data) {
-            for (final change in data) {
-              _sessionUpdatesController.add(SessionUpdate(
-                sessionId: change['id'] as String,
-                status: change['status'] as String,
-                studentId: change['student_id'] as String?,
-                updatedAt: DateTime.parse(change['updated_at'] as String),
-              ),);
-            }
-          });
+      final subscription =
+          _supabase.from('sessions').stream(primaryKey: ['id']).listen((data) {
+        for (final change in data) {
+          _sessionUpdatesController.add(
+            SessionUpdate(
+              sessionId: change['id'] as String,
+              status: change['status'] as String,
+              studentId: change['student_id'] as String?,
+              updatedAt: DateTime.parse(change['updated_at'] as String),
+            ),
+          );
+        }
+      });
       _sessionSubscriptions.add(subscription);
     }
   }
@@ -101,15 +107,17 @@ class RealtimeService {
         .eq('status', 'pending')
         .listen((data) {
           for (final change in data) {
-            _adminNotificationsController.add(AdminNotification(
-              type: AdminNotificationType.newRegistration,
-              userId: change['id'] as String,
-              userName: change['english_name'] as String? ??
-                  change['arabic_name'] as String? ??
-                  'Unknown',
-              role: change['role'] as String,
-              createdAt: DateTime.parse(change['created_at'] as String),
-            ),);
+            _adminNotificationsController.add(
+              AdminNotification(
+                type: AdminNotificationType.newRegistration,
+                userId: change['id'] as String,
+                userName: change['english_name'] as String? ??
+                    change['arabic_name'] as String? ??
+                    'Unknown',
+                role: change['role'] as String,
+                createdAt: DateTime.parse(change['created_at'] as String),
+              ),
+            );
           }
         });
     _adminSubscriptions.add(subscription);
@@ -127,12 +135,14 @@ class RealtimeService {
           for (final change in data) {
             // Check if student_id was updated (student joined)
             if (change['student_id'] != null) {
-              _studentJoinsController.add(StudentJoin(
-                sessionId: change['id'] as String,
-                studentId: change['student_id'] as String,
-                studentName: change['student_name'] as String? ?? 'Unknown',
-                joinedAt: DateTime.now(),
-              ),);
+              _studentJoinsController.add(
+                StudentJoin(
+                  sessionId: change['id'] as String,
+                  studentId: change['student_id'] as String,
+                  studentName: change['student_name'] as String? ?? 'Unknown',
+                  joinedAt: DateTime.now(),
+                ),
+              );
             }
           }
         });
@@ -172,11 +182,11 @@ class RealtimeService {
 
 /// Session update event
 class SessionUpdate {
-
   SessionUpdate({
     required this.sessionId,
     required this.status,
-    required this.updatedAt, this.studentId,
+    required this.updatedAt,
+    this.studentId,
   });
   final String sessionId;
   final String status;
@@ -186,7 +196,6 @@ class SessionUpdate {
 
 /// Admin notification event
 class AdminNotification {
-
   AdminNotification({
     required this.type,
     required this.userId,
@@ -209,7 +218,6 @@ enum AdminNotificationType {
 
 /// Student join event
 class StudentJoin {
-
   StudentJoin({
     required this.sessionId,
     required this.studentId,

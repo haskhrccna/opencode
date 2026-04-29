@@ -50,8 +50,7 @@ void main() {
 
     test('propagates failure', () async {
       final f = ServerFailure.internalError();
-      when(() => repo.getCurrentProfile())
-          .thenAnswer((_) async => (null, f));
+      when(() => repo.getCurrentProfile()).thenAnswer((_) async => (null, f));
       final useCase = GetProfileUseCase(repo);
 
       final (profile, failure) = await useCase();

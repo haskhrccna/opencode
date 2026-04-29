@@ -63,7 +63,8 @@ void main() {
     testWidgets('should show error for empty password', (tester) async {
       // act
       await tester.pumpWidget(createWidgetUnderTest());
-      await tester.enterText(find.byType(TextFormField).first, 'test@example.com');
+      await tester.enterText(
+          find.byType(TextFormField).first, 'test@example.com');
       await tester.tap(find.text('دخول'));
       await tester.pump();
 
@@ -71,7 +72,8 @@ void main() {
       expect(find.text('validation.required'), findsOneWidget);
     });
 
-    testWidgets('should call SignInRequested on valid form submit', (tester) async {
+    testWidgets('should call SignInRequested on valid form submit',
+        (tester) async {
       // arrange
       when(() => mockAuthBloc.add(any())).thenReturn(null);
 
@@ -89,12 +91,14 @@ void main() {
       await tester.pump();
 
       // assert
-      verify(() => mockAuthBloc.add(
-        const SignInRequested(
-          email: 'test@example.com',
-          password: 'Password123',
+      verify(
+        () => mockAuthBloc.add(
+          const SignInRequested(
+            email: 'test@example.com',
+            password: 'Password123',
+          ),
         ),
-      ),).called(1);
+      ).called(1);
     });
 
     testWidgets('should show loading indicator when loading', (tester) async {
@@ -102,8 +106,8 @@ void main() {
       when(() => mockAuthBloc.state).thenReturn(
         const AuthState(status: AuthStatus.loading),
       );
-      when(() => mockAuthBloc.stream)
-          .thenAnswer((_) => Stream.value(const AuthState(status: AuthStatus.loading)));
+      when(() => mockAuthBloc.stream).thenAnswer(
+          (_) => Stream.value(const AuthState(status: AuthStatus.loading)));
 
       // act
       await tester.pumpWidget(createWidgetUnderTest());

@@ -7,7 +7,6 @@ import 'package:quran_tutor_app/features/profile/presentation/bloc/profile_state
 
 @injectable
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-
   ProfileBloc(this._repository) : super(ProfileState.initial()) {
     on<LoadProfile>(_onLoadProfile);
     on<LoadProfileById>(_onLoadProfileById);
@@ -32,16 +31,20 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     final (profile, failure) = await _repository.getCurrentProfile();
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: ProfileStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: ProfileStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: ProfileStatus.loaded,
-        profile: profile,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: ProfileStatus.loaded,
+          profile: profile,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -54,16 +57,20 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     final (profile, failure) = await _repository.getProfileById(event.userId);
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: ProfileStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: ProfileStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: ProfileStatus.loaded,
-        profile: profile,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: ProfileStatus.loaded,
+          profile: profile,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -75,10 +82,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
     final currentProfile = state.profile;
     if (currentProfile == null) {
-      emit(state.copyWith(
-        status: ProfileStatus.error,
-        errorMessage: 'No profile loaded',
-      ),);
+      emit(
+        state.copyWith(
+          status: ProfileStatus.error,
+          errorMessage: 'No profile loaded',
+        ),
+      );
       return;
     }
 
@@ -95,16 +104,20 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     final (profile, failure) = await _repository.updateProfile(updatedProfile);
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: ProfileStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: ProfileStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: ProfileStatus.loaded,
-        profile: profile,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: ProfileStatus.loaded,
+          profile: profile,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -117,16 +130,20 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     final (profile, failure) = await _repository.uploadAvatar(event.imageFile);
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: ProfileStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: ProfileStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: ProfileStatus.loaded,
-        profile: profile,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: ProfileStatus.loaded,
+          profile: profile,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -139,10 +156,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     final failure = await _repository.deleteAvatar();
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: ProfileStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: ProfileStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
       // Refresh profile
       add(const LoadProfile());
@@ -161,15 +180,19 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     );
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: ProfileStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: ProfileStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: ProfileStatus.loaded,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: ProfileStatus.loaded,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -182,16 +205,20 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     final (teachers, failure) = await _repository.getTeachers();
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: ProfileStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: ProfileStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: ProfileStatus.loaded,
-        teachers: teachers,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: ProfileStatus.loaded,
+          teachers: teachers,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -201,19 +228,24 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ) async {
     emit(state.copyWith(status: ProfileStatus.loading));
 
-    final (students, failure) = await _repository.getStudentsByTeacher(event.teacherId);
+    final (students, failure) =
+        await _repository.getStudentsByTeacher(event.teacherId);
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: ProfileStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: ProfileStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: ProfileStatus.loaded,
-        students: students,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: ProfileStatus.loaded,
+          students: students,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -229,10 +261,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     );
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: ProfileStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: ProfileStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
       // Refresh students list
       add(LoadStudentsByTeacher(event.teacherId));
@@ -248,10 +282,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     final failure = await _repository.unlinkStudentFromTeacher(event.studentId);
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: ProfileStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: ProfileStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
       // Refresh profile
       add(const LoadProfile());
@@ -267,16 +303,20 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     final (profile, failure) = await _repository.getCurrentProfile();
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: ProfileStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: ProfileStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: ProfileStatus.loaded,
-        profile: profile,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: ProfileStatus.loaded,
+          profile: profile,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 }

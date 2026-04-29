@@ -45,14 +45,16 @@ class _TeacherStudentsScreenState extends State<TeacherStudentsScreen> {
       ),
       body: BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state) {
-          if (state.status == ProfileStatus.error && state.errorMessage != null) {
+          if (state.status == ProfileStatus.error &&
+              state.errorMessage != null) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.errorMessage!)),
             );
           }
         },
         builder: (context, state) {
-          if (state.status == ProfileStatus.loading || state.status == ProfileStatus.initial) {
+          if (state.status == ProfileStatus.loading ||
+              state.status == ProfileStatus.initial) {
             return const Center(child: CircularProgressIndicator());
           }
 
@@ -63,7 +65,8 @@ class _TeacherStudentsScreenState extends State<TeacherStudentsScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.people_outline, size: 64, color: AppColors.outline),
+                  Icon(Icons.people_outline,
+                      size: 64, color: AppColors.outline),
                   SizedBox(height: 16),
                   Text('لا يوجد طلاب مسندون إليك'),
                   SizedBox(height: 8),
@@ -113,13 +116,15 @@ class _StudentCard extends StatelessWidget {
               CircleAvatar(
                 radius: 28,
                 backgroundColor: AppColors.primaryContainer,
-                backgroundImage: student.hasAvatar ? NetworkImage(student.photoUrl!) : null,
+                backgroundImage:
+                    student.hasAvatar ? NetworkImage(student.photoUrl!) : null,
                 child: !student.hasAvatar
                     ? Text(
                         student.initials,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              color: AppColors.onPrimaryContainer,
-                            ),
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  color: AppColors.onPrimaryContainer,
+                                ),
                       )
                     : null,
               ),

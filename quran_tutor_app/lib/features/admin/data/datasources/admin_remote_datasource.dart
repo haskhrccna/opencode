@@ -56,7 +56,6 @@ abstract class AdminRemoteDataSource {
 /// Supabase implementation
 @Singleton(as: AdminRemoteDataSource)
 class SupabaseAdminDataSource implements AdminRemoteDataSource {
-
   SupabaseAdminDataSource({SupabaseClient? supabase})
       : _supabase = supabase ?? Supabase.instance.client;
   final SupabaseClient _supabase;
@@ -131,13 +130,10 @@ class SupabaseAdminDataSource implements AdminRemoteDataSource {
   @override
   Future<void> approveUser(String userId) async {
     try {
-      await _supabase
-          .from('users')
-          .update({
-            'status': 'approved',
-            'updated_at': DateTime.now().toUtc().toIso8601String(),
-          })
-          .eq('id', userId);
+      await _supabase.from('users').update({
+        'status': 'approved',
+        'updated_at': DateTime.now().toUtc().toIso8601String(),
+      }).eq('id', userId);
     } catch (e) {
       throw ServerException.internalError();
     }
@@ -146,14 +142,11 @@ class SupabaseAdminDataSource implements AdminRemoteDataSource {
   @override
   Future<void> rejectUser(String userId, {String? reason}) async {
     try {
-      await _supabase
-          .from('users')
-          .update({
-            'status': 'rejected',
-            'rejection_reason': reason,
-            'updated_at': DateTime.now().toUtc().toIso8601String(),
-          })
-          .eq('id', userId);
+      await _supabase.from('users').update({
+        'status': 'rejected',
+        'rejection_reason': reason,
+        'updated_at': DateTime.now().toUtc().toIso8601String(),
+      }).eq('id', userId);
     } catch (e) {
       throw ServerException.internalError();
     }
@@ -162,14 +155,11 @@ class SupabaseAdminDataSource implements AdminRemoteDataSource {
   @override
   Future<void> suspendUser(String userId, {String? reason}) async {
     try {
-      await _supabase
-          .from('users')
-          .update({
-            'status': 'suspended',
-            'suspension_reason': reason,
-            'updated_at': DateTime.now().toUtc().toIso8601String(),
-          })
-          .eq('id', userId);
+      await _supabase.from('users').update({
+        'status': 'suspended',
+        'suspension_reason': reason,
+        'updated_at': DateTime.now().toUtc().toIso8601String(),
+      }).eq('id', userId);
     } catch (e) {
       throw ServerException.internalError();
     }
@@ -178,13 +168,10 @@ class SupabaseAdminDataSource implements AdminRemoteDataSource {
   @override
   Future<void> reactivateUser(String userId) async {
     try {
-      await _supabase
-          .from('users')
-          .update({
-            'status': 'approved',
-            'updated_at': DateTime.now().toUtc().toIso8601String(),
-          })
-          .eq('id', userId);
+      await _supabase.from('users').update({
+        'status': 'approved',
+        'updated_at': DateTime.now().toUtc().toIso8601String(),
+      }).eq('id', userId);
     } catch (e) {
       throw ServerException.internalError();
     }
@@ -193,13 +180,10 @@ class SupabaseAdminDataSource implements AdminRemoteDataSource {
   @override
   Future<void> assignTeacher(String studentId, String teacherId) async {
     try {
-      await _supabase
-          .from('users')
-          .update({
-            'teacher_id': teacherId,
-            'updated_at': DateTime.now().toUtc().toIso8601String(),
-          })
-          .eq('id', studentId);
+      await _supabase.from('users').update({
+        'teacher_id': teacherId,
+        'updated_at': DateTime.now().toUtc().toIso8601String(),
+      }).eq('id', studentId);
     } catch (e) {
       throw ServerException.internalError();
     }
@@ -208,13 +192,10 @@ class SupabaseAdminDataSource implements AdminRemoteDataSource {
   @override
   Future<void> removeTeacher(String studentId) async {
     try {
-      await _supabase
-          .from('users')
-          .update({
-            'teacher_id': null,
-            'updated_at': DateTime.now().toUtc().toIso8601String(),
-          })
-          .eq('id', studentId);
+      await _supabase.from('users').update({
+        'teacher_id': null,
+        'updated_at': DateTime.now().toUtc().toIso8601String(),
+      }).eq('id', studentId);
     } catch (e) {
       throw ServerException.internalError();
     }
@@ -223,7 +204,8 @@ class SupabaseAdminDataSource implements AdminRemoteDataSource {
   @override
   Future<SystemStats> getSystemStats() async {
     try {
-      final response = await _supabase.rpc<Map<String, dynamic>>('get_system_stats');
+      final response =
+          await _supabase.rpc<Map<String, dynamic>>('get_system_stats');
 
       return SystemStats(
         totalUsers: (response['total_users'] as num?)?.toInt() ?? 0,
@@ -232,12 +214,17 @@ class SupabaseAdminDataSource implements AdminRemoteDataSource {
         totalAdmins: (response['total_admins'] as num?)?.toInt() ?? 0,
         pendingApprovals: (response['pending_approvals'] as num?)?.toInt() ?? 0,
         totalSessions: (response['total_sessions'] as num?)?.toInt() ?? 0,
-        completedSessions: (response['completed_sessions'] as num?)?.toInt() ?? 0,
-        cancelledSessions: (response['cancelled_sessions'] as num?)?.toInt() ?? 0,
-        averageSessionDuration: (response['average_session_duration'] as num?)?.toDouble() ?? 0.0,
+        completedSessions:
+            (response['completed_sessions'] as num?)?.toInt() ?? 0,
+        cancelledSessions:
+            (response['cancelled_sessions'] as num?)?.toInt() ?? 0,
+        averageSessionDuration:
+            (response['average_session_duration'] as num?)?.toDouble() ?? 0.0,
         averageGrade: (response['average_grade'] as num?)?.toDouble() ?? 0.0,
-        newUsersThisWeek: (response['new_users_this_week'] as num?)?.toInt() ?? 0,
-        activeUsersToday: (response['active_users_today'] as num?)?.toInt() ?? 0,
+        newUsersThisWeek:
+            (response['new_users_this_week'] as num?)?.toInt() ?? 0,
+        activeUsersToday:
+            (response['active_users_today'] as num?)?.toInt() ?? 0,
       );
     } catch (e) {
       throw ServerException.internalError();
@@ -250,36 +237,45 @@ class SupabaseAdminDataSource implements AdminRemoteDataSource {
     required DateTime endDate,
   }) async {
     try {
-      final response = await _supabase.rpc<Map<String, dynamic>>('get_report_data', params: {
-        'start_date': startDate.toIso8601String(),
-        'end_date': endDate.toIso8601String(),
-      },);
+      final response = await _supabase.rpc<Map<String, dynamic>>(
+        'get_report_data',
+        params: {
+          'start_date': startDate.toIso8601String(),
+          'end_date': endDate.toIso8601String(),
+        },
+      );
 
       return ReportData(
         title: (response['title'] as String?) ?? 'Report',
         startDate: startDate,
         endDate: endDate,
         sections: (response['sections'] as List? ?? [])
-            .map((e) => ReportSection(
-                  title: (e as Map<String, dynamic>)['title'] as String? ?? '',
-                  content: e['content'] as String? ?? '',
-                ),)
+            .map(
+              (e) => ReportSection(
+                title: (e as Map<String, dynamic>)['title'] as String? ?? '',
+                content: e['content'] as String? ?? '',
+              ),
+            )
             .toList(),
         charts: (response['charts'] as List? ?? [])
-            .map((e) => ReportChart(
-                  title: (e as Map<String, dynamic>)['title'] as String? ?? '',
-                  type: ChartType.values.byName((e['type'] as String?) ?? 'bar'),
-                  data: (e['data'] as Map<String, dynamic>?) ?? {},
-                ),)
+            .map(
+              (e) => ReportChart(
+                title: (e as Map<String, dynamic>)['title'] as String? ?? '',
+                type: ChartType.values.byName((e['type'] as String?) ?? 'bar'),
+                data: (e['data'] as Map<String, dynamic>?) ?? {},
+              ),
+            )
             .toList(),
         tables: (response['tables'] as List? ?? [])
-            .map((e) => ReportTable(
-                  title: (e as Map<String, dynamic>)['title'] as String? ?? '',
-                  headers: List<String>.from((e['headers'] as List?) ?? []),
-                  rows: ((e['rows'] as List?) ?? [])
-                      .map((r) => List<String>.from(r as List))
-                      .toList(),
-                ),)
+            .map(
+              (e) => ReportTable(
+                title: (e as Map<String, dynamic>)['title'] as String? ?? '',
+                headers: List<String>.from((e['headers'] as List?) ?? []),
+                rows: ((e['rows'] as List?) ?? [])
+                    .map((r) => List<String>.from(r as List))
+                    .toList(),
+              ),
+            )
             .toList(),
       );
     } catch (e) {
@@ -290,15 +286,15 @@ class SupabaseAdminDataSource implements AdminRemoteDataSource {
   @override
   Future<SystemSettings> getSystemSettings() async {
     try {
-      final response = await _supabase
-          .from('system_settings')
-          .select()
-          .single();
+      final response =
+          await _supabase.from('system_settings').select().single();
 
       return SystemSettings(
-        allowSelfRegistration: (response['allow_self_registration'] as bool?) ?? true,
+        allowSelfRegistration:
+            (response['allow_self_registration'] as bool?) ?? true,
         requireApproval: (response['require_approval'] as bool?) ?? true,
-        defaultSessionDuration: (response['default_session_duration'] as num?)?.toInt() ?? 60,
+        defaultSessionDuration:
+            (response['default_session_duration'] as num?)?.toInt() ?? 60,
         systemNotice: response['system_notice'] as String?,
         customSettings: response['custom_settings'] as Map<String, dynamic>?,
       );
@@ -311,16 +307,14 @@ class SupabaseAdminDataSource implements AdminRemoteDataSource {
   @override
   Future<void> updateSystemSettings(SystemSettings settings) async {
     try {
-      await _supabase
-          .from('system_settings')
-          .upsert({
-            'allow_self_registration': settings.allowSelfRegistration,
-            'require_approval': settings.requireApproval,
-            'default_session_duration': settings.defaultSessionDuration,
-            'system_notice': settings.systemNotice,
-            'custom_settings': settings.customSettings,
-            'updated_at': DateTime.now().toUtc().toIso8601String(),
-          });
+      await _supabase.from('system_settings').upsert({
+        'allow_self_registration': settings.allowSelfRegistration,
+        'require_approval': settings.requireApproval,
+        'default_session_duration': settings.defaultSessionDuration,
+        'system_notice': settings.systemNotice,
+        'custom_settings': settings.customSettings,
+        'updated_at': DateTime.now().toUtc().toIso8601String(),
+      });
     } catch (e) {
       throw ServerException.internalError();
     }

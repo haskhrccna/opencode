@@ -27,7 +27,6 @@ class LoadAllUsers extends AdminEvent {
 }
 
 class LoadUsersByRole extends AdminEvent {
-
   const LoadUsersByRole(this.role);
   final UserRole role;
 
@@ -36,7 +35,6 @@ class LoadUsersByRole extends AdminEvent {
 }
 
 class ApproveUser extends AdminEvent {
-
   const ApproveUser(this.userId);
   final String userId;
 
@@ -45,7 +43,6 @@ class ApproveUser extends AdminEvent {
 }
 
 class RejectUser extends AdminEvent {
-
   const RejectUser({required this.userId, this.reason});
   final String userId;
   final String? reason;
@@ -55,7 +52,6 @@ class RejectUser extends AdminEvent {
 }
 
 class SuspendUser extends AdminEvent {
-
   const SuspendUser({required this.userId, this.reason});
   final String userId;
   final String? reason;
@@ -65,7 +61,6 @@ class SuspendUser extends AdminEvent {
 }
 
 class ReactivateUser extends AdminEvent {
-
   const ReactivateUser(this.userId);
   final String userId;
 
@@ -74,7 +69,6 @@ class ReactivateUser extends AdminEvent {
 }
 
 class AssignTeacher extends AdminEvent {
-
   const AssignTeacher({required this.studentId, required this.teacherId});
   final String studentId;
   final String teacherId;
@@ -84,7 +78,6 @@ class AssignTeacher extends AdminEvent {
 }
 
 class RemoveTeacher extends AdminEvent {
-
   const RemoveTeacher(this.studentId);
   final String studentId;
 
@@ -97,7 +90,6 @@ class LoadSystemStats extends AdminEvent {
 }
 
 class LoadReportData extends AdminEvent {
-
   const LoadReportData({required this.startDate, required this.endDate});
   final DateTime startDate;
   final DateTime endDate;
@@ -111,7 +103,6 @@ class LoadSystemSettings extends AdminEvent {
 }
 
 class UpdateSystemSettings extends AdminEvent {
-
   const UpdateSystemSettings(this.settings);
   final SystemSettings settings;
 

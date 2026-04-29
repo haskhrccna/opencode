@@ -3,7 +3,6 @@ import 'package:quran_tutor_app/features/auth/domain/repositories/auth_repositor
 
 /// Use case for resetting password
 class ResetPasswordUseCase {
-
   const ResetPasswordUseCase(this.repository);
   final AuthRepository repository;
 
@@ -17,7 +16,6 @@ class ResetPasswordUseCase {
 
 /// Use case for updating password
 class UpdatePasswordUseCase {
-
   const UpdatePasswordUseCase(this.repository);
   final AuthRepository repository;
 
@@ -34,7 +32,6 @@ class UpdatePasswordUseCase {
 
 /// Parameters for password update
 class UpdatePasswordParams {
-
   const UpdatePasswordParams({
     required this.currentPassword,
     required this.newPassword,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 /// Banner shown when offline data is displayed
 class StaleDataBanner extends StatelessWidget {
-
   const StaleDataBanner({
     super.key,
     this.onRefresh,
@@ -77,7 +76,8 @@ class StaleDataBanner extends StatelessWidget {
   String _fallbackArabic(String key) {
     final arabicStrings = <String, String>{
       'offline_title': 'أنت غير متصل',
-      'offline_message': 'عرض البيانات المخزنة. سيتم المزامنة عند إعادة الاتصال.',
+      'offline_message':
+          'عرض البيانات المخزنة. سيتم المزامنة عند إعادة الاتصال.',
       'retry_connection': 'إعادة المحاولة',
     };
     return arabicStrings[key] ?? key;

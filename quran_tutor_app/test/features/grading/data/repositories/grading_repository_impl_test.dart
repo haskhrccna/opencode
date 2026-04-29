@@ -86,14 +86,15 @@ void main() {
 
   group('getLatestGradesByStudent', () {
     test('respects the limit', () async {
-      when(() => ds.getGradesByStudent('st-1')).thenAnswer((_) async => [
-            makeModel(id: 'a'),
-            makeModel(id: 'b'),
-            makeModel(id: 'c'),
-          ],);
+      when(() => ds.getGradesByStudent('st-1')).thenAnswer(
+        (_) async => [
+          makeModel(id: 'a'),
+          makeModel(id: 'b'),
+          makeModel(id: 'c'),
+        ],
+      );
 
-      final (grades, _) =
-          await repo.getLatestGradesByStudent('st-1', limit: 2);
+      final (grades, _) = await repo.getLatestGradesByStudent('st-1', limit: 2);
       expect(grades!.length, 2);
       expect(grades.first.id, 'a');
     });
@@ -101,13 +102,15 @@ void main() {
 
   group('createGrade', () {
     test('returns created entity', () async {
-      when(() => ds.createGrade(
-            sessionId: 's-1',
-            studentId: 'st-1',
-            teacherId: 't-1',
-            category: GradingCategory.memorization,
-            grade: 5,
-          ),).thenAnswer((_) async => makeModel());
+      when(
+        () => ds.createGrade(
+          sessionId: 's-1',
+          studentId: 'st-1',
+          teacherId: 't-1',
+          category: GradingCategory.memorization,
+          grade: 5,
+        ),
+      ).thenAnswer((_) async => makeModel());
 
       final (grade, failure) = await repo.createGrade(
         sessionId: 's-1',

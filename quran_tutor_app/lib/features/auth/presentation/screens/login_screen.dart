@@ -39,8 +39,10 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 const Icon(Icons.menu_book, size: 64, color: Colors.green),
                 const SizedBox(height: 16),
-                Text('تسجيل الدخول',
-                    style: Theme.of(context).textTheme.headlineMedium,),
+                Text(
+                  'تسجيل الدخول',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
                 const SizedBox(height: 32),
                 TextFormField(
                   controller: _emailController,
@@ -52,8 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _passwordController,
-                  decoration:
-                      const InputDecoration(labelText: 'كلمة المرور'),
+                  decoration: const InputDecoration(labelText: 'كلمة المرور'),
                   obscureText: true,
                   validator: ArabicValidators.validatePassword,
                 ),
@@ -63,8 +64,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (state.status == AuthStatus.error) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                            content:
-                                Text(state.errorMessage ?? 'Login failed'),),
+                          content: Text(state.errorMessage ?? 'Login failed'),
+                        ),
                       );
                     }
                   },
@@ -87,7 +88,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               width: 20,
                               height: 20,
                               child: CircularProgressIndicator(
-                                  strokeWidth: 2,),)
+                                strokeWidth: 2,
+                              ),
+                            )
                           : const Text('دخول'),
                     );
                   },
@@ -95,6 +98,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextButton(
                   onPressed: () => context.go('/auth/signup'),
                   child: const Text('إنشاء حساب جديد'),
+                ),
+                TextButton(
+                  onPressed: () => context.go('/auth/teacher-signup'),
+                  child: const Text('تسجيل كمعلم'),
                 ),
               ],
             ),

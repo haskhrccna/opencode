@@ -10,7 +10,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 /// Service for handling audio recording and playback
 @singleton
 class AudioService {
-
   AudioService({
     AudioPlayer? player,
     AudioRecorder? recorder,
@@ -42,9 +41,7 @@ class AudioService {
     }
 
     // Configure recording
-    const config = RecordConfig(
-      
-    );
+    const config = RecordConfig();
 
     // Start recording
     _currentRecordingPath = customPath ?? await _generateRecordingPath();
@@ -105,15 +102,12 @@ class AudioService {
       throw Exception('Recording file not found');
     }
 
-    final fileName = 'recordings/$sessionId/${DateTime.now().millisecondsSinceEpoch}.m4a';
+    final fileName =
+        'recordings/$sessionId/${DateTime.now().millisecondsSinceEpoch}.m4a';
 
-    await _supabase.storage
-        .from('recordings')
-        .upload(fileName, file);
+    await _supabase.storage.from('recordings').upload(fileName, file);
 
-    return _supabase.storage
-        .from('recordings')
-        .getPublicUrl(fileName);
+    return _supabase.storage.from('recordings').getPublicUrl(fileName);
   }
 
   /// Delete recording from storage

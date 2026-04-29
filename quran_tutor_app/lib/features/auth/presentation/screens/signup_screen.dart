@@ -8,7 +8,6 @@ import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_event.dart'
 import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_state.dart';
 
 class SignupScreen extends StatefulWidget {
-
   const SignupScreen({super.key, this.teacherInviteCode});
   final String? teacherInviteCode;
 
@@ -52,8 +51,10 @@ class _SignupScreenState extends State<SignupScreen> {
               children: [
                 const Icon(Icons.menu_book, size: 64, color: Colors.green),
                 const SizedBox(height: 16),
-                Text('إنشاء حساب',
-                    style: Theme.of(context).textTheme.headlineMedium,),
+                Text(
+                  'إنشاء حساب',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
                 if (widget.teacherInviteCode != null) ...[
                   const SizedBox(height: 8),
                   Container(
@@ -93,8 +94,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _phoneController,
-                  decoration:
-                      const InputDecoration(labelText: 'رقم الهاتف'),
+                  decoration: const InputDecoration(labelText: 'رقم الهاتف'),
                   keyboardType: TextInputType.phone,
                   validator: ArabicValidators.validatePhone,
                 ),
@@ -127,8 +127,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _passwordController,
-                  decoration:
-                      const InputDecoration(labelText: 'كلمة المرور'),
+                  decoration: const InputDecoration(labelText: 'كلمة المرور'),
                   obscureText: true,
                   validator: ArabicValidators.validatePassword,
                 ),
@@ -140,7 +139,9 @@ class _SignupScreenState extends State<SignupScreen> {
                   obscureText: true,
                   validator: (v) =>
                       ArabicValidators.validatePasswordConfirmation(
-                          v, _passwordController.text,),
+                    v,
+                    _passwordController.text,
+                  ),
                 ),
                 const SizedBox(height: 24),
                 BlocConsumer<AuthBloc, AuthState>(
@@ -169,7 +170,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                         dateOfBirth: _selectedDob!,
                                         phoneNumber:
                                             _phoneController.text.trim(),
-                                        teacherInviteCode: widget.teacherInviteCode,
+                                        teacherInviteCode:
+                                            widget.teacherInviteCode,
                                       ),
                                     );
                               }
@@ -178,7 +180,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           ? const SizedBox(
                               width: 20,
                               height: 20,
-                              child: CircularProgressIndicator(strokeWidth: 2),)
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
                           : const Text('تسجيل'),
                     );
                   },
@@ -186,6 +189,10 @@ class _SignupScreenState extends State<SignupScreen> {
                 TextButton(
                   onPressed: () => context.go('/auth/login'),
                   child: const Text('لديك حساب؟ سجل دخولك'),
+                ),
+                TextButton(
+                  onPressed: () => context.go('/auth/teacher-signup'),
+                  child: const Text('تسجيل كمعلم بدلاً من ذلك'),
                 ),
               ],
             ),
