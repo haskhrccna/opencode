@@ -9,7 +9,7 @@ import 'package:quran_tutor_app/features/profile/domain/entities/user_profile.da
 import 'package:quran_tutor_app/features/profile/domain/repositories/profile_repository.dart';
 
 /// Implementation of ProfileRepository using remote datasource
-@Injectable(as: ProfileRepository)
+@Singleton(as: ProfileRepository)
 class ProfileRepositoryImpl implements ProfileRepository {
 
   ProfileRepositoryImpl({required this.remoteDataSource});

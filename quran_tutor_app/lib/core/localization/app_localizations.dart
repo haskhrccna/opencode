@@ -54,7 +54,7 @@ class AppLocalizations {
     
     if (args != null) {
       args.forEach((paramKey, paramValue) {
-        result = result.replaceAll(r'{$paramKey}', paramValue.toString());
+        result = result.replaceAll('{$paramKey}', paramValue.toString());
       });
     }
     

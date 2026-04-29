@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +10,12 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:quran_tutor_app/core/constants/app_constants.dart';
 import 'package:quran_tutor_app/core/environment/app_environment.dart';
+import 'package:quran_tutor_app/core/error/error_handler.dart';
 import 'package:quran_tutor_app/core/localization/app_localizations.dart';
 import 'package:quran_tutor_app/core/router/app_router.dart';
+import 'package:quran_tutor_app/core/services/analytics/analytics_service.dart';
 import 'package:quran_tutor_app/core/services/dependency_injection/injection.dart';
+import 'package:quran_tutor_app/core/services/notifications/notification_service.dart';
 import 'package:quran_tutor_app/core/theme/app_theme.dart';
 import 'package:quran_tutor_app/core/theme/cubit/theme_cubit.dart';
 import 'package:quran_tutor_app/core/utils/bloc_observer.dart';
@@ -50,13 +55,18 @@ void main() async {
   await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
   await EasyLocalization.ensureInitialized();
 
-  HydratedBloc.storage = await HydratedStorage.build(
-    storageDirectory: HydratedStorageDirectory(
-      (await getApplicationDocumentsDirectory()).path,
-    ),
-  );
-
   final logger = AppLogger();
+
+  try {
+    HydratedBloc.storage = await HydratedStorage.build(
+      storageDirectory: HydratedStorageDirectory(
+        (await getApplicationDocumentsDirectory()).path,
+      ),
+    );
+  } catch (e, stackTrace) {
+    logger.e('Failed to initialize HydratedStorage', error: e, stackTrace: stackTrace);
+    // Fall back to in-memory storage so the app can still launch
+  }
 
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -74,13 +84,23 @@ void main() async {
 
   await configureDependencies();
 
+  // Initialize core services
+  try {
+    await getIt<NotificationService>().initialize();
+  } catch (e, stackTrace) {
+    logger.e('Failed to initialize NotificationService', error: e, stackTrace: stackTrace);
+  }
+  try {
+    await getIt<AnalyticsService>().initialize();
+  } catch (e, stackTrace) {
+    logger.e('Failed to initialize AnalyticsService', error: e, stackTrace: stackTrace);
+  }
+
+  // Initialize global error handling
+  ErrorHandler.initialize();
+
   if (kDebugMode) {
     Bloc.observer = AppBlocObserver();
-    FlutterError.onError = (details) {
-      FlutterError.presentError(details);
-      logger.e('FlutterError: ${details.exception}',
-          error: details.exception, stackTrace: details.stack,);
-    };
     ErrorWidget.builder = (details) => Material(
       child: Container(
         color: Colors.red,
@@ -100,15 +120,20 @@ void main() async {
   logger.i('Environment: ${AppEnvironment.displayName}');
   logger.i('API Base URL: ${AppEnvironment.baseUrl}');
 
-  runApp(
-    EasyLocalization(
-      supportedLocales: AppConstants.supportedLocales,
-      path: AppConstants.translationsPath,
-      fallbackLocale: AppConstants.defaultLocale,
-      startLocale: AppConstants.defaultLocale,
-      useOnlyLangCode: true,
-      child: const QuranTutorApp(),
+  runZonedGuarded(
+    () => runApp(
+      EasyLocalization(
+        supportedLocales: AppConstants.supportedLocales,
+        path: AppConstants.translationsPath,
+        fallbackLocale: AppConstants.defaultLocale,
+        startLocale: AppConstants.defaultLocale,
+        useOnlyLangCode: true,
+        child: const QuranTutorApp(),
+      ),
     ),
+    (error, stack) {
+      logger.e('Unhandled async error', error: error, stackTrace: stack);
+    },
   );
 }
 

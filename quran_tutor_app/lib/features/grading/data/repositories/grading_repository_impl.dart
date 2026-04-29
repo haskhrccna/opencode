@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:quran_tutor_app/core/constants/app_constants.dart';
+import 'package:quran_tutor_app/core/error/exceptions.dart';
 import 'package:quran_tutor_app/core/error/failures.dart';
 import 'package:quran_tutor_app/features/grading/data/datasources/grading_remote_datasource.dart';
 import 'package:quran_tutor_app/features/grading/data/models/grade_model.dart';
@@ -17,8 +18,12 @@ class GradingRepositoryImpl implements GradingRepository {
     try {
       final grade = await _remoteDataSource.getGrade(gradeId);
       return (grade?.toEntity(), null);
+    } on ServerException catch (e) {
+      return (null, _mapServerExceptionToFailure(e));
+    } on NetworkException catch (e) {
+      return (null, _mapNetworkExceptionToFailure(e));
     } catch (e) {
-      return (null, ServerFailure(message: e.toString()));
+      return (null, UnknownFailure(message: e.toString()));
     }
   }
 
@@ -27,8 +32,12 @@ class GradingRepositoryImpl implements GradingRepository {
     try {
       final grades = await _remoteDataSource.getGradesBySession(sessionId);
       return (grades.map((g) => g.toEntity()).toList(), null);
+    } on ServerException catch (e) {
+      return (null, _mapServerExceptionToFailure(e));
+    } on NetworkException catch (e) {
+      return (null, _mapNetworkExceptionToFailure(e));
     } catch (e) {
-      return (null, ServerFailure(message: e.toString()));
+      return (null, UnknownFailure(message: e.toString()));
     }
   }
 
@@ -37,8 +46,12 @@ class GradingRepositoryImpl implements GradingRepository {
     try {
       final grades = await _remoteDataSource.getGradesByStudent(studentId);
       return (grades.map((g) => g.toEntity()).toList(), null);
+    } on ServerException catch (e) {
+      return (null, _mapServerExceptionToFailure(e));
+    } on NetworkException catch (e) {
+      return (null, _mapNetworkExceptionToFailure(e));
     } catch (e) {
-      return (null, ServerFailure(message: e.toString()));
+      return (null, UnknownFailure(message: e.toString()));
     }
   }
 
@@ -47,8 +60,12 @@ class GradingRepositoryImpl implements GradingRepository {
     try {
       final grades = await _remoteDataSource.getGradesByTeacher(teacherId);
       return (grades.map((g) => g.toEntity()).toList(), null);
+    } on ServerException catch (e) {
+      return (null, _mapServerExceptionToFailure(e));
+    } on NetworkException catch (e) {
+      return (null, _mapNetworkExceptionToFailure(e));
     } catch (e) {
-      return (null, ServerFailure(message: e.toString()));
+      return (null, UnknownFailure(message: e.toString()));
     }
   }
 
@@ -61,8 +78,12 @@ class GradingRepositoryImpl implements GradingRepository {
       final grades = await _remoteDataSource.getGradesByStudent(studentId);
       final limited = grades.take(limit).toList();
       return (limited.map((g) => g.toEntity()).toList(), null);
+    } on ServerException catch (e) {
+      return (null, _mapServerExceptionToFailure(e));
+    } on NetworkException catch (e) {
+      return (null, _mapNetworkExceptionToFailure(e));
     } catch (e) {
-      return (null, ServerFailure(message: e.toString()));
+      return (null, UnknownFailure(message: e.toString()));
     }
   }
 
@@ -91,8 +112,12 @@ class GradingRepositoryImpl implements GradingRepository {
         pagesMemorized: pagesMemorized,
       );
       return (gradeModel.toEntity(), null);
+    } on ServerException catch (e) {
+      return (null, _mapServerExceptionToFailure(e));
+    } on NetworkException catch (e) {
+      return (null, _mapNetworkExceptionToFailure(e));
     } catch (e) {
-      return (null, ServerFailure(message: e.toString()));
+      return (null, UnknownFailure(message: e.toString()));
     }
   }
 
@@ -102,8 +127,12 @@ class GradingRepositoryImpl implements GradingRepository {
       final gradeModel = GradeModel.fromEntity(grade);
       final updated = await _remoteDataSource.updateGrade(gradeModel);
       return (updated.toEntity(), null);
+    } on ServerException catch (e) {
+      return (null, _mapServerExceptionToFailure(e));
+    } on NetworkException catch (e) {
+      return (null, _mapNetworkExceptionToFailure(e));
     } catch (e) {
-      return (null, ServerFailure(message: e.toString()));
+      return (null, UnknownFailure(message: e.toString()));
     }
   }
 
@@ -112,8 +141,12 @@ class GradingRepositoryImpl implements GradingRepository {
     try {
       await _remoteDataSource.deleteGrade(gradeId);
       return null;
+    } on ServerException catch (e) {
+      return _mapServerExceptionToFailure(e);
+    } on NetworkException catch (e) {
+      return _mapNetworkExceptionToFailure(e);
     } catch (e) {
-      return ServerFailure(message: e.toString());
+      return UnknownFailure(message: e.toString());
     }
   }
 
@@ -126,8 +159,12 @@ class GradingRepositoryImpl implements GradingRepository {
       await _remoteDataSource.uploadAudioFeedback(gradeId, audioFilePath);
       final grade = await _remoteDataSource.getGrade(gradeId);
       return (grade?.toEntity(), null);
+    } on ServerException catch (e) {
+      return (null, _mapServerExceptionToFailure(e));
+    } on NetworkException catch (e) {
+      return (null, _mapNetworkExceptionToFailure(e));
     } catch (e) {
-      return (null, ServerFailure(message: e.toString()));
+      return (null, UnknownFailure(message: e.toString()));
     }
   }
 
@@ -136,8 +173,12 @@ class GradingRepositoryImpl implements GradingRepository {
     try {
       await _remoteDataSource.deleteAudioFeedback(gradeId);
       return null;
+    } on ServerException catch (e) {
+      return _mapServerExceptionToFailure(e);
+    } on NetworkException catch (e) {
+      return _mapNetworkExceptionToFailure(e);
     } catch (e) {
-      return ServerFailure(message: e.toString());
+      return UnknownFailure(message: e.toString());
     }
   }
 
@@ -146,8 +187,12 @@ class GradingRepositoryImpl implements GradingRepository {
     try {
       final summary = await _remoteDataSource.getStudentProgressSummary(studentId);
       return (summary, null);
+    } on ServerException catch (e) {
+      return (null, _mapServerExceptionToFailure(e));
+    } on NetworkException catch (e) {
+      return (null, _mapNetworkExceptionToFailure(e));
     } catch (e) {
-      return (null, ServerFailure(message: e.toString()));
+      return (null, UnknownFailure(message: e.toString()));
     }
   }
 
@@ -164,8 +209,12 @@ class GradingRepositoryImpl implements GradingRepository {
         endDate: endDate,
       );
       return (timeline, null);
+    } on ServerException catch (e) {
+      return (null, _mapServerExceptionToFailure(e));
+    } on NetworkException catch (e) {
+      return (null, _mapNetworkExceptionToFailure(e));
     } catch (e) {
-      return (null, ServerFailure(message: e.toString()));
+      return (null, UnknownFailure(message: e.toString()));
     }
   }
 
@@ -174,8 +223,49 @@ class GradingRepositoryImpl implements GradingRepository {
     try {
       final progress = await _remoteDataSource.getClassProgress(teacherId);
       return (progress, null);
+    } on ServerException catch (e) {
+      return (null, _mapServerExceptionToFailure(e));
+    } on NetworkException catch (e) {
+      return (null, _mapNetworkExceptionToFailure(e));
     } catch (e) {
-      return (null, ServerFailure(message: e.toString()));
+      return (null, UnknownFailure(message: e.toString()));
+    }
+  }
+
+  Failure _mapServerExceptionToFailure(ServerException e) {
+    switch (e.code) {
+      case 'bad_request':
+        return ServerFailure.badRequest(message: e.message);
+      case 'unauthorized':
+        return ServerFailure.unauthorized();
+      case 'forbidden':
+        return ServerFailure.forbidden();
+      case 'not_found':
+        return ServerFailure.notFound();
+      case 'conflict':
+        return ServerFailure.conflict();
+      case 'internal_error':
+        return ServerFailure.internalError();
+      default:
+        return ServerFailure(
+          message: e.message,
+          code: e.code,
+          statusCode: e.statusCode,
+        );
+    }
+  }
+
+  Failure _mapNetworkExceptionToFailure(NetworkException e) {
+    switch (e.code) {
+      case 'no_connection':
+        return NetworkFailure.noConnection();
+      case 'timeout':
+        return NetworkFailure.timeout();
+      default:
+        return NetworkFailure(
+          message: e.message,
+          code: e.code,
+        );
     }
   }
 

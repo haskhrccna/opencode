@@ -73,13 +73,14 @@ void main() {
 
   group('SignOutRequested', () {
     blocTest<AuthBloc, AuthState>(
-      'emits unauthenticated on sign out',
+      'emits loading then unauthenticated on sign out',
       build: () {
         when(() => mockRepository.signOut()).thenAnswer((_) async {});
         return authBloc;
       },
       act: (bloc) => bloc.add(const SignOutRequested()),
       expect: () => [
+        isA<AuthState>().having((s) => s.status, 'status', AuthStatus.loading),
         isA<AuthState>().having((s) => s.status, 'status', AuthStatus.unauthenticated),
       ],
     );

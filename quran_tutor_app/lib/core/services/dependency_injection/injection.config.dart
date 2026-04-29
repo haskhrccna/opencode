@@ -103,8 +103,6 @@ _i174.GetIt $initGetIt(
       _i412.SupabaseProfileDataSource(supabase: gh<_i454.SupabaseClient>()));
   gh.singleton<_i854.RealtimeService>(
       () => _i854.RealtimeService(supabase: gh<_i454.SupabaseClient>()));
-  gh.singleton<_i998.GradingRemoteDataSource>(() =>
-      _i998.SupabaseGradingDataSource(supabase: gh<_i454.SupabaseClient>()));
   gh.singleton<_i642.OfflineService>(() => _i642.OfflineService(
         db: gh<_i95.OfflineDatabase>(),
         connectivity: gh<_i895.Connectivity>(),
@@ -115,22 +113,24 @@ _i174.GetIt $initGetIt(
       _i1043.SupabaseAuthDataSource(supabase: gh<_i454.SupabaseClient>()));
   gh.singleton<_i612.AdminRemoteDataSource>(() =>
       _i612.SupabaseAdminDataSource(supabase: gh<_i454.SupabaseClient>()));
+  gh.singleton<_i998.GradingRemoteDataSource>(() =>
+      _i998.SupabaseGradingDataSource(supabase: gh<_i454.SupabaseClient>()));
   gh.singleton<_i916.GradingRepository>(
       () => _i430.GradingRepositoryImpl(gh<_i998.GradingRemoteDataSource>()));
-  gh.factory<_i241.AdminRepository>(() => _i839.AdminRepositoryImpl(
+  gh.singleton<_i241.AdminRepository>(() => _i839.AdminRepositoryImpl(
       remoteDataSource: gh<_i612.AdminRemoteDataSource>()));
   gh.singleton<_i234.AuthRepository>(() => _i365.AuthRepositoryImpl(
         remoteDataSource: gh<_i1043.AuthRemoteDataSource>(),
         localDataSource: gh<_i838.AuthLocalDataSource>(),
       ));
-  gh.factory<_i46.SessionsRepository>(() => _i790.SessionsRepositoryImpl(
+  gh.singleton<_i46.SessionsRepository>(() => _i790.SessionsRepositoryImpl(
       remoteDataSource: gh<_i933.SessionsRemoteDataSource>()));
   gh.factory<_i940.AdminBloc>(
       () => _i940.AdminBloc(gh<_i241.AdminRepository>()));
   gh.factory<_i284.SessionsBloc>(
       () => _i284.SessionsBloc(gh<_i46.SessionsRepository>()));
   gh.factory<_i748.AuthBloc>(() => _i748.AuthBloc(gh<_i234.AuthRepository>()));
-  gh.factory<_i919.ProfileRepository>(() => _i695.ProfileRepositoryImpl(
+  gh.singleton<_i919.ProfileRepository>(() => _i695.ProfileRepositoryImpl(
       remoteDataSource: gh<_i412.ProfileRemoteDataSource>()));
   gh.factory<_i428.ProfileBloc>(
       () => _i428.ProfileBloc(gh<_i919.ProfileRepository>()));

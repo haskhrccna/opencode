@@ -51,6 +51,7 @@ class UserModel {
           user.userMetadata?['name'] as String?,
       arabicName: profileData?['arabic_name'] as String?,
       photoUrl: profileData?['avatar_url'] as String? ??
+          profileData?['photo_url'] as String? ??
           user.userMetadata?['avatar_url'] as String?,
       role: profileData?['role'] as String? ?? 'student',
       status: profileData?['status'] as String? ?? 'pending',
@@ -103,6 +104,7 @@ createdAt: DateTime.parse(user.createdAt),
       'display_name': displayName,
       'arabic_name': arabicName,
       'avatar_url': photoUrl,
+      'photo_url': photoUrl,
       'role': role,
       'status': status,
       'created_at': createdAt.toIso8601String(),

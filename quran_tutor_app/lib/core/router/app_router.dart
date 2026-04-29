@@ -48,6 +48,7 @@ class AppRouter {
   );
 
   static final List<RouteBase> _routes = [
+    GoRoute(path: '/', redirect: (_, __) => '/splash'),
     GoRoute(path: '/splash', builder: (_, __) => const SplashScreen()),
     // Deep link: Teacher invite code
     GoRoute(
@@ -220,12 +221,16 @@ class AppRouter {
     if (role == UserRole.admin) return true;
     if (path.startsWith('/student') && role == UserRole.student) return true;
     if (path.startsWith('/teacher') && role == UserRole.teacher) return true;
+    if (path.startsWith('/admin') && role == UserRole.admin) return true;
+    if (path == '/pending-approval' || path == '/rejected') return true;
     if (path.startsWith('/auth') || path == '/splash') return true;
     return false;
   }
 
   static bool _isDeepLinkPath(String path) {
     // [path] is the URL path (e.g. "/session/abc-123" or "/invite/XYZ").
-    return path.startsWith('/session/') || path.startsWith('/invite/');
+    // Note: /invite/ is NOT a deep-link for authenticated users — it is a
+    // signup screen and should redirect them to their home.
+    return path.startsWith('/session/');
   }
 }

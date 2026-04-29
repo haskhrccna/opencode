@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:quran_tutor_app/core/constants/app_constants.dart';
+import 'package:quran_tutor_app/core/error/exceptions.dart';
 import 'package:quran_tutor_app/core/error/failures.dart';
 import 'package:quran_tutor_app/features/grading/data/datasources/grading_remote_datasource.dart';
 import 'package:quran_tutor_app/features/grading/data/models/grade_model.dart';
@@ -49,12 +50,22 @@ void main() {
       expect(grade.category, GradingCategory.memorization);
     });
 
-    test('returns ServerFailure on exception', () async {
-      when(() => ds.getGrade(any())).thenThrow(Exception('boom'));
+    test('returns ServerFailure on ServerException', () async {
+      when(() => ds.getGrade(any())).thenThrow(
+        const ServerException(message: 'boom'),
+      );
 
       final (grade, failure) = await repo.getGrade('g-1');
       expect(grade, isNull);
       expect(failure, isA<ServerFailure>());
+    });
+
+    test('returns UnknownFailure on generic exception', () async {
+      when(() => ds.getGrade(any())).thenThrow(Exception('boom'));
+
+      final (grade, failure) = await repo.getGrade('g-1');
+      expect(grade, isNull);
+      expect(failure, isA<UnknownFailure>());
     });
   });
 
@@ -140,11 +151,20 @@ void main() {
       expect(failure, isNull);
     });
 
-    test('returns ServerFailure on exception', () async {
-      when(() => ds.deleteGrade(any())).thenThrow(Exception('nope'));
+    test('returns ServerFailure on ServerException', () async {
+      when(() => ds.deleteGrade(any())).thenThrow(
+        const ServerException(message: 'nope'),
+      );
 
       final failure = await repo.deleteGrade('g-1');
       expect(failure, isA<ServerFailure>());
+    });
+
+    test('returns UnknownFailure on generic exception', () async {
+      when(() => ds.deleteGrade(any())).thenThrow(Exception('nope'));
+
+      final failure = await repo.deleteGrade('g-1');
+      expect(failure, isA<UnknownFailure>());
     });
   });
 }

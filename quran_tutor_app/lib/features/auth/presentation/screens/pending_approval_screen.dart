@@ -1,10 +1,35 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_event.dart';
 
-class PendingApprovalScreen extends StatelessWidget {
+class PendingApprovalScreen extends StatefulWidget {
   const PendingApprovalScreen({super.key});
+
+  @override
+  State<PendingApprovalScreen> createState() => _PendingApprovalScreenState();
+}
+
+class _PendingApprovalScreenState extends State<PendingApprovalScreen> {
+  Timer? _refreshTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    // Auto-refresh user status every 30 seconds
+    _refreshTimer = Timer.periodic(
+      const Duration(seconds: 30),
+      (_) => context.read<AuthBloc>().add(const RefreshUserRequested()),
+    );
+  }
+
+  @override
+  void dispose() {
+    _refreshTimer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
