@@ -11,7 +11,7 @@ import 'package:quran_tutor_app/features/sessions/data/models/session_model.dart
 import 'package:quran_tutor_app/features/sessions/domain/entities/session.dart';
 
 /// Service that manages offline caching and sync
-@singleton
+@lazySingleton
 class OfflineService {
 
   OfflineService({
