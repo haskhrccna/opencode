@@ -63,9 +63,11 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
                   const PopupMenuItem(value: 'edit', child: Text('تعديل')),
                   const PopupMenuItem(value: 'cancel', child: Text('إلغاء')),
                   if (session.status == SessionStatus.scheduled)
-                    const PopupMenuItem(value: 'start', child: Text('بدء الجلسة')),
+                    const PopupMenuItem(
+                        value: 'start', child: Text('بدء الجلسة')),
                   if (session.status == SessionStatus.inProgress)
-                    const PopupMenuItem(value: 'complete', child: Text('إكمال')),
+                    const PopupMenuItem(
+                        value: 'complete', child: Text('إكمال')),
                 ],
               );
             },
@@ -74,14 +76,16 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
       ),
       body: BlocConsumer<SessionsBloc, SessionsState>(
         listener: (context, state) {
-          if (state.status == SessionsStatus.error && state.errorMessage != null) {
+          if (state.status == SessionsStatus.error &&
+              state.errorMessage != null) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.errorMessage!)),
             );
           }
         },
         builder: (context, state) {
-          if (state.status == SessionsStatus.loading && state.selectedSession == null) {
+          if (state.status == SessionsStatus.loading &&
+              state.selectedSession == null) {
             return const Center(child: CircularProgressIndicator());
           }
 
@@ -134,7 +138,7 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
 
   void _showCancelDialog(SessionsBloc bloc, String sessionId) {
     final controller = TextEditingController();
-    showDialog(
+    showDialog<String>(
       context: context,
       builder: (_) => AlertDialog(
         title: const Text('إلغاء الجلسة'),
@@ -149,7 +153,8 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
           ),
           ElevatedButton(
             onPressed: () {
-              bloc.add(CancelSession(sessionId: sessionId, reason: controller.text.trim()));
+              bloc.add(CancelSession(
+                  sessionId: sessionId, reason: controller.text.trim()));
               Navigator.pop(context);
             },
             child: const Text('إلغاء'),
@@ -195,7 +200,8 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
                     );
                     if (time == null) return;
                     setState(() {
-                      scheduledAt = DateTime(date.year, date.month, date.day, time.hour, time.minute);
+                      scheduledAt = DateTime(date.year, date.month, date.day,
+                          time.hour, time.minute);
                     });
                   },
                 ),
@@ -223,12 +229,12 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
             ElevatedButton(
               onPressed: () {
                 context.read<SessionsBloc>().add(UpdateSession(
-                  sessionId: session.id,
-                  scheduledAt: scheduledAt.toUtc(),
-                  durationMinutes: duration,
-                  topic: topicController.text.trim(),
-                  notes: notesController.text.trim(),
-                ));
+                      sessionId: session.id,
+                      scheduledAt: scheduledAt.toUtc(),
+                      durationMinutes: duration,
+                      topic: topicController.text.trim(),
+                      notes: notesController.text.trim(),
+                    ));
                 Navigator.pop(context);
               },
               child: const Text('حفظ'),
@@ -347,13 +353,21 @@ class _DetailCard extends StatelessWidget {
             ),
             if (session.notes != null && session.notes!.isNotEmpty) ...[
               const SizedBox(height: 8),
-              Text(session.notes!, style: Theme.of(context).textTheme.bodyMedium),
+              Text(session.notes!,
+                  style: Theme.of(context).textTheme.bodyMedium),
             ],
             const Divider(height: 24),
-            _DetailRow(icon: Icons.person, label: 'المعلم', value: session.teacherId),
+            _DetailRow(
+                icon: Icons.person, label: 'المعلم', value: session.teacherId),
             if (session.studentId != null)
-              _DetailRow(icon: Icons.school, label: 'الطالب', value: session.studentId!),
-            _DetailRow(icon: Icons.timelapse, label: 'المدة', value: session.durationText),
+              _DetailRow(
+                  icon: Icons.school,
+                  label: 'الطالب',
+                  value: session.studentId!),
+            _DetailRow(
+                icon: Icons.timelapse,
+                label: 'المدة',
+                value: session.durationText),
             _DetailRow(
               icon: session.isOnline ? Icons.videocam : Icons.location_on,
               label: 'النوع',
@@ -453,7 +467,9 @@ class _InfoCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: TextStyle(color: color, fontWeight: FontWeight.bold)),
+                Text(title,
+                    style:
+                        TextStyle(color: color, fontWeight: FontWeight.bold)),
                 Text(value, style: Theme.of(context).textTheme.bodyMedium),
               ],
             ),
