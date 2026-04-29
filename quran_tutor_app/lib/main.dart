@@ -15,9 +15,13 @@ import 'package:quran_tutor_app/core/theme/app_theme.dart';
 import 'package:quran_tutor_app/core/theme/cubit/theme_cubit.dart';
 import 'package:quran_tutor_app/core/utils/bloc_observer.dart';
 import 'package:quran_tutor_app/core/utils/logging/app_logger.dart';
+import 'package:quran_tutor_app/features/admin/presentation/bloc/admin_bloc.dart';
 import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_event.dart';
 import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_state.dart';
+import 'package:quran_tutor_app/features/grading/presentation/bloc/grading_bloc.dart';
+import 'package:quran_tutor_app/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:quran_tutor_app/features/sessions/presentation/bloc/sessions_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 
 void main() async {
@@ -140,9 +144,11 @@ class QuranTutorApp extends StatelessWidget {
         BlocProvider(
           create: (context) => getIt<AuthBloc>()..add(const AppStarted()),
         ),
-        BlocProvider(
-          create: (context) => ThemeCubit(),
-        ),
+        BlocProvider(create: (_) => ThemeCubit()),
+        BlocProvider(create: (_) => getIt<SessionsBloc>()),
+        BlocProvider(create: (_) => getIt<ProfileBloc>()),
+        BlocProvider(create: (_) => getIt<GradingBloc>()),
+        BlocProvider(create: (_) => getIt<AdminBloc>()),
       ],
       child: BlocListener<AuthBloc, AuthState>(
         listenWhen: (previous, current) => previous.status != current.status,
