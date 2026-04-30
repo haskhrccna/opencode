@@ -5,7 +5,6 @@ import 'package:quran_tutor_app/core/theme/cubit/theme_cubit.dart';
 
 /// Theme toggle widget that can be used in settings/profile
 class ThemeToggle extends StatelessWidget {
-
   const ThemeToggle({
     super.key,
     this.showTitle = true,
@@ -17,7 +16,7 @@ class ThemeToggle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    
+
     return BlocBuilder<ThemeCubit, ThemeState>(
       builder: (context, state) {
         if (useDropdown) {
@@ -28,7 +27,8 @@ class ThemeToggle extends StatelessWidget {
     );
   }
 
-  Widget _buildSegmentedButton(BuildContext context, AppLocalizations l10n, ThemeState state) {
+  Widget _buildSegmentedButton(
+      BuildContext context, AppLocalizations l10n, ThemeState state) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -68,7 +68,8 @@ class ThemeToggle extends StatelessWidget {
     );
   }
 
-  Widget _buildDropdown(BuildContext context, AppLocalizations l10n, ThemeState state) {
+  Widget _buildDropdown(
+      BuildContext context, AppLocalizations l10n, ThemeState state) {
     return ListTile(
       leading: Icon(_getThemeIcon(state.themeMode)),
       title: Text(l10n.t('settings.theme.title')),

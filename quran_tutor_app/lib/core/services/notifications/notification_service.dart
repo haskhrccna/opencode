@@ -11,7 +11,6 @@ import 'package:timezone/timezone.dart' as tz;
 /// Service for handling push notifications (OneSignal) and local notifications
 @singleton
 class NotificationService {
-
   NotificationService()
       : _appId = const String.fromEnvironment('ONESIGNAL_APP_ID');
   final String _appId;
@@ -65,7 +64,8 @@ class NotificationService {
   }
 
   Future<void> _initializeLocalNotifications() async {
-    const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const androidSettings =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
     const darwinSettings = DarwinInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
@@ -85,8 +85,9 @@ class NotificationService {
     );
 
     // Request permissions on Android 13+
-    final androidPlugin = _localNotifications.resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>();
+    final androidPlugin =
+        _localNotifications.resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>();
     await androidPlugin?.requestNotificationsPermission();
   }
 

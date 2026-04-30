@@ -14,7 +14,8 @@ class TeacherHomeScreen extends StatelessWidget {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         if (state.user == null) {
-          return const Scaffold(body: Center(child: CircularProgressIndicator()));
+          return const Scaffold(
+              body: Center(child: CircularProgressIndicator()));
         }
         final user = state.user!;
         return Scaffold(
@@ -43,9 +44,16 @@ class TeacherHomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               _NavCard(
+                icon: Icons.person_outline,
+                label: 'الملف الشخصي',
+                onTap: () => context.go('/teacher/profile'),
+              ),
+              const SizedBox(height: 12),
+              _NavCard(
                 icon: Icons.logout,
                 label: 'تسجيل الخروج',
-                onTap: () => context.read<AuthBloc>().add(const SignOutRequested()),
+                onTap: () =>
+                    context.read<AuthBloc>().add(const SignOutRequested()),
               ),
             ],
           ),
@@ -56,8 +64,8 @@ class TeacherHomeScreen extends StatelessWidget {
 }
 
 class _NavCard extends StatelessWidget {
-
-  const _NavCard({required this.icon, required this.label, required this.onTap});
+  const _NavCard(
+      {required this.icon, required this.label, required this.onTap});
   final IconData icon;
   final String label;
   final VoidCallback onTap;

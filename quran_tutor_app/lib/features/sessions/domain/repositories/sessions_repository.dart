@@ -67,7 +67,8 @@ abstract class SessionsRepository {
   });
 
   /// Get sessions for a specific day
-  Future<(List<Session>?, Failure?)> getSessionsForDay(DateTime date, {String? userId});
+  Future<(List<Session>?, Failure?)> getSessionsForDay(DateTime date,
+      {String? userId});
 
   /// Get available time slots for a teacher
   Future<(List<DateTime>?, Failure?)> getAvailableSlots({

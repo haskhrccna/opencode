@@ -104,26 +104,30 @@ void main() {
     blocTest<GradingBloc, GradingState>(
       'emits [creating, loaded] on success',
       build: () {
-        when(() => repo.createGrade(
-              sessionId: any(named: 'sessionId'),
-              studentId: any(named: 'studentId'),
-              teacherId: any(named: 'teacherId'),
-              category: any(named: 'category'),
-              grade: any(named: 'grade'),
-              notes: any(named: 'notes'),
-              surahs: any(named: 'surahs'),
-              verses: any(named: 'verses'),
-              pagesMemorized: any(named: 'pagesMemorized'),
-            ),).thenAnswer((_) async => (tGrade, null));
+        when(
+          () => repo.createGrade(
+            sessionId: any(named: 'sessionId'),
+            studentId: any(named: 'studentId'),
+            teacherId: any(named: 'teacherId'),
+            category: any(named: 'category'),
+            grade: any(named: 'grade'),
+            notes: any(named: 'notes'),
+            surahs: any(named: 'surahs'),
+            verses: any(named: 'verses'),
+            pagesMemorized: any(named: 'pagesMemorized'),
+          ),
+        ).thenAnswer((_) async => (tGrade, null));
         return GradingBloc(repo);
       },
-      act: (b) => b.add(const CreateGrade(
-        sessionId: 's-1',
-        studentId: 'st-1',
-        teacherId: 't-1',
-        category: GradingCategory.memorization,
-        grade: 5,
-      ),),
+      act: (b) => b.add(
+        const CreateGrade(
+          sessionId: 's-1',
+          studentId: 'st-1',
+          teacherId: 't-1',
+          category: GradingCategory.memorization,
+          grade: 5,
+        ),
+      ),
       expect: () => [
         isA<GradingState>().having(
           (s) => s.status,

@@ -4,12 +4,11 @@ import 'package:quran_tutor_app/features/auth/domain/repositories/auth_repositor
 
 /// Use case for student registration
 class SignUpStudentUseCase {
-
   const SignUpStudentUseCase(this.repository);
   final AuthRepository repository;
 
   /// Execute student sign up
-  /// 
+  ///
   /// Returns [AuthUser] on success, [Failure] on error
   Future<(AuthUser?, Failure?)> call(SignUpStudentParams params) async {
     return repository.signUpStudent(
@@ -26,7 +25,6 @@ class SignUpStudentUseCase {
 
 /// Parameters for student sign up
 class SignUpStudentParams {
-
   const SignUpStudentParams({
     required this.email,
     required this.password,

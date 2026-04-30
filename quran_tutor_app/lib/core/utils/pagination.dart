@@ -4,7 +4,6 @@ import 'package:quran_tutor_app/core/constants/app_constants.dart';
 
 /// Pagination state for infinite scroll
 class PaginationState<T> {
-
   const PaginationState({
     this.items = const [],
     this.isLoading = false,
@@ -26,7 +25,7 @@ class PaginationState<T> {
     bool? hasMore,
     String? cursor,
     int? currentPage,
-    Failure? error,
+    PaginationFailure? error,
   }) {
     return PaginationState<T>(
       items: items ?? this.items,
@@ -41,7 +40,6 @@ class PaginationState<T> {
 
 /// Generic failure class for pagination
 class PaginationFailure {
-
   const PaginationFailure({
     required this.message,
     this.code,
@@ -52,7 +50,6 @@ class PaginationFailure {
 
 /// Pagination configuration
 class PaginationConfig {
-
   const PaginationConfig({
     this.pageSize = AppConstants.defaultPageSize,
     this.maxPageSize = AppConstants.maxPageSize,
@@ -63,13 +60,11 @@ class PaginationConfig {
   final int initialPage;
 
   /// Validate and clamp page size
-  int get clampedPageSize =>
-      pageSize.clamp(1, maxPageSize);
+  int get clampedPageSize => pageSize.clamp(1, maxPageSize);
 }
 
 /// Cursor-based pagination helper
 class CursorPagination<T> {
-
   CursorPagination({
     required this.config,
     required this.fetchPage,
@@ -172,7 +167,6 @@ class CursorPagination<T> {
 
 /// Result of a paginated query
 class PaginatedResult<T> {
-
   const PaginatedResult({
     required this.items,
     required this.hasMore,

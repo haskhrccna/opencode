@@ -92,13 +92,16 @@ void main() {
     const tUserId = 'user-123';
 
     test('should return null on success', () async {
-      when(() => mockRemoteDataSource.rejectUser(tUserId, reason: any(named: 'reason')))
-          .thenAnswer((_) async {});
+      when(() => mockRemoteDataSource.rejectUser(tUserId,
+          reason: any(named: 'reason'))).thenAnswer((_) async {});
 
-      final failure = await repository.rejectUser(tUserId, reason: 'Invalid info');
+      final failure =
+          await repository.rejectUser(tUserId, reason: 'Invalid info');
 
       expect(failure, isNull);
-      verify(() => mockRemoteDataSource.rejectUser(tUserId, reason: 'Invalid info')).called(1);
+      verify(() =>
+              mockRemoteDataSource.rejectUser(tUserId, reason: 'Invalid info'))
+          .called(1);
     });
   });
 

@@ -3,15 +3,19 @@ import 'package:equatable/equatable.dart';
 import 'package:quran_tutor_app/core/constants/app_constants.dart';
 
 /// Domain entity representing an authenticated user
-/// 
+///
 /// This is decoupled from UserModel and contains only
 /// the fields needed for authentication and authorization.
-class AuthUser extends Equatable { // For students - references their teacher
+class AuthUser extends Equatable {
+  // For students - references their teacher
 
   const AuthUser({
     required this.id,
     required this.email,
-    required this.role, required this.status, required this.createdAt, this.displayName,
+    required this.role,
+    required this.status,
+    required this.createdAt,
+    this.displayName,
     this.arabicName,
     this.photoUrl,
     this.updatedAt,

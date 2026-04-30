@@ -8,7 +8,6 @@ import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_state.dart'
 
 @injectable
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-
   AuthBloc(this._authRepository) : super(const AuthState.initial()) {
     on<AppStarted>(_onAppStarted);
     on<SignInRequested>(_onSignInRequested);
@@ -25,15 +24,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AppStarted event,
     Emitter<AuthState> emit,
   ) async {
-    emit(state.copyWith(status: AuthStatus.loading));
     try {
       final user = await _authRepository.getCurrentUser();
       if (user.isAuthenticated) {
-        emit(state.copyWith(
-          status: AuthStatus.authenticated,
-          user: user,
-          errorMessage: null,
-        ),);
+        emit(
+          state.copyWith(
+            status: AuthStatus.authenticated,
+            user: user,
+            errorMessage: null,
+          ),
+        );
       } else {
         emit(state.copyWith(
           status: AuthStatus.unauthenticated,
@@ -63,16 +63,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       password: event.password,
     );
     if (user != null && failure == null) {
-      emit(state.copyWith(
-        status: AuthStatus.authenticated,
-        user: user,
-        errorMessage: null,
-      ),);
+      emit(
+        state.copyWith(
+          status: AuthStatus.authenticated,
+          user: user,
+          errorMessage: null,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: AuthStatus.error,
-        errorMessage: failure?.message ?? 'Login failed',
-      ),);
+      emit(
+        state.copyWith(
+          status: AuthStatus.error,
+          errorMessage: failure?.message ?? 'Login failed',
+        ),
+      );
     }
   }
 
@@ -92,23 +96,29 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
     if (user != null && failure == null) {
       if (user.isPending) {
-        emit(state.copyWith(
-          status: AuthStatus.pendingApproval,
-          user: user,
-          errorMessage: null,
-        ),);
+        emit(
+          state.copyWith(
+            status: AuthStatus.pendingApproval,
+            user: user,
+            errorMessage: null,
+          ),
+        );
       } else {
-        emit(state.copyWith(
-          status: AuthStatus.authenticated,
-          user: user,
-          errorMessage: null,
-        ),);
+        emit(
+          state.copyWith(
+            status: AuthStatus.authenticated,
+            user: user,
+            errorMessage: null,
+          ),
+        );
       }
     } else {
-      emit(state.copyWith(
-        status: AuthStatus.error,
-        errorMessage: failure?.message ?? 'Sign up failed',
-      ),);
+      emit(
+        state.copyWith(
+          status: AuthStatus.error,
+          errorMessage: failure?.message ?? 'Sign up failed',
+        ),
+      );
     }
   }
 
@@ -128,23 +138,29 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
     if (user != null && failure == null) {
       if (user.isPending) {
-        emit(state.copyWith(
-          status: AuthStatus.pendingApproval,
-          user: user,
-          errorMessage: null,
-        ),);
+        emit(
+          state.copyWith(
+            status: AuthStatus.pendingApproval,
+            user: user,
+            errorMessage: null,
+          ),
+        );
       } else {
-        emit(state.copyWith(
-          status: AuthStatus.authenticated,
-          user: user,
-          errorMessage: null,
-        ),);
+        emit(
+          state.copyWith(
+            status: AuthStatus.authenticated,
+            user: user,
+            errorMessage: null,
+          ),
+        );
       }
     } else {
-      emit(state.copyWith(
-        status: AuthStatus.error,
-        errorMessage: failure?.message ?? 'Sign up failed',
-      ),);
+      emit(
+        state.copyWith(
+          status: AuthStatus.error,
+          errorMessage: failure?.message ?? 'Sign up failed',
+        ),
+      );
     }
   }
 
@@ -165,27 +181,35 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     RefreshUserRequested event,
     Emitter<AuthState> emit,
   ) async {
-    emit(state.copyWith(status: AuthStatus.loading));
+    // Background poll: do NOT emit loading. Periodic refreshes (e.g.
+    // PendingApprovalScreen every 30s) must not flip the router to splash
+    // or to /auth/login on transient failures.
     final (user, failure) = await _authRepository.refreshUser();
     if (user != null && failure == null) {
       if (user.isPending) {
-        emit(state.copyWith(
-          status: AuthStatus.pendingApproval,
-          user: user,
-          errorMessage: null,
-        ),);
+        emit(
+          state.copyWith(
+            status: AuthStatus.pendingApproval,
+            user: user,
+            errorMessage: null,
+          ),
+        );
       } else if (user.isRejected) {
-        emit(state.copyWith(
-          status: AuthStatus.rejected,
-          user: user,
-          errorMessage: null,
-        ),);
+        emit(
+          state.copyWith(
+            status: AuthStatus.rejected,
+            user: user,
+            errorMessage: null,
+          ),
+        );
       } else if (user.isAuthenticated) {
-        emit(state.copyWith(
-          status: AuthStatus.authenticated,
-          user: user,
-          errorMessage: null,
-        ),);
+        emit(
+          state.copyWith(
+            status: AuthStatus.authenticated,
+            user: user,
+            errorMessage: null,
+          ),
+        );
       }
       return;
     }
@@ -193,11 +217,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       'AuthBloc.RefreshUserRequested: refresh failed: '
       '${failure?.message ?? 'unknown'}',
     );
-    // Emit error so UI knows refresh failed
-    emit(state.copyWith(
-      status: AuthStatus.error,
-      errorMessage: failure?.message ?? 'Failed to refresh user',
-    ));
+    // Failure path: log only. Keep current state intact.
   }
 
   Future<void> _onResetPasswordRequested(
@@ -208,10 +228,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(state.copyWith(status: AuthStatus.loading));
     final failure = await _authRepository.resetPassword(event.email);
     if (failure != null) {
-      emit(state.copyWith(
-        status: AuthStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: AuthStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
       return;
     }
     // Success: drop the spinner. Reset is requested while logged out, so fall
@@ -237,10 +259,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       newPassword: event.newPassword,
     );
     if (failure != null) {
-      emit(state.copyWith(
-        status: AuthStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: AuthStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
       return;
     }
     // Success: drop the spinner. Update is requested while authenticated.

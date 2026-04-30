@@ -1,5 +1,5 @@
 /// Offline database stub - drift code generation not available
-/// 
+///
 /// This is a temporary implementation that stores data in memory.
 /// For production, run: flutter pub run build_runner build
 /// to generate the real drift database.
@@ -7,11 +7,15 @@
 import 'package:injectable/injectable.dart';
 
 class CachedSession {
-
   CachedSession({
     required this.id,
     required this.teacherId,
-    required this.scheduledAt, required this.durationMinutes, required this.status, required this.createdAt, required this.syncedAt, this.studentId,
+    required this.scheduledAt,
+    required this.durationMinutes,
+    required this.status,
+    required this.createdAt,
+    required this.syncedAt,
+    this.studentId,
     this.topic,
     this.notes,
   });
@@ -28,7 +32,6 @@ class CachedSession {
 }
 
 class CachedGrade {
-
   CachedGrade({
     required this.id,
     required this.sessionId,
@@ -36,7 +39,9 @@ class CachedGrade {
     required this.teacherId,
     required this.category,
     required this.grade,
-    required this.createdAt, required this.syncedAt, this.notes,
+    required this.createdAt,
+    required this.syncedAt,
+    this.notes,
   });
   final String id;
   final String sessionId;
@@ -50,13 +55,14 @@ class CachedGrade {
 }
 
 class SyncQueueEntry {
-
   SyncQueueEntry({
     required this.id,
     required this.tableName,
     required this.operation,
     required this.recordId,
-    required this.createdAt, required this.isSynced, this.data,
+    required this.createdAt,
+    required this.isSynced,
+    this.data,
   });
   final int id;
   final String tableName;
@@ -126,15 +132,17 @@ class OfflineDatabase {
     required String recordId,
     String? data,
   }) async {
-    _syncQueue.add(SyncQueueEntry(
-      id: _nextSyncId++,
-      tableName: table,
-      operation: operation,
-      recordId: recordId,
-      data: data,
-      createdAt: DateTime.now(),
-      isSynced: false,
-    ),);
+    _syncQueue.add(
+      SyncQueueEntry(
+        id: _nextSyncId++,
+        tableName: table,
+        operation: operation,
+        recordId: recordId,
+        data: data,
+        createdAt: DateTime.now(),
+        isSynced: false,
+      ),
+    );
   }
 
   Future<List<SyncQueueEntry>> getPendingSyncItems() async {
@@ -163,6 +171,8 @@ class OfflineDatabase {
 
   Future<DateTime?> getLastSyncTime() async {
     if (_sessions.isEmpty) return null;
-    return _sessions.map((s) => s.syncedAt).reduce((a, b) => a.isAfter(b) ? a : b);
+    return _sessions
+        .map((s) => s.syncedAt)
+        .reduce((a, b) => a.isAfter(b) ? a : b);
   }
 }

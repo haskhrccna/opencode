@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran_tutor_app/core/utils/logging/app_logger.dart';
 
 /// Custom BLoC observer for debugging
-/// 
+///
 /// IMPORTANT: Verbose logging is automatically stripped in release builds.
 /// Only errors are logged in release mode.
 class AppBlocObserver extends BlocObserver {
@@ -40,7 +40,8 @@ class AppBlocObserver extends BlocObserver {
   }
 
   @override
-  void onTransition(Bloc<dynamic, dynamic> bloc, Transition<dynamic, dynamic> transition) {
+  void onTransition(
+      Bloc<dynamic, dynamic> bloc, Transition<dynamic, dynamic> transition) {
     super.onTransition(bloc, transition);
     // Only log in debug mode - strip verbose BLoC logs in release
     if (kDebugMode) {
@@ -55,9 +56,12 @@ class AppBlocObserver extends BlocObserver {
   void onError(BlocBase<dynamic> bloc, Object error, StackTrace stackTrace) {
     super.onError(bloc, error, stackTrace);
     // Always log errors, regardless of mode
-    _logger.e('🔴 Error in ${bloc.runtimeType}',
-        error: error, stackTrace: stackTrace,);
-    
+    _logger.e(
+      '🔴 Error in ${bloc.runtimeType}',
+      error: error,
+      stackTrace: stackTrace,
+    );
+
     // In release mode, this will also be reported to Crashlytics
     // via the AppLogger
   }

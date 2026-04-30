@@ -167,15 +167,17 @@ void main() {
 
     test('should return pending AuthUser on successful sign up', () async {
       // Arrange
-      when(() => mockRemoteDataSource.signUpStudent(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-            arabicName: any(named: 'arabicName'),
-            englishName: any(named: 'englishName'),
-            dateOfBirth: any(named: 'dateOfBirth'),
-            phoneNumber: any(named: 'phoneNumber'),
-            teacherInviteCode: any(named: 'teacherInviteCode'),
-          ),).thenAnswer((_) async => tPendingUser);
+      when(
+        () => mockRemoteDataSource.signUpStudent(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+          arabicName: any(named: 'arabicName'),
+          englishName: any(named: 'englishName'),
+          dateOfBirth: any(named: 'dateOfBirth'),
+          phoneNumber: any(named: 'phoneNumber'),
+          teacherInviteCode: any(named: 'teacherInviteCode'),
+        ),
+      ).thenAnswer((_) async => tPendingUser);
       when(() => mockLocalDataSource.cacheUserData(any()))
           .thenAnswer((_) async {});
 
@@ -198,15 +200,17 @@ void main() {
 
     test('should return AuthFailure when email already exists', () async {
       // Arrange
-      when(() => mockRemoteDataSource.signUpStudent(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-            arabicName: any(named: 'arabicName'),
-            englishName: any(named: 'englishName'),
-            dateOfBirth: any(named: 'dateOfBirth'),
-            phoneNumber: any(named: 'phoneNumber'),
-            teacherInviteCode: any(named: 'teacherInviteCode'),
-          ),).thenThrow(AuthException.emailAlreadyInUse());
+      when(
+        () => mockRemoteDataSource.signUpStudent(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+          arabicName: any(named: 'arabicName'),
+          englishName: any(named: 'englishName'),
+          dateOfBirth: any(named: 'dateOfBirth'),
+          phoneNumber: any(named: 'phoneNumber'),
+          teacherInviteCode: any(named: 'teacherInviteCode'),
+        ),
+      ).thenThrow(AuthException.emailAlreadyInUse());
 
       // Act
       final (result, failure) = await repository.signUpStudent(
@@ -225,15 +229,17 @@ void main() {
 
     test('should return ValidationFailure on invalid invite code', () async {
       // Arrange
-      when(() => mockRemoteDataSource.signUpStudent(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-            arabicName: any(named: 'arabicName'),
-            englishName: any(named: 'englishName'),
-            dateOfBirth: any(named: 'dateOfBirth'),
-            phoneNumber: any(named: 'phoneNumber'),
-            teacherInviteCode: any(named: 'teacherInviteCode'),
-          ),).thenThrow(ValidationException.invalidInput(message: 'Invalid code'));
+      when(
+        () => mockRemoteDataSource.signUpStudent(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+          arabicName: any(named: 'arabicName'),
+          englishName: any(named: 'englishName'),
+          dateOfBirth: any(named: 'dateOfBirth'),
+          phoneNumber: any(named: 'phoneNumber'),
+          teacherInviteCode: any(named: 'teacherInviteCode'),
+        ),
+      ).thenThrow(ValidationException.invalidInput(message: 'Invalid code'));
 
       // Act
       final (result, failure) = await repository.signUpStudent(
@@ -255,10 +261,8 @@ void main() {
   group('signOut', () {
     test('should clear local data and sign out from remote', () async {
       // Arrange
-      when(() => mockRemoteDataSource.signOut())
-          .thenAnswer((_) async {});
-      when(() => mockLocalDataSource.clearAll())
-          .thenAnswer((_) async {});
+      when(() => mockRemoteDataSource.signOut()).thenAnswer((_) async {});
+      when(() => mockLocalDataSource.clearAll()).thenAnswer((_) async {});
 
       // Act
       await repository.signOut();
@@ -327,8 +331,7 @@ void main() {
       // Arrange
       when(() => mockRemoteDataSource.authStateChanges)
           .thenAnswer((_) => Stream.value(null));
-      when(() => mockLocalDataSource.clearAll())
-          .thenAnswer((_) async {});
+      when(() => mockLocalDataSource.clearAll()).thenAnswer((_) async {});
 
       // Act
       final stream = repository.authStateChanges;
@@ -336,7 +339,8 @@ void main() {
       // Assert
       await expectLater(
         stream,
-        emits(isA<AuthUser>().having((u) => u.isAuthenticated, 'isAuthenticated', false)),
+        emits(isA<AuthUser>()
+            .having((u) => u.isAuthenticated, 'isAuthenticated', false)),
       );
     });
   });

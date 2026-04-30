@@ -36,10 +36,12 @@ void main() {
 
   group('UpdatePasswordUseCase', () {
     test('returns null on success and forwards both passwords', () async {
-      when(() => repo.updatePassword(
-            currentPassword: any(named: 'currentPassword'),
-            newPassword: any(named: 'newPassword'),
-          ),).thenAnswer((_) async => null);
+      when(
+        () => repo.updatePassword(
+          currentPassword: any(named: 'currentPassword'),
+          newPassword: any(named: 'newPassword'),
+        ),
+      ).thenAnswer((_) async => null);
       final useCase = UpdatePasswordUseCase(repo);
 
       final failure = await useCase(
@@ -50,18 +52,22 @@ void main() {
       );
 
       expect(failure, isNull);
-      verify(() => repo.updatePassword(
-            currentPassword: 'old',
-            newPassword: 'newSecret123',
-          ),).called(1);
+      verify(
+        () => repo.updatePassword(
+          currentPassword: 'old',
+          newPassword: 'newSecret123',
+        ),
+      ).called(1);
     });
 
     test('propagates failure', () async {
       final f = AuthFailure.weakPassword();
-      when(() => repo.updatePassword(
-            currentPassword: any(named: 'currentPassword'),
-            newPassword: any(named: 'newPassword'),
-          ),).thenAnswer((_) async => f);
+      when(
+        () => repo.updatePassword(
+          currentPassword: any(named: 'currentPassword'),
+          newPassword: any(named: 'newPassword'),
+        ),
+      ).thenAnswer((_) async => f);
       final useCase = UpdatePasswordUseCase(repo);
 
       final failure = await useCase(

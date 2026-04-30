@@ -62,16 +62,23 @@ void main() {
   });
 
   group('Sanitizer.sanitizePhoneNumber', () {
-    test('strips formatting and accepts valid Saudi number', () {
+    test('strips formatting and accepts +966', () {
       expect(
         Sanitizer.sanitizePhoneNumber('+966 5 0 123 4567'),
         '+966501234567',
       );
     });
 
-    test('rejects non-Saudi formats', () {
+    test('accepts an international +1 number', () {
       expect(
-        () => Sanitizer.sanitizePhoneNumber('1234567890'),
+        Sanitizer.sanitizePhoneNumber('+1 (415) 555-2671'),
+        '+14155552671',
+      );
+    });
+
+    test('rejects clearly invalid (too short) numbers', () {
+      expect(
+        () => Sanitizer.sanitizePhoneNumber('+12'),
         throwsArgumentError,
       );
     });

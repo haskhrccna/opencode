@@ -7,7 +7,6 @@ import 'package:quran_tutor_app/core/localization/app_localizations.dart';
 
 /// Error screen that displays different UI based on Failure type
 class ErrorScreen extends StatelessWidget {
-
   const ErrorScreen({
     super.key,
     this.failure,
@@ -22,7 +21,7 @@ class ErrorScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.maybeOf(context);
     final errorData = _getErrorData(context, l10n);
-    
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -37,7 +36,7 @@ class ErrorScreen extends StatelessWidget {
                 color: errorData.iconColor,
               ),
               const SizedBox(height: 24),
-              
+
               // Error Title
               Text(
                 errorData.title,
@@ -47,7 +46,7 @@ class ErrorScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 16),
-              
+
               // Error Message
               Text(
                 customMessage ?? failure?.userMessage ?? errorData.message,
@@ -56,13 +55,13 @@ class ErrorScreen extends StatelessWidget {
                     ),
                 textAlign: TextAlign.center,
               ),
-              
+
               // Technical details (only in debug mode)
               if (_showTechnicalDetails && failure?.message != null)
                 _buildTechnicalDetails(context, l10n),
-              
+
               const SizedBox(height: 32),
-              
+
               // Retry Button
               if (onRetry != null && (failure?.isRetryable ?? false))
                 SizedBox(
@@ -73,9 +72,9 @@ class ErrorScreen extends StatelessWidget {
                     label: Text(l10n?.t('error.retry') ?? 'Retry'),
                   ),
                 ),
-              
+
               const SizedBox(height: 16),
-              
+
               // Go Home Button
               SizedBox(
                 width: double.infinity,
@@ -194,7 +193,6 @@ class ErrorScreen extends StatelessWidget {
 
 /// Error data holder
 class _ErrorData {
-
   _ErrorData({
     required this.icon,
     required this.iconColor,

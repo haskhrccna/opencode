@@ -7,7 +7,6 @@ import 'package:quran_tutor_app/core/constants/app_constants.dart';
 /// **CRITICAL**: All timestamps are stored in UTC and converted
 /// to local time for display only.
 class Session extends Equatable {
-
   const Session({
     required this.id,
     required this.teacherId,
@@ -62,7 +61,8 @@ class Session extends Equatable {
 
   /// Check if session is upcoming
   bool get isUpcoming =>
-      status == SessionStatus.scheduled && scheduledAt.isAfter(DateTime.now().toUtc());
+      status == SessionStatus.scheduled &&
+      scheduledAt.isAfter(DateTime.now().toUtc());
 
   /// Check if session is in progress
   bool get isInProgress => status == SessionStatus.inProgress;

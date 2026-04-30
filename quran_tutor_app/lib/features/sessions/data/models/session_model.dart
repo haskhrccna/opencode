@@ -3,11 +3,13 @@ import 'package:quran_tutor_app/features/sessions/domain/entities/session.dart';
 
 /// Data model for sessions
 class SessionModel {
-
   SessionModel({
     required this.id,
     required this.teacherId,
-    required this.scheduledAt, required this.status, required this.createdAt, this.studentId,
+    required this.scheduledAt,
+    required this.status,
+    required this.createdAt,
+    this.studentId,
     this.durationMinutes = 60,
     this.topic,
     this.notes,

@@ -7,7 +7,6 @@ import 'package:quran_tutor_app/features/sessions/presentation/bloc/sessions_sta
 
 @injectable
 class SessionsBloc extends Bloc<SessionsEvent, SessionsState> {
-
   SessionsBloc(this._repository) : super(SessionsState.initial()) {
     on<LoadSessions>(_onLoadSessions);
     on<LoadTeacherSessions>(_onLoadTeacherSessions);
@@ -38,16 +37,20 @@ class SessionsBloc extends Bloc<SessionsEvent, SessionsState> {
     final (sessions, failure) = await _repository.getAllSessions();
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: SessionsStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: SessionsStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: SessionsStatus.loaded,
-        sessions: sessions,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: SessionsStatus.loaded,
+          sessions: sessions,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -57,19 +60,24 @@ class SessionsBloc extends Bloc<SessionsEvent, SessionsState> {
   ) async {
     emit(state.copyWith(status: SessionsStatus.loading));
 
-    final (sessions, failure) = await _repository.getTeacherSessions(event.teacherId);
+    final (sessions, failure) =
+        await _repository.getTeacherSessions(event.teacherId);
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: SessionsStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: SessionsStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: SessionsStatus.loaded,
-        sessions: sessions,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: SessionsStatus.loaded,
+          sessions: sessions,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -79,19 +87,24 @@ class SessionsBloc extends Bloc<SessionsEvent, SessionsState> {
   ) async {
     emit(state.copyWith(status: SessionsStatus.loading));
 
-    final (sessions, failure) = await _repository.getStudentSessions(event.studentId);
+    final (sessions, failure) =
+        await _repository.getStudentSessions(event.studentId);
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: SessionsStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: SessionsStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: SessionsStatus.loaded,
-        sessions: sessions,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: SessionsStatus.loaded,
+          sessions: sessions,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -104,16 +117,20 @@ class SessionsBloc extends Bloc<SessionsEvent, SessionsState> {
     final (sessions, failure) = await _repository.getAllSessions();
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: SessionsStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: SessionsStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: SessionsStatus.loaded,
-        sessions: sessions,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: SessionsStatus.loaded,
+          sessions: sessions,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -123,19 +140,24 @@ class SessionsBloc extends Bloc<SessionsEvent, SessionsState> {
   ) async {
     emit(state.copyWith(status: SessionsStatus.loading));
 
-    final (sessions, failure) = await _repository.getUpcomingSessions(userId: event.userId);
+    final (sessions, failure) =
+        await _repository.getUpcomingSessions(userId: event.userId);
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: SessionsStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: SessionsStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: SessionsStatus.loaded,
-        sessions: sessions,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: SessionsStatus.loaded,
+          sessions: sessions,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -145,19 +167,24 @@ class SessionsBloc extends Bloc<SessionsEvent, SessionsState> {
   ) async {
     emit(state.copyWith(status: SessionsStatus.loading));
 
-    final (sessions, failure) = await _repository.getPastSessions(userId: event.userId);
+    final (sessions, failure) =
+        await _repository.getPastSessions(userId: event.userId);
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: SessionsStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: SessionsStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: SessionsStatus.loaded,
-        sessions: sessions,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: SessionsStatus.loaded,
+          sessions: sessions,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -170,16 +197,20 @@ class SessionsBloc extends Bloc<SessionsEvent, SessionsState> {
     final (session, failure) = await _repository.getSession(event.sessionId);
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: SessionsStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: SessionsStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: SessionsStatus.loaded,
-        selectedSession: session,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: SessionsStatus.loaded,
+          selectedSession: session,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -200,10 +231,12 @@ class SessionsBloc extends Bloc<SessionsEvent, SessionsState> {
     );
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: SessionsStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: SessionsStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
       // Refresh sessions list
       add(const LoadSessions());
@@ -222,10 +255,12 @@ class SessionsBloc extends Bloc<SessionsEvent, SessionsState> {
     );
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: SessionsStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: SessionsStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
       add(GetSession(event.sessionId));
     }
@@ -240,10 +275,12 @@ class SessionsBloc extends Bloc<SessionsEvent, SessionsState> {
     final failure = await _repository.unassignStudent(event.sessionId);
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: SessionsStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: SessionsStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
       add(GetSession(event.sessionId));
     }
@@ -258,10 +295,12 @@ class SessionsBloc extends Bloc<SessionsEvent, SessionsState> {
     // Get current session first
     final (currentSession, _) = await _repository.getSession(event.sessionId);
     if (currentSession == null) {
-      emit(state.copyWith(
-        status: SessionsStatus.error,
-        errorMessage: 'Session not found',
-      ),);
+      emit(
+        state.copyWith(
+          status: SessionsStatus.error,
+          errorMessage: 'Session not found',
+        ),
+      );
       return;
     }
 
@@ -278,16 +317,20 @@ class SessionsBloc extends Bloc<SessionsEvent, SessionsState> {
     final (session, failure) = await _repository.updateSession(updatedSession);
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: SessionsStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: SessionsStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: SessionsStatus.loaded,
-        selectedSession: session,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: SessionsStatus.loaded,
+          selectedSession: session,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -303,10 +346,12 @@ class SessionsBloc extends Bloc<SessionsEvent, SessionsState> {
     );
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: SessionsStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: SessionsStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
       add(GetSession(event.sessionId));
     }
@@ -324,16 +369,20 @@ class SessionsBloc extends Bloc<SessionsEvent, SessionsState> {
     );
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: SessionsStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: SessionsStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: SessionsStatus.loaded,
-        selectedSession: session,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: SessionsStatus.loaded,
+          selectedSession: session,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -346,16 +395,20 @@ class SessionsBloc extends Bloc<SessionsEvent, SessionsState> {
     final (session, failure) = await _repository.startSession(event.sessionId);
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: SessionsStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: SessionsStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: SessionsStatus.loaded,
-        selectedSession: session,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: SessionsStatus.loaded,
+          selectedSession: session,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -365,19 +418,24 @@ class SessionsBloc extends Bloc<SessionsEvent, SessionsState> {
   ) async {
     emit(state.copyWith(status: SessionsStatus.updating));
 
-    final (session, failure) = await _repository.completeSession(event.sessionId);
+    final (session, failure) =
+        await _repository.completeSession(event.sessionId);
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: SessionsStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: SessionsStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: SessionsStatus.loaded,
-        selectedSession: session,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: SessionsStatus.loaded,
+          selectedSession: session,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -394,16 +452,20 @@ class SessionsBloc extends Bloc<SessionsEvent, SessionsState> {
     );
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: SessionsStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: SessionsStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: SessionsStatus.loaded,
-        sessions: sessions,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: SessionsStatus.loaded,
+          sessions: sessions,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -416,16 +478,20 @@ class SessionsBloc extends Bloc<SessionsEvent, SessionsState> {
     final (sessions, failure) = await _repository.getAllSessions();
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: SessionsStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: SessionsStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: SessionsStatus.loaded,
-        sessions: sessions,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: SessionsStatus.loaded,
+          sessions: sessions,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 }

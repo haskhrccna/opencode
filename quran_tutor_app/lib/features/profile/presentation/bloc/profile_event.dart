@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 
-
 abstract class ProfileEvent extends Equatable {
   const ProfileEvent();
 
@@ -15,7 +14,6 @@ class LoadProfile extends ProfileEvent {
 }
 
 class LoadProfileById extends ProfileEvent {
-
   const LoadProfileById(this.userId);
   final String userId;
 
@@ -24,7 +22,6 @@ class LoadProfileById extends ProfileEvent {
 }
 
 class UpdateProfile extends ProfileEvent {
-
   const UpdateProfile({
     this.arabicName,
     this.englishName,
@@ -52,7 +49,6 @@ class UpdateProfile extends ProfileEvent {
 }
 
 class UploadAvatar extends ProfileEvent {
-
   const UploadAvatar(this.imageFile);
   final File imageFile;
 
@@ -65,7 +61,6 @@ class DeleteAvatar extends ProfileEvent {
 }
 
 class UpdatePassword extends ProfileEvent {
-
   const UpdatePassword({
     required this.currentPassword,
     required this.newPassword,
@@ -82,7 +77,6 @@ class LoadTeachers extends ProfileEvent {
 }
 
 class LoadStudentsByTeacher extends ProfileEvent {
-
   const LoadStudentsByTeacher(this.teacherId);
   final String teacherId;
 
@@ -91,7 +85,6 @@ class LoadStudentsByTeacher extends ProfileEvent {
 }
 
 class LinkStudentToTeacher extends ProfileEvent {
-
   const LinkStudentToTeacher({
     required this.studentId,
     required this.teacherId,
@@ -104,7 +97,6 @@ class LinkStudentToTeacher extends ProfileEvent {
 }
 
 class UnlinkStudentFromTeacher extends ProfileEvent {
-
   const UnlinkStudentFromTeacher(this.studentId);
   final String studentId;
 

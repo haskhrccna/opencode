@@ -9,7 +9,6 @@ import 'package:quran_tutor_app/features/grading/domain/repositories/grading_rep
 
 @Singleton(as: GradingRepository)
 class GradingRepositoryImpl implements GradingRepository {
-
   GradingRepositoryImpl(this._remoteDataSource);
   final GradingRemoteDataSource _remoteDataSource;
 
@@ -28,7 +27,8 @@ class GradingRepositoryImpl implements GradingRepository {
   }
 
   @override
-  Future<(List<ProgressGrade>?, Failure?)> getGradesBySession(String sessionId) async {
+  Future<(List<ProgressGrade>?, Failure?)> getGradesBySession(
+      String sessionId) async {
     try {
       final grades = await _remoteDataSource.getGradesBySession(sessionId);
       return (grades.map((g) => g.toEntity()).toList(), null);
@@ -42,7 +42,8 @@ class GradingRepositoryImpl implements GradingRepository {
   }
 
   @override
-  Future<(List<ProgressGrade>?, Failure?)> getGradesByStudent(String studentId) async {
+  Future<(List<ProgressGrade>?, Failure?)> getGradesByStudent(
+      String studentId) async {
     try {
       final grades = await _remoteDataSource.getGradesByStudent(studentId);
       return (grades.map((g) => g.toEntity()).toList(), null);
@@ -56,7 +57,8 @@ class GradingRepositoryImpl implements GradingRepository {
   }
 
   @override
-  Future<(List<ProgressGrade>?, Failure?)> getGradesByTeacher(String teacherId) async {
+  Future<(List<ProgressGrade>?, Failure?)> getGradesByTeacher(
+      String teacherId) async {
     try {
       final grades = await _remoteDataSource.getGradesByTeacher(teacherId);
       return (grades.map((g) => g.toEntity()).toList(), null);
@@ -183,9 +185,11 @@ class GradingRepositoryImpl implements GradingRepository {
   }
 
   @override
-  Future<(ProgressSummary?, Failure?)> getStudentProgressSummary(String studentId) async {
+  Future<(ProgressSummary?, Failure?)> getStudentProgressSummary(
+      String studentId) async {
     try {
-      final summary = await _remoteDataSource.getStudentProgressSummary(studentId);
+      final summary =
+          await _remoteDataSource.getStudentProgressSummary(studentId);
       return (summary, null);
     } on ServerException catch (e) {
       return (null, _mapServerExceptionToFailure(e));
@@ -219,7 +223,8 @@ class GradingRepositoryImpl implements GradingRepository {
   }
 
   @override
-  Future<(List<StudentProgress>?, Failure?)> getClassProgress(String teacherId) async {
+  Future<(List<StudentProgress>?, Failure?)> getClassProgress(
+      String teacherId) async {
     try {
       final progress = await _remoteDataSource.getClassProgress(teacherId);
       return (progress, null);
@@ -272,7 +277,7 @@ class GradingRepositoryImpl implements GradingRepository {
   @override
   Stream<List<ProgressGrade>> get gradesStream {
     return _remoteDataSource.gradesStream().map(
-      (models) => models.map((m) => m.toEntity()).toList(),
-    );
+          (models) => models.map((m) => m.toEntity()).toList(),
+        );
   }
 }

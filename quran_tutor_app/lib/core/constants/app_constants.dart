@@ -101,8 +101,13 @@ class AppConstants {
   static final RegExp emailRegex = RegExp(
     r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
   );
+
+  /// E.164-ish international phone: optional leading "+", country code
+  /// 1-3 digits (first digit non-zero), then 6-14 more digits.
+  /// Total digits: 7 to 15 (E.164 max). Strip spaces, dashes, parens
+  /// before matching.
   static final RegExp phoneRegex = RegExp(
-    r'^(\+966|0)5[0-9]{8}$', // Saudi format: +9665XXXXXXXX or 05XXXXXXXX
+    r'^\+?[1-9]\d{6,14}$',
   );
   static final RegExp arabicNameRegex = RegExp(
     r'^[\u0600-\u06FF\s]+$', // Arabic characters and spaces
@@ -111,7 +116,7 @@ class AppConstants {
   static final RegExp englishNameRegex = RegExp(
     r'^[a-zA-Z\s]+$',
   );
-  
+
   /// Password requirements:
   /// - At least 8 characters
   /// - At least one uppercase letter
@@ -133,19 +138,19 @@ class AppConstants {
   );
 
   /// Password validation messages
-  static const String passwordMinLengthMessage = 
+  static const String passwordMinLengthMessage =
       'Password must be at least 8 characters';
-  static const String passwordMaxLengthMessage = 
+  static const String passwordMaxLengthMessage =
       'Password must not exceed 32 characters';
-  static const String passwordUppercaseMessage = 
+  static const String passwordUppercaseMessage =
       'Password must contain at least one uppercase letter';
-  static const String passwordLowercaseMessage = 
+  static const String passwordLowercaseMessage =
       'Password must contain at least one lowercase letter';
-  static const String passwordNumberMessage = 
+  static const String passwordNumberMessage =
       'Password must contain at least one number';
-  static const String passwordSpecialCharRecommendedMessage = 
+  static const String passwordSpecialCharRecommendedMessage =
       'Tip: Adding special characters makes your password stronger';
-  static const String passwordHint = 
+  static const String passwordHint =
       'Use at least 8 characters with uppercase, lowercase, and numbers';
 }
 

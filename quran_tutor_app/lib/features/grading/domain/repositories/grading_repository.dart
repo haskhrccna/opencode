@@ -55,7 +55,8 @@ abstract class GradingRepository {
   Future<Failure?> deleteAudioFeedback(String gradeId);
 
   /// Get student progress summary
-  Future<(ProgressSummary?, Failure?)> getStudentProgressSummary(String studentId);
+  Future<(ProgressSummary?, Failure?)> getStudentProgressSummary(
+      String studentId);
 
   /// Get progress over time
   Future<(ProgressTimeline?, Failure?)> getProgressTimeline({
@@ -73,7 +74,6 @@ abstract class GradingRepository {
 
 /// Progress summary for a student
 class ProgressSummary extends Equatable {
-
   const ProgressSummary({
     required this.studentId,
     required this.totalSessions,
@@ -82,7 +82,9 @@ class ProgressSummary extends Equatable {
     required this.categoryAverages,
     required this.currentStreak,
     required this.longestStreak,
-    required this.totalPagesMemorized, required this.surahsMemorized, this.lastSessionDate,
+    required this.totalPagesMemorized,
+    required this.surahsMemorized,
+    this.lastSessionDate,
   });
   final String studentId;
   final int totalSessions;
@@ -112,7 +114,6 @@ class ProgressSummary extends Equatable {
 
 /// Progress timeline for charting
 class ProgressTimeline extends Equatable {
-
   const ProgressTimeline({
     required this.studentId,
     required this.points,
@@ -126,7 +127,6 @@ class ProgressTimeline extends Equatable {
 
 /// Single progress data point
 class ProgressPoint extends Equatable {
-
   const ProgressPoint({
     required this.date,
     required this.averageGrade,
@@ -142,10 +142,12 @@ class ProgressPoint extends Equatable {
 
 /// Student progress for class overview
 class StudentProgress extends Equatable {
-
   const StudentProgress({
     required this.studentId,
-    required this.averageGrade, required this.sessionsAttended, required this.sessionsTotal, this.studentName,
+    required this.averageGrade,
+    required this.sessionsAttended,
+    required this.sessionsTotal,
+    this.studentName,
     this.lastSession,
     this.isOnTrack = true,
   });
@@ -157,9 +159,8 @@ class StudentProgress extends Equatable {
   final DateTime? lastSession;
   final bool isOnTrack;
 
-  double get attendanceRate => sessionsTotal > 0
-      ? (sessionsAttended / sessionsTotal) * 100
-      : 0;
+  double get attendanceRate =>
+      sessionsTotal > 0 ? (sessionsAttended / sessionsTotal) * 100 : 0;
 
   @override
   List<Object?> get props => [

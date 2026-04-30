@@ -7,7 +7,6 @@ import 'package:quran_tutor_app/features/grading/presentation/bloc/grading_state
 
 @injectable
 class GradingBloc extends Bloc<GradingEvent, GradingState> {
-
   GradingBloc(this._repository) : super(GradingState.initial()) {
     on<LoadGrades>(_onLoadGrades);
     on<LoadGradesBySession>(_onLoadGradesBySession);
@@ -31,28 +30,35 @@ class GradingBloc extends Bloc<GradingEvent, GradingState> {
     emit(state.copyWith(status: GradingStatus.loading));
 
     if (event.studentId == null) {
-      emit(state.copyWith(
-        status: GradingStatus.error,
-        errorMessage: 'Student ID required',
-      ),);
+      emit(
+        state.copyWith(
+          status: GradingStatus.error,
+          errorMessage: 'Student ID required',
+        ),
+      );
       return;
     }
 
-    final (grades, failure) = await _repository.getGradesByStudent(event.studentId!);
+    final (grades, failure) =
+        await _repository.getGradesByStudent(event.studentId!);
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: GradingStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: GradingStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
       final chartData = grades != null ? ChartData.fromGrades(grades) : null;
-      emit(state.copyWith(
-        status: GradingStatus.loaded,
-        grades: grades,
-        chartData: chartData,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: GradingStatus.loaded,
+          grades: grades,
+          chartData: chartData,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -62,19 +68,24 @@ class GradingBloc extends Bloc<GradingEvent, GradingState> {
   ) async {
     emit(state.copyWith(status: GradingStatus.loading));
 
-    final (grades, failure) = await _repository.getGradesBySession(event.sessionId);
+    final (grades, failure) =
+        await _repository.getGradesBySession(event.sessionId);
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: GradingStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: GradingStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: GradingStatus.loaded,
-        grades: grades,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: GradingStatus.loaded,
+          grades: grades,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -84,19 +95,24 @@ class GradingBloc extends Bloc<GradingEvent, GradingState> {
   ) async {
     emit(state.copyWith(status: GradingStatus.loading));
 
-    final (grades, failure) = await _repository.getGradesByTeacher(event.teacherId);
+    final (grades, failure) =
+        await _repository.getGradesByTeacher(event.teacherId);
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: GradingStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: GradingStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: GradingStatus.loaded,
-        grades: grades,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: GradingStatus.loaded,
+          grades: grades,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -109,16 +125,20 @@ class GradingBloc extends Bloc<GradingEvent, GradingState> {
     final (grade, failure) = await _repository.getGrade(event.gradeId);
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: GradingStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: GradingStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: GradingStatus.loaded,
-        selectedGrade: grade,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: GradingStatus.loaded,
+          selectedGrade: grade,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -141,16 +161,20 @@ class GradingBloc extends Bloc<GradingEvent, GradingState> {
     );
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: GradingStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: GradingStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: GradingStatus.loaded,
-        selectedGrade: grade,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: GradingStatus.loaded,
+          selectedGrade: grade,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -163,10 +187,12 @@ class GradingBloc extends Bloc<GradingEvent, GradingState> {
     // Get current grade first
     final (currentGrade, _) = await _repository.getGrade(event.gradeId);
     if (currentGrade == null) {
-      emit(state.copyWith(
-        status: GradingStatus.error,
-        errorMessage: 'Grade not found',
-      ),);
+      emit(
+        state.copyWith(
+          status: GradingStatus.error,
+          errorMessage: 'Grade not found',
+        ),
+      );
       return;
     }
 
@@ -182,16 +208,20 @@ class GradingBloc extends Bloc<GradingEvent, GradingState> {
     final (grade, failure) = await _repository.updateGrade(updatedGrade);
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: GradingStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: GradingStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: GradingStatus.loaded,
-        selectedGrade: grade,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: GradingStatus.loaded,
+          selectedGrade: grade,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -204,15 +234,19 @@ class GradingBloc extends Bloc<GradingEvent, GradingState> {
     final failure = await _repository.deleteGrade(event.gradeId);
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: GradingStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: GradingStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: GradingStatus.loaded,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: GradingStatus.loaded,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -222,19 +256,24 @@ class GradingBloc extends Bloc<GradingEvent, GradingState> {
   ) async {
     emit(state.copyWith(status: GradingStatus.loading));
 
-    final (summary, failure) = await _repository.getStudentProgressSummary(event.studentId);
+    final (summary, failure) =
+        await _repository.getStudentProgressSummary(event.studentId);
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: GradingStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: GradingStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: GradingStatus.loaded,
-        progressSummary: summary,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: GradingStatus.loaded,
+          progressSummary: summary,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -251,16 +290,20 @@ class GradingBloc extends Bloc<GradingEvent, GradingState> {
     );
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: GradingStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: GradingStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: GradingStatus.loaded,
-        progressTimeline: timeline,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: GradingStatus.loaded,
+          progressTimeline: timeline,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -270,19 +313,24 @@ class GradingBloc extends Bloc<GradingEvent, GradingState> {
   ) async {
     emit(state.copyWith(status: GradingStatus.loading));
 
-    final (progress, failure) = await _repository.getClassProgress(event.teacherId);
+    final (progress, failure) =
+        await _repository.getClassProgress(event.teacherId);
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: GradingStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: GradingStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: GradingStatus.loaded,
-        classProgress: progress,
-        lastUpdated: DateTime.now(),
-      ),);
+      emit(
+        state.copyWith(
+          status: GradingStatus.loaded,
+          classProgress: progress,
+          lastUpdated: DateTime.now(),
+        ),
+      );
     }
   }
 
@@ -298,10 +346,12 @@ class GradingBloc extends Bloc<GradingEvent, GradingState> {
     );
 
     if (failure != null) {
-      emit(state.copyWith(
-        status: GradingStatus.error,
-        errorMessage: failure.message,
-      ),);
+      emit(
+        state.copyWith(
+          status: GradingStatus.error,
+          errorMessage: failure.message,
+        ),
+      );
     } else {
       // Refresh the grade
       add(GetGrade(event.gradeId));

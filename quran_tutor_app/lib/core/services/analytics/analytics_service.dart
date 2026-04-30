@@ -8,7 +8,6 @@ import 'package:quran_tutor_app/core/environment/app_environment.dart';
 /// Never tracks PII or sensitive data.
 @singleton
 class AnalyticsService {
-
   AnalyticsService();
 
   bool _initialized = false;
@@ -111,8 +110,10 @@ class AnalyticsService {
   }
 
   /// Generic track method
-  Future<void> _track(String eventName,
-      {Map<String, Object>? properties,}) async {
+  Future<void> _track(
+    String eventName, {
+    Map<String, Object>? properties,
+  }) async {
     if (!_shouldTrack) return;
 
     try {
@@ -125,6 +126,5 @@ class AnalyticsService {
     }
   }
 
-  bool get _shouldTrack =>
-      _initialized && AppEnvironment.enableAnalytics;
+  bool get _shouldTrack => _initialized && AppEnvironment.enableAnalytics;
 }

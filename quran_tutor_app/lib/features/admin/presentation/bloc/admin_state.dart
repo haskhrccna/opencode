@@ -16,7 +16,6 @@ enum AdminStatus {
 }
 
 class AdminState extends Equatable {
-
   const AdminState({
     required this.status,
     this.pendingUsers,

@@ -6,7 +6,6 @@ import 'package:quran_tutor_app/features/profile/domain/repositories/profile_rep
 
 /// Use case for updating user profile
 class UpdateProfileUseCase {
-
   const UpdateProfileUseCase(this.repository);
   final ProfileRepository repository;
 
@@ -18,7 +17,6 @@ class UpdateProfileUseCase {
 
 /// Use case for uploading avatar
 class UploadAvatarUseCase {
-
   const UploadAvatarUseCase(this.repository);
   final ProfileRepository repository;
 
@@ -30,7 +28,6 @@ class UploadAvatarUseCase {
 
 /// Use case for deleting avatar
 class DeleteAvatarUseCase {
-
   const DeleteAvatarUseCase(this.repository);
   final ProfileRepository repository;
 

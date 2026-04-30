@@ -9,6 +9,7 @@ import 'package:quran_tutor_app/features/sessions/domain/entities/session.dart';
 import 'package:quran_tutor_app/features/sessions/presentation/bloc/sessions_bloc.dart';
 import 'package:quran_tutor_app/features/sessions/presentation/bloc/sessions_event.dart';
 import 'package:quran_tutor_app/features/sessions/presentation/bloc/sessions_state.dart';
+import 'package:quran_tutor_app/shared/widgets/session_status_badge.dart';
 
 class TeacherSessionsScreen extends StatefulWidget {
   const TeacherSessionsScreen({super.key});
@@ -46,14 +47,16 @@ class _TeacherSessionsScreenState extends State<TeacherSessionsScreen> {
       ),
       body: BlocConsumer<SessionsBloc, SessionsState>(
         listener: (context, state) {
-          if (state.status == SessionsStatus.error && state.errorMessage != null) {
+          if (state.status == SessionsStatus.error &&
+              state.errorMessage != null) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.errorMessage!)),
             );
           }
         },
         builder: (context, state) {
-          if (state.status == SessionsStatus.loading && state.sessions == null) {
+          if (state.status == SessionsStatus.loading &&
+              state.sessions == null) {
             return const Center(child: CircularProgressIndicator());
           }
 
@@ -112,36 +115,6 @@ class _SessionList extends StatelessWidget {
   final List<Session> sessions;
   final bool isUpcoming;
 
-  Color _statusColor(SessionStatus status) {
-    switch (status) {
-      case SessionStatus.scheduled:
-        return AppColors.primary;
-      case SessionStatus.inProgress:
-        return Colors.orange;
-      case SessionStatus.completed:
-        return Colors.green;
-      case SessionStatus.cancelled:
-        return AppColors.error;
-      case SessionStatus.rescheduled:
-        return Colors.purple;
-    }
-  }
-
-  String _statusText(SessionStatus status) {
-    switch (status) {
-      case SessionStatus.scheduled:
-        return 'مجدولة';
-      case SessionStatus.inProgress:
-        return 'جارية';
-      case SessionStatus.completed:
-        return 'مكتملة';
-      case SessionStatus.cancelled:
-        return 'ملغاة';
-      case SessionStatus.rescheduled:
-        return 'معاد جدولتها';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     if (sessions.isEmpty) {
@@ -167,21 +140,7 @@ class _SessionList extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: _statusColor(session.status).withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          _statusText(session.status),
-                          style: TextStyle(
-                            color: _statusColor(session.status),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
+                      SessionStatusBadge(status: session.status),
                       const Spacer(),
                       Text(
                         session.formattedLocalTime,
@@ -199,31 +158,42 @@ class _SessionList extends StatelessWidget {
                   const SizedBox(height: 8),
                   Row(
                     children: [
-                      const Icon(Icons.timer, size: 16, color: AppColors.outline),
+                      const Icon(Icons.timer,
+                          size: 16, color: AppColors.outline),
                       const SizedBox(width: 4),
-                      Text(session.durationText, style: Theme.of(context).textTheme.bodySmall),
+                      Text(session.durationText,
+                          style: Theme.of(context).textTheme.bodySmall),
                       if (session.studentId != null) ...[
                         const SizedBox(width: 16),
-                        const Icon(Icons.person, size: 16, color: AppColors.outline),
+                        const Icon(Icons.person,
+                            size: 16, color: AppColors.outline),
                         const SizedBox(width: 4),
-                        Text('طالب مسند', style: Theme.of(context).textTheme.bodySmall),
+                        Text('طالب مسند',
+                            style: Theme.of(context).textTheme.bodySmall),
                       ],
                     ],
                   ),
-                  if (isUpcoming && session.status == SessionStatus.scheduled) ...[
+                  if (isUpcoming &&
+                      session.status == SessionStatus.scheduled) ...[
                     const SizedBox(height: 12),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         TextButton.icon(
-                          onPressed: () => _showCancelDialog(context, session.id),
+                          onPressed: () => showDialog<String>(
+                            context: context,
+                            builder: (dialogCtx) =>
+                                _CancelConfirmDialog(sessionId: session.id),
+                          ),
                           icon: const Icon(Icons.cancel, size: 18),
                           label: const Text('إلغاء'),
                         ),
                         const SizedBox(width: 8),
                         ElevatedButton.icon(
                           onPressed: () {
-                            context.read<SessionsBloc>().add(StartSession(session.id));
+                            context
+                                .read<SessionsBloc>()
+                                .add(StartSession(session.id));
                           },
                           icon: const Icon(Icons.play_arrow, size: 18),
                           label: const Text('بدء'),
@@ -239,16 +209,31 @@ class _SessionList extends StatelessWidget {
       },
     );
   }
+}
 
-  void _showCancelDialog(BuildContext context, String sessionId) {
-    final controller = TextEditingController();
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
+class _CancelConfirmDialog extends StatefulWidget {
+  const _CancelConfirmDialog({required this.sessionId});
+  final String sessionId;
+
+  @override
+  State<_CancelConfirmDialog> createState() => _CancelConfirmDialogState();
+}
+
+class _CancelConfirmDialogState extends State<_CancelConfirmDialog> {
+  final TextEditingController _reasonController = TextEditingController();
+
+  @override
+  void dispose() {
+    _reasonController.dispose();
+    super.dispose();
+  }
+
+  Widget build(BuildContext context) => AlertDialog(
         title: const Text('إلغاء الجلسة'),
         content: TextField(
-          controller: controller,
-          decoration: const InputDecoration(labelText: 'سبب الإلغاء (اختياري)'),
+          controller: _reasonController,
+          decoration:
+              const InputDecoration(labelText: 'سبب الإلغاء (اختياري)'),
         ),
         actions: [
           TextButton(
@@ -258,14 +243,14 @@ class _SessionList extends StatelessWidget {
           ElevatedButton(
             onPressed: () {
               context.read<SessionsBloc>().add(
-                CancelSession(sessionId: sessionId, reason: controller.text.trim()),
-              );
+                    CancelSession(
+                        sessionId: widget.sessionId,
+                        reason: _reasonController.text.trim()),
+                  );
               Navigator.pop(context);
             },
             child: const Text('إلغاء'),
           ),
         ],
-      ),
-    );
-  }
+      );
 }

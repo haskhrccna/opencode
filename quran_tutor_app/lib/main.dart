@@ -64,7 +64,8 @@ void main() async {
       ),
     );
   } catch (e, stackTrace) {
-    logger.e('Failed to initialize HydratedStorage', error: e, stackTrace: stackTrace);
+    logger.e('Failed to initialize HydratedStorage',
+        error: e, stackTrace: stackTrace);
     // Fall back to in-memory storage so the app can still launch
   }
 
@@ -88,12 +89,14 @@ void main() async {
   try {
     await getIt<NotificationService>().initialize();
   } catch (e, stackTrace) {
-    logger.e('Failed to initialize NotificationService', error: e, stackTrace: stackTrace);
+    logger.e('Failed to initialize NotificationService',
+        error: e, stackTrace: stackTrace);
   }
   try {
     await getIt<AnalyticsService>().initialize();
   } catch (e, stackTrace) {
-    logger.e('Failed to initialize AnalyticsService', error: e, stackTrace: stackTrace);
+    logger.e('Failed to initialize AnalyticsService',
+        error: e, stackTrace: stackTrace);
   }
 
   // Initialize global error handling
@@ -102,18 +105,18 @@ void main() async {
   if (kDebugMode) {
     Bloc.observer = AppBlocObserver();
     ErrorWidget.builder = (details) => Material(
-      child: Container(
-        color: Colors.red,
-        padding: const EdgeInsets.all(16),
-        child: Center(
-          child: Text(
-            'Error:\n${details.exception.toString()}',
-            style: const TextStyle(color: Colors.white, fontSize: 14),
-            textAlign: TextAlign.center,
+          child: Container(
+            color: Colors.red,
+            padding: const EdgeInsets.all(16),
+            child: Center(
+              child: Text(
+                'Error:\n${details.exception.toString()}',
+                style: const TextStyle(color: Colors.white, fontSize: 14),
+                textAlign: TextAlign.center,
+              ),
+            ),
           ),
-        ),
-      ),
-    );
+        );
   }
 
   logger.i('Quran Tutor App Started');

@@ -96,7 +96,8 @@ void main() {
       expect(find.text('تسجيل الخروج'), findsOneWidget);
     });
 
-    testWidgets('should call SignOutRequested when logout tapped', (tester) async {
+    testWidgets('should call SignOutRequested when logout tapped',
+        (tester) async {
       // arrange
       final user = AuthUser(
         id: 'user-123',

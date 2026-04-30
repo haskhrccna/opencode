@@ -12,7 +12,6 @@ enum ProfileStatus {
 }
 
 class ProfileState extends Equatable {
-
   const ProfileState({
     required this.status,
     this.profile,

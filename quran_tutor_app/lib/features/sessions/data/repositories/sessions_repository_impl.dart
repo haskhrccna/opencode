@@ -10,7 +10,6 @@ import 'package:quran_tutor_app/features/sessions/domain/repositories/sessions_r
 /// Implementation of SessionsRepository using remote datasource
 @Singleton(as: SessionsRepository)
 class SessionsRepositoryImpl implements SessionsRepository {
-
   SessionsRepositoryImpl({required this.remoteDataSource});
   final SessionsRemoteDataSource remoteDataSource;
 
@@ -32,7 +31,8 @@ class SessionsRepositoryImpl implements SessionsRepository {
   }
 
   @override
-  Future<(List<Session>?, Failure?)> getTeacherSessions(String teacherId) async {
+  Future<(List<Session>?, Failure?)> getTeacherSessions(
+      String teacherId) async {
     try {
       final models = await remoteDataSource.getTeacherSessions(teacherId);
       final sessions = models.map((m) => m.toEntity()).toList();
@@ -47,7 +47,8 @@ class SessionsRepositoryImpl implements SessionsRepository {
   }
 
   @override
-  Future<(List<Session>?, Failure?)> getStudentSessions(String studentId) async {
+  Future<(List<Session>?, Failure?)> getStudentSessions(
+      String studentId) async {
     try {
       final models = await remoteDataSource.getStudentSessions(studentId);
       final sessions = models.map((m) => m.toEntity()).toList();
@@ -77,7 +78,8 @@ class SessionsRepositoryImpl implements SessionsRepository {
   }
 
   @override
-  Future<(List<Session>?, Failure?)> getUpcomingSessions({String? userId}) async {
+  Future<(List<Session>?, Failure?)> getUpcomingSessions(
+      {String? userId}) async {
     try {
       final now = DateTime.now().toUtc();
       final models = await remoteDataSource.getSessionsInRange(
@@ -323,7 +325,8 @@ class SessionsRepositoryImpl implements SessionsRepository {
           final sessionStart = session.scheduledAt.toLocal();
           final sessionEnd = session.endAt.toLocal();
           final slotUtc = slot.toUtc();
-          return slotUtc.isAfter(sessionStart.subtract(const Duration(minutes: 1))) &&
+          return slotUtc
+                  .isAfter(sessionStart.subtract(const Duration(minutes: 1))) &&
               slotUtc.isBefore(sessionEnd);
         });
       }).toList();

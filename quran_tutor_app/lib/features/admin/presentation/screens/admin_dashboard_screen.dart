@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:quran_tutor_app/features/admin/domain/repositories/admin_repository.dart';
 import 'package:quran_tutor_app/features/admin/presentation/bloc/admin_bloc.dart';
 import 'package:quran_tutor_app/features/admin/presentation/bloc/admin_event.dart';
 import 'package:quran_tutor_app/features/admin/presentation/bloc/admin_state.dart';
 import 'package:quran_tutor_app/features/auth/domain/entities/auth_user.dart';
+import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:quran_tutor_app/features/auth/presentation/bloc/auth_event.dart';
 
 class AdminDashboardScreen extends StatefulWidget {
   const AdminDashboardScreen({super.key});
@@ -25,6 +28,19 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('لوحة التحكم'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings_outlined),
+            tooltip: 'الإعدادات',
+            onPressed: () => context.go('/admin/settings'),
+          ),
+          IconButton(
+            icon: const Icon(Icons.logout),
+            tooltip: 'تسجيل الخروج',
+            onPressed: () =>
+                context.read<AuthBloc>().add(const SignOutRequested()),
+          ),
+        ],
       ),
       body: BlocBuilder<AdminBloc, AdminState>(
         builder: (context, state) {
@@ -61,8 +77,33 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                 ],
                 const SizedBox(height: 24),
 
+                // Admin navigation
+                _buildSectionTitle('إدارة'),
+                _AdminNavCard(
+                  icon: Icons.pending_actions,
+                  label: 'الطلاب قيد المراجعة',
+                  onTap: () => context.go('/admin/pending'),
+                ),
+                _AdminNavCard(
+                  icon: Icons.person,
+                  label: 'إدارة المعلمين',
+                  onTap: () => context.go('/admin/teachers'),
+                ),
+                _AdminNavCard(
+                  icon: Icons.event_note,
+                  label: 'الجلسات',
+                  onTap: () => context.go('/admin/sessions'),
+                ),
+                _AdminNavCard(
+                  icon: Icons.bar_chart,
+                  label: 'التقارير',
+                  onTap: () => context.go('/admin/reports'),
+                ),
+                const SizedBox(height: 24),
+
                 // Pending Users Section
-                if (state.pendingUsers != null && state.pendingUsers!.isNotEmpty) ...[
+                if (state.pendingUsers != null &&
+                    state.pendingUsers!.isNotEmpty) ...[
                   _buildSectionTitle('طلبات قيد الانتظار'),
                   _buildPendingUsersList(state.pendingUsers!),
                 ],
@@ -190,7 +231,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
 }
 
 class _StatCard {
-
   _StatCard({
     required this.title,
     required this.value,
@@ -201,4 +241,29 @@ class _StatCard {
   final String value;
   final IconData icon;
   final Color color;
+}
+
+class _AdminNavCard extends StatelessWidget {
+  const _AdminNavCard({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 8),
+      child: ListTile(
+        leading: Icon(icon, size: 28),
+        title: Text(label, style: Theme.of(context).textTheme.titleMedium),
+        trailing: const Icon(Icons.chevron_left),
+        onTap: onTap,
+      ),
+    );
+  }
 }

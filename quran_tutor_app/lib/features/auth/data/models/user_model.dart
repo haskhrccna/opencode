@@ -4,11 +4,13 @@ import 'package:supabase_flutter/supabase_flutter.dart' hide AuthUser;
 
 /// User model for authentication
 class UserModel {
-
   UserModel({
     required this.id,
     required this.email,
-    required this.role, required this.status, required this.createdAt, this.displayName,
+    required this.role,
+    required this.status,
+    required this.createdAt,
+    this.displayName,
     this.arabicName,
     this.photoUrl,
     this.updatedAt,
@@ -42,7 +44,8 @@ class UserModel {
   }
 
   /// Factory constructor from Supabase user
-  factory UserModel.fromSupabaseUser(User user, Map<String, dynamic>? profileData) {
+  factory UserModel.fromSupabaseUser(
+      User user, Map<String, dynamic>? profileData) {
     return UserModel(
       id: user.id,
       email: user.email ?? '',
@@ -55,8 +58,9 @@ class UserModel {
           user.userMetadata?['avatar_url'] as String?,
       role: profileData?['role'] as String? ?? 'student',
       status: profileData?['status'] as String? ?? 'pending',
-createdAt: DateTime.parse(user.createdAt),
-      updatedAt: user.updatedAt != null ? DateTime.parse(user.updatedAt!) : null,
+      createdAt: DateTime.parse(user.createdAt),
+      updatedAt:
+          user.updatedAt != null ? DateTime.parse(user.updatedAt!) : null,
       phoneNumber: profileData?['phone_number'] as String? ??
           profileData?['phone'] as String?,
       dateOfBirth: profileData?['date_of_birth'] != null

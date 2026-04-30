@@ -3,7 +3,6 @@ import 'package:quran_tutor_app/features/grading/domain/entities/progress_grade.
 
 /// Data model for grades
 class GradeModel {
-
   GradeModel({
     required this.id,
     required this.sessionId,
@@ -11,7 +10,8 @@ class GradeModel {
     required this.teacherId,
     required this.category,
     required this.grade,
-    required this.createdAt, this.notes,
+    required this.createdAt,
+    this.notes,
     this.audioFeedbackUrl,
     this.updatedAt,
     this.surahs,

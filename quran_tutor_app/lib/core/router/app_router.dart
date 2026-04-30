@@ -25,15 +25,19 @@ import 'package:quran_tutor_app/features/student/presentation/screens/student_ho
 import 'package:quran_tutor_app/features/teacher/presentation/screens/teacher_home_screen.dart';
 import 'package:quran_tutor_app/features/teacher/presentation/screens/teacher_sessions_screen.dart';
 import 'package:quran_tutor_app/features/teacher/presentation/screens/teacher_students_screen.dart';
+import 'package:quran_tutor_app/features/teacher/presentation/screens/create_session_screen.dart';
+import 'package:quran_tutor_app/features/teacher/presentation/screens/student_detail_screen.dart';
 import 'package:quran_tutor_app/shared/widgets/error_screen.dart';
 
 class AppRouter {
   AppRouter._();
 
-  static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
 
   /// Notifies go_router to re-evaluate redirects when auth state changes
-  static final ValueNotifier<AuthStatus> authRefreshNotifier = ValueNotifier<AuthStatus>(AuthStatus.initial);
+  static final ValueNotifier<AuthStatus> authRefreshNotifier =
+      ValueNotifier<AuthStatus>(AuthStatus.initial);
 
   static GoRouter get router => _router;
 
@@ -44,7 +48,8 @@ class AppRouter {
     redirect: _redirect,
     refreshListenable: authRefreshNotifier,
     routes: _routes,
-    errorBuilder: (_, state) => ErrorScreen(customMessage: state.error?.toString()),
+    errorBuilder: (_, state) =>
+        ErrorScreen(customMessage: state.error?.toString()),
   );
 
   static final List<RouteBase> _routes = [
@@ -68,26 +73,32 @@ class AppRouter {
     ),
     GoRoute(
       path: '/auth',
-      redirect: (_, state) =>
-          state.uri.path == '/auth' ? '/auth/login' : null,
+      redirect: (_, state) => state.uri.path == '/auth' ? '/auth/login' : null,
       routes: [
         GoRoute(path: 'login', builder: (_, __) => const LoginScreen()),
         GoRoute(path: 'signup', builder: (_, __) => const SignupScreen()),
-        GoRoute(path: 'teacher-signup', builder: (_, __) => const TeacherSignupScreen()),
+        GoRoute(
+            path: 'teacher-signup',
+            builder: (_, __) => const TeacherSignupScreen()),
       ],
     ),
     GoRoute(
       path: '/pending-approval',
-      builder: (_, __) => const PendingApprovalScreen(),),
+      builder: (_, __) => const PendingApprovalScreen(),
+    ),
     GoRoute(
-      path: '/rejected', builder: (_, __) => const RejectedScreen(),),
+      path: '/rejected',
+      builder: (_, __) => const RejectedScreen(),
+    ),
     GoRoute(
       path: '/student',
       redirect: (_, state) =>
           state.uri.path == '/student' ? '/student/home' : null,
       routes: [
         GoRoute(
-          path: 'home', builder: (_, __) => const StudentHomeScreen(),),
+          path: 'home',
+          builder: (_, __) => const StudentHomeScreen(),
+        ),
         GoRoute(
           path: 'sessions',
           builder: (_, __) => const SessionsScreen(),
@@ -95,14 +106,19 @@ class AppRouter {
             GoRoute(
               path: ':id',
               builder: (_, state) => SessionDetailScreen(
-                sessionId: state.pathParameters['id']!,),
+                sessionId: state.pathParameters['id']!,
+              ),
             ),
           ],
         ),
         GoRoute(
-          path: 'progress', builder: (_, __) => const ProgressScreen(),),
+          path: 'progress',
+          builder: (_, __) => const ProgressScreen(),
+        ),
         GoRoute(
-          path: 'profile', builder: (_, __) => const ProfileScreen(),),
+          path: 'profile',
+          builder: (_, __) => const ProfileScreen(),
+        ),
       ],
     ),
     GoRoute(
@@ -111,7 +127,9 @@ class AppRouter {
           state.uri.path == '/teacher' ? '/teacher/home' : null,
       routes: [
         GoRoute(
-          path: 'home', builder: (_, __) => const TeacherHomeScreen(),),
+          path: 'home',
+          builder: (_, __) => const TeacherHomeScreen(),
+        ),
         GoRoute(
           path: 'sessions',
           builder: (_, __) => const TeacherSessionsScreen(),
@@ -127,9 +145,20 @@ class AppRouter {
         ),
         GoRoute(
           path: 'students',
-          builder: (_, __) => const TeacherStudentsScreen(),),
+          builder: (_, __) => const TeacherStudentsScreen(),
+          routes: [
+            GoRoute(
+              path: ':id',
+              builder: (_, state) => StudentDetailScreen(
+                studentId: state.pathParameters['id']!,
+              ),
+            ),
+          ],
+        ),
         GoRoute(
-          path: 'profile', builder: (_, __) => const ProfileScreen(),),
+          path: 'profile',
+          builder: (_, __) => const ProfileScreen(),
+        ),
       ],
     ),
     GoRoute(
@@ -139,21 +168,28 @@ class AppRouter {
       routes: [
         GoRoute(
           path: 'dashboard',
-          builder: (_, __) => const AdminDashboardScreen(),),
+          builder: (_, __) => const AdminDashboardScreen(),
+        ),
         GoRoute(
           path: 'pending',
-          builder: (_, __) => const PendingStudentsScreen(),),
+          builder: (_, __) => const PendingStudentsScreen(),
+        ),
         GoRoute(
           path: 'teachers',
-          builder: (_, __) => const TeacherManagementScreen(),),
+          builder: (_, __) => const TeacherManagementScreen(),
+        ),
         GoRoute(
           path: 'sessions',
-          builder: (_, __) => const AdminSessionsScreen(),),
+          builder: (_, __) => const AdminSessionsScreen(),
+        ),
         GoRoute(
-          path: 'reports', builder: (_, __) => const ReportsScreen(),),
+          path: 'reports',
+          builder: (_, __) => const ReportsScreen(),
+        ),
         GoRoute(
           path: 'settings',
-          builder: (_, __) => const AdminSettingsScreen(),),
+          builder: (_, __) => const AdminSettingsScreen(),
+        ),
       ],
     ),
   ];
@@ -167,9 +203,13 @@ class AppRouter {
     final isSplash = location == '/splash';
     final isAuthRoute = location.startsWith('/auth');
 
-    if (authState.status == AuthStatus.initial ||
-        authState.status == AuthStatus.loading) {
+    if (authState.status == AuthStatus.initial) {
       return isSplash ? null : '/splash';
+    }
+
+    // Loading state during sign-in: let UI show loader without redirect.
+    if (authState.status == AuthStatus.loading) {
+      return null;
     }
 
     if (authState.status == AuthStatus.authenticated) {

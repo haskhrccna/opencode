@@ -103,7 +103,7 @@ _i174.GetIt $initGetIt(
       _i412.SupabaseProfileDataSource(supabase: gh<_i454.SupabaseClient>()));
   gh.singleton<_i854.RealtimeService>(
       () => _i854.RealtimeService(supabase: gh<_i454.SupabaseClient>()));
-  gh.singleton<_i642.OfflineService>(() => _i642.OfflineService(
+  gh.lazySingleton<_i642.OfflineService>(() => _i642.OfflineService(
         db: gh<_i95.OfflineDatabase>(),
         connectivity: gh<_i895.Connectivity>(),
         sessionsDataSource: gh<_i933.SessionsRemoteDataSource>(),

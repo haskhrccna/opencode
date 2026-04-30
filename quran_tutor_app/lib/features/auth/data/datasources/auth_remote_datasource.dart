@@ -55,7 +55,6 @@ abstract class AuthRemoteDataSource {
 /// Supabase implementation of AuthRemoteDataSource
 @Singleton(as: AuthRemoteDataSource)
 class SupabaseAuthDataSource implements AuthRemoteDataSource {
-
   SupabaseAuthDataSource({SupabaseClient? supabase})
       : _supabase = supabase ?? Supabase.instance.client;
   final SupabaseClient _supabase;
@@ -276,11 +275,8 @@ class SupabaseAuthDataSource implements AuthRemoteDataSource {
   @override
   Future<UserModel?> refreshUser(String userId) async {
     try {
-      final response = await _supabase
-          .from('users')
-          .select()
-          .eq('id', userId)
-          .maybeSingle();
+      final response =
+          await _supabase.from('users').select().eq('id', userId).maybeSingle();
 
       if (response == null) return null;
 

@@ -9,7 +9,6 @@ import 'package:quran_tutor_app/features/auth/domain/repositories/auth_repositor
 
 @Singleton(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
-
   const AuthRepositoryImpl({
     required this.remoteDataSource,
     required this.localDataSource,
@@ -193,8 +192,7 @@ class AuthRepositoryImpl implements AuthRepository {
       return (AuthUser.empty(), null);
     }
     try {
-      final refreshedUser =
-          await remoteDataSource.refreshUser(currentUser.id);
+      final refreshedUser = await remoteDataSource.refreshUser(currentUser.id);
       if (refreshedUser != null) {
         await localDataSource.cacheUserData(refreshedUser.toJson());
         return (refreshedUser.toEntity(), null);

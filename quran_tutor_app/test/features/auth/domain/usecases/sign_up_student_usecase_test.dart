@@ -25,7 +25,7 @@ void main() {
     final tDateOfBirth = DateTime(2010, 5, 15);
     const tPhoneNumber = '0501234567';
     const tTeacherInviteCode = 'TEAC123';
-    
+
     final tPendingUser = AuthUser(
       id: 'student123',
       email: tEmail,
@@ -38,17 +38,21 @@ void main() {
       dateOfBirth: tDateOfBirth,
     );
 
-    test('should return AuthUser with pending status when sign up is successful', () async {
+    test(
+        'should return AuthUser with pending status when sign up is successful',
+        () async {
       // Arrange
-      when(() => mockRepository.signUpStudent(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-            arabicName: any(named: 'arabicName'),
-            englishName: any(named: 'englishName'),
-            dateOfBirth: any(named: 'dateOfBirth'),
-            phoneNumber: any(named: 'phoneNumber'),
-            teacherInviteCode: any(named: 'teacherInviteCode'),
-          ),).thenAnswer((_) async => (tPendingUser, null));
+      when(
+        () => mockRepository.signUpStudent(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+          arabicName: any(named: 'arabicName'),
+          englishName: any(named: 'englishName'),
+          dateOfBirth: any(named: 'dateOfBirth'),
+          phoneNumber: any(named: 'phoneNumber'),
+          teacherInviteCode: any(named: 'teacherInviteCode'),
+        ),
+      ).thenAnswer((_) async => (tPendingUser, null));
 
       // Act
       final (result, failure) = await useCase(
@@ -72,20 +76,22 @@ void main() {
       expect(failure, isNull);
     });
 
-    test('should return AuthUser with pending status without teacher code', () async {
+    test('should return AuthUser with pending status without teacher code',
+        () async {
       // Arrange
-      when(() => mockRepository.signUpStudent(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-            arabicName: any(named: 'arabicName'),
-            englishName: any(named: 'englishName'),
-            dateOfBirth: any(named: 'dateOfBirth'),
-            phoneNumber: any(named: 'phoneNumber'),
-            teacherInviteCode: any(named: 'teacherInviteCode'),
-          ),).thenAnswer((_) async => (
-            tPendingUser.copyWith(),
-            null
-          ),);
+      when(
+        () => mockRepository.signUpStudent(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+          arabicName: any(named: 'arabicName'),
+          englishName: any(named: 'englishName'),
+          dateOfBirth: any(named: 'dateOfBirth'),
+          phoneNumber: any(named: 'phoneNumber'),
+          teacherInviteCode: any(named: 'teacherInviteCode'),
+        ),
+      ).thenAnswer(
+        (_) async => (tPendingUser.copyWith(), null),
+      );
 
       // Act
       final (result, failure) = await useCase(
@@ -108,15 +114,17 @@ void main() {
     test('should return AuthFailure when email already exists', () async {
       // Arrange
       final tFailure = AuthFailure.emailAlreadyInUse();
-      when(() => mockRepository.signUpStudent(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-            arabicName: any(named: 'arabicName'),
-            englishName: any(named: 'englishName'),
-            dateOfBirth: any(named: 'dateOfBirth'),
-            phoneNumber: any(named: 'phoneNumber'),
-            teacherInviteCode: any(named: 'teacherInviteCode'),
-          ),).thenAnswer((_) async => (null, tFailure));
+      when(
+        () => mockRepository.signUpStudent(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+          arabicName: any(named: 'arabicName'),
+          englishName: any(named: 'englishName'),
+          dateOfBirth: any(named: 'dateOfBirth'),
+          phoneNumber: any(named: 'phoneNumber'),
+          teacherInviteCode: any(named: 'teacherInviteCode'),
+        ),
+      ).thenAnswer((_) async => (null, tFailure));
 
       // Act
       final (result, failure) = await useCase(
@@ -137,16 +145,19 @@ void main() {
 
     test('should return ValidationFailure when invalid invite code', () async {
       // Arrange
-      final tFailure = ValidationFailure.invalidInput(message: 'Invalid invite code');
-      when(() => mockRepository.signUpStudent(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-            arabicName: any(named: 'arabicName'),
-            englishName: any(named: 'englishName'),
-            dateOfBirth: any(named: 'dateOfBirth'),
-            phoneNumber: any(named: 'phoneNumber'),
-            teacherInviteCode: any(named: 'teacherInviteCode'),
-          ),).thenAnswer((_) async => (null, tFailure));
+      final tFailure =
+          ValidationFailure.invalidInput(message: 'Invalid invite code');
+      when(
+        () => mockRepository.signUpStudent(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+          arabicName: any(named: 'arabicName'),
+          englishName: any(named: 'englishName'),
+          dateOfBirth: any(named: 'dateOfBirth'),
+          phoneNumber: any(named: 'phoneNumber'),
+          teacherInviteCode: any(named: 'teacherInviteCode'),
+        ),
+      ).thenAnswer((_) async => (null, tFailure));
 
       // Act
       final (result, failure) = await useCase(
@@ -169,15 +180,17 @@ void main() {
     test('should return ServerFailure when server error occurs', () async {
       // Arrange
       final tFailure = ServerFailure.internalError();
-      when(() => mockRepository.signUpStudent(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-            arabicName: any(named: 'arabicName'),
-            englishName: any(named: 'englishName'),
-            dateOfBirth: any(named: 'dateOfBirth'),
-            phoneNumber: any(named: 'phoneNumber'),
-            teacherInviteCode: any(named: 'teacherInviteCode'),
-          ),).thenAnswer((_) async => (null, tFailure));
+      when(
+        () => mockRepository.signUpStudent(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+          arabicName: any(named: 'arabicName'),
+          englishName: any(named: 'englishName'),
+          dateOfBirth: any(named: 'dateOfBirth'),
+          phoneNumber: any(named: 'phoneNumber'),
+          teacherInviteCode: any(named: 'teacherInviteCode'),
+        ),
+      ).thenAnswer((_) async => (null, tFailure));
 
       // Act
       final (result, failure) = await useCase(

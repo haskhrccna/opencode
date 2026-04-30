@@ -7,8 +7,7 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   group('Auth Flow Integration Tests', () {
-    testWidgets('Golden path: Splash → Login → Student Home',
-        (tester) async {
+    testWidgets('Golden path: Splash → Login → Student Home', (tester) async {
       // Start the app
       app.main();
       await tester.pumpAndSettle();
@@ -46,8 +45,7 @@ void main() {
       expect(find.textContaining('مرحباً'), findsOneWidget);
     });
 
-    testWidgets('Login with bad credentials shows error',
-        (tester) async {
+    testWidgets('Login with bad credentials shows error', (tester) async {
       app.main();
       await tester.pumpAndSettle();
 
@@ -76,8 +74,7 @@ void main() {
       expect(find.byType(SnackBar), findsOneWidget);
     });
 
-    testWidgets('New registration → pending screen flow',
-        (tester) async {
+    testWidgets('New registration → pending screen flow', (tester) async {
       app.main();
       await tester.pumpAndSettle();
 

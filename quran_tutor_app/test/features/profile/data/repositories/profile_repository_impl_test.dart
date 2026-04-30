@@ -10,7 +10,8 @@ import 'package:quran_tutor_app/features/profile/data/models/profile_model.dart'
 import 'package:quran_tutor_app/features/profile/data/repositories/profile_repository_impl.dart';
 import 'package:quran_tutor_app/features/profile/domain/entities/user_profile.dart';
 
-class MockProfileRemoteDataSource extends Mock implements ProfileRemoteDataSource {}
+class MockProfileRemoteDataSource extends Mock
+    implements ProfileRemoteDataSource {}
 
 void main() {
   late ProfileRepositoryImpl repository;
@@ -106,7 +107,8 @@ void main() {
   group('updateProfile', () {
     test('should return updated UserProfile on success', () async {
       final updatedModel = tProfileModel.copyWith(displayName: 'Updated Name');
-      final entity = tProfileModel.toEntity().copyWith(displayName: 'Updated Name');
+      final entity =
+          tProfileModel.toEntity().copyWith(displayName: 'Updated Name');
 
       when(() => mockRemoteDataSource.updateProfile(any()))
           .thenAnswer((_) async => updatedModel);
@@ -141,7 +143,8 @@ void main() {
       when(() => mockRemoteDataSource.getStudentsByTeacher(tTeacherId))
           .thenAnswer((_) async => [tProfileModel]);
 
-      final (students, failure) = await repository.getStudentsByTeacher(tTeacherId);
+      final (students, failure) =
+          await repository.getStudentsByTeacher(tTeacherId);
 
       expect(students, isNotNull);
       expect(students!.length, 1);
@@ -151,8 +154,8 @@ void main() {
 
   group('linkStudentToTeacher', () {
     test('should return null on success', () async {
-      when(() => mockRemoteDataSource.linkStudentToTeacher('student-1', 'teacher-1'))
-          .thenAnswer((_) async {});
+      when(() => mockRemoteDataSource.linkStudentToTeacher(
+          'student-1', 'teacher-1')).thenAnswer((_) async {});
 
       final failure = await repository.linkStudentToTeacher(
         studentId: 'student-1',

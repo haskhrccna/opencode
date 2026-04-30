@@ -11,6 +11,7 @@ import 'package:quran_tutor_app/features/sessions/domain/entities/session.dart';
 import 'package:quran_tutor_app/features/sessions/presentation/bloc/sessions_bloc.dart';
 import 'package:quran_tutor_app/features/sessions/presentation/bloc/sessions_event.dart';
 import 'package:quran_tutor_app/features/sessions/presentation/bloc/sessions_state.dart';
+import 'package:quran_tutor_app/shared/widgets/session_status_badge.dart';
 
 class SessionsScreen extends StatefulWidget {
   const SessionsScreen({super.key});
@@ -81,7 +82,8 @@ class _SessionsScreenState extends State<SessionsScreen> {
       ),
       body: BlocConsumer<SessionsBloc, SessionsState>(
         listener: (context, state) {
-          if (state.status == SessionsStatus.error && state.errorMessage != null) {
+          if (state.status == SessionsStatus.error &&
+              state.errorMessage != null) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.errorMessage!)),
             );
@@ -116,7 +118,8 @@ class _SessionsScreenState extends State<SessionsScreen> {
                 onPageChanged: (focused) {
                   _focusedDay = focused;
                 },
-                eventLoader: (day) => grouped[DateTime(day.year, day.month, day.day)] ?? [],
+                eventLoader: (day) =>
+                    grouped[DateTime(day.year, day.month, day.day)] ?? [],
                 calendarStyle: CalendarStyle(
                   markerDecoration: const BoxDecoration(
                     color: AppColors.primary,
@@ -162,7 +165,8 @@ class _SessionsScreenState extends State<SessionsScreen> {
       return const Center(child: CircularProgressIndicator());
     }
 
-    final daySessions = _sessionsForDay(state.sessions, _selectedDay ?? DateTime.now());
+    final daySessions =
+        _sessionsForDay(state.sessions, _selectedDay ?? DateTime.now());
 
     if (daySessions.isEmpty) {
       return const Center(
@@ -203,7 +207,7 @@ class _SessionsScreenState extends State<SessionsScreen> {
   }
 
   void _showCreateSessionSheet(BuildContext context) {
-    showModalBottomSheet(
+    showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       builder: (_) => const _CreateSessionSheet(),
@@ -216,36 +220,6 @@ class _SessionCard extends StatelessWidget {
 
   final Session session;
   final VoidCallback? onTap;
-
-  Color _statusColor(SessionStatus status) {
-    switch (status) {
-      case SessionStatus.scheduled:
-        return AppColors.primary;
-      case SessionStatus.inProgress:
-        return Colors.orange;
-      case SessionStatus.completed:
-        return Colors.green;
-      case SessionStatus.cancelled:
-        return AppColors.error;
-      case SessionStatus.rescheduled:
-        return Colors.purple;
-    }
-  }
-
-  String _statusText(SessionStatus status) {
-    switch (status) {
-      case SessionStatus.scheduled:
-        return 'مجدولة';
-      case SessionStatus.inProgress:
-        return 'جارية';
-      case SessionStatus.completed:
-        return 'مكتملة';
-      case SessionStatus.cancelled:
-        return 'ملغاة';
-      case SessionStatus.rescheduled:
-        return 'معاد جدولتها';
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -261,21 +235,7 @@ class _SessionCard extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: _statusColor(session.status).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      _statusText(session.status),
-                      style: TextStyle(
-                        color: _statusColor(session.status),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ),
+                  SessionStatusBadge(status: session.status),
                   const Spacer(),
                   Text(
                     session.formattedLocalTime,
@@ -310,7 +270,8 @@ class _SessionCard extends StatelessWidget {
                   ),
                   if (session.isOnline) ...[
                     const SizedBox(width: 16),
-                    const Icon(Icons.videocam, size: 16, color: AppColors.outline),
+                    const Icon(Icons.videocam,
+                        size: 16, color: AppColors.outline),
                     const SizedBox(width: 4),
                     const Text('عبر الإنترنت', style: TextStyle(fontSize: 12)),
                   ],
@@ -350,12 +311,16 @@ class _CreateSessionSheetState extends State<_CreateSessionSheet> {
     if (teacherId == null) return;
 
     context.read<SessionsBloc>().add(CreateSession(
-      teacherId: teacherId,
-      scheduledAt: _scheduledAt.toUtc(),
-      durationMinutes: _duration,
-      topic: _topicController.text.trim().isEmpty ? null : _topicController.text.trim(),
-      notes: _notesController.text.trim().isEmpty ? null : _notesController.text.trim(),
-    ));
+          teacherId: teacherId,
+          scheduledAt: _scheduledAt.toUtc(),
+          durationMinutes: _duration,
+          topic: _topicController.text.trim().isEmpty
+              ? null
+              : _topicController.text.trim(),
+          notes: _notesController.text.trim().isEmpty
+              ? null
+              : _notesController.text.trim(),
+        ));
 
     Navigator.pop(context);
   }

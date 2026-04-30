@@ -1,6 +1,5 @@
 /// Base class for all exceptions in the data layer
 abstract class AppException implements Exception {
-
   const AppException({
     required this.message,
     this.code,
@@ -42,7 +41,6 @@ class NetworkException extends AppException {
 
 /// Server-related exceptions
 class ServerException extends AppException {
-
   const ServerException({
     required super.message,
     String? code,
@@ -155,7 +153,6 @@ class AuthException extends AppException {
 
 /// Validation-related exceptions
 class ValidationException extends AppException {
-
   const ValidationException({
     required super.message,
     String? code,
@@ -165,14 +162,16 @@ class ValidationException extends AppException {
           code: code ?? 'validation_error',
         );
 
-  factory ValidationException.invalidInput({String? message, Map<String, String>? errors}) =>
+  factory ValidationException.invalidInput(
+          {String? message, Map<String, String>? errors}) =>
       ValidationException(
         message: message ?? 'Invalid input',
         code: 'invalid_input',
         errors: errors,
       );
 
-  factory ValidationException.requiredField(String field) => ValidationException(
+  factory ValidationException.requiredField(String field) =>
+      ValidationException(
         message: '$field is required',
         code: 'required_field',
         errors: {field: 'This field is required'},

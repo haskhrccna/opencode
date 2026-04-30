@@ -10,7 +10,6 @@ abstract class GradingEvent extends Equatable {
 }
 
 class LoadGrades extends GradingEvent {
-
   const LoadGrades({this.studentId});
   final String? studentId;
 
@@ -19,7 +18,6 @@ class LoadGrades extends GradingEvent {
 }
 
 class LoadGradesBySession extends GradingEvent {
-
   const LoadGradesBySession(this.sessionId);
   final String sessionId;
 
@@ -28,7 +26,6 @@ class LoadGradesBySession extends GradingEvent {
 }
 
 class LoadGradesByTeacher extends GradingEvent {
-
   const LoadGradesByTeacher(this.teacherId);
   final String teacherId;
 
@@ -37,7 +34,6 @@ class LoadGradesByTeacher extends GradingEvent {
 }
 
 class GetGrade extends GradingEvent {
-
   const GetGrade(this.gradeId);
   final String gradeId;
 
@@ -46,7 +42,6 @@ class GetGrade extends GradingEvent {
 }
 
 class CreateGrade extends GradingEvent {
-
   const CreateGrade({
     required this.sessionId,
     required this.studentId,
@@ -83,7 +78,6 @@ class CreateGrade extends GradingEvent {
 }
 
 class UpdateGrade extends GradingEvent {
-
   const UpdateGrade({
     required this.gradeId,
     this.grade,
@@ -111,7 +105,6 @@ class UpdateGrade extends GradingEvent {
 }
 
 class DeleteGrade extends GradingEvent {
-
   const DeleteGrade(this.gradeId);
   final String gradeId;
 
@@ -120,7 +113,6 @@ class DeleteGrade extends GradingEvent {
 }
 
 class LoadStudentProgress extends GradingEvent {
-
   const LoadStudentProgress(this.studentId);
   final String studentId;
 
@@ -129,7 +121,6 @@ class LoadStudentProgress extends GradingEvent {
 }
 
 class LoadProgressTimeline extends GradingEvent {
-
   const LoadProgressTimeline({
     required this.studentId,
     required this.startDate,
@@ -144,7 +135,6 @@ class LoadProgressTimeline extends GradingEvent {
 }
 
 class LoadClassProgress extends GradingEvent {
-
   const LoadClassProgress(this.teacherId);
   final String teacherId;
 
@@ -153,7 +143,6 @@ class LoadClassProgress extends GradingEvent {
 }
 
 class UploadAudioFeedback extends GradingEvent {
-
   const UploadAudioFeedback({
     required this.gradeId,
     required this.audioFilePath,

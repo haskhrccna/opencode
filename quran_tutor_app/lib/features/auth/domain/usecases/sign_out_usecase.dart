@@ -2,7 +2,6 @@ import 'package:quran_tutor_app/features/auth/domain/repositories/auth_repositor
 
 /// Use case for signing out
 class SignOutUseCase {
-
   const SignOutUseCase(this.repository);
   final AuthRepository repository;
 

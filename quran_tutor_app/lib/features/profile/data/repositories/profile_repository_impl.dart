@@ -11,7 +11,6 @@ import 'package:quran_tutor_app/features/profile/domain/repositories/profile_rep
 /// Implementation of ProfileRepository using remote datasource
 @Singleton(as: ProfileRepository)
 class ProfileRepositoryImpl implements ProfileRepository {
-
   ProfileRepositoryImpl({required this.remoteDataSource});
   final ProfileRemoteDataSource remoteDataSource;
 
@@ -145,7 +144,8 @@ class ProfileRepositoryImpl implements ProfileRepository {
   }
 
   @override
-  Future<(List<UserProfile>?, Failure?)> getStudentsByTeacher(String teacherId) async {
+  Future<(List<UserProfile>?, Failure?)> getStudentsByTeacher(
+      String teacherId) async {
     try {
       final models = await remoteDataSource.getStudentsByTeacher(teacherId);
       final profiles = models.map((m) => m.toEntity()).toList();

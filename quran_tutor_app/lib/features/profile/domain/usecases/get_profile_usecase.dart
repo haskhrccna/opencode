@@ -4,7 +4,6 @@ import 'package:quran_tutor_app/features/profile/domain/repositories/profile_rep
 
 /// Use case for getting current user profile
 class GetProfileUseCase {
-
   const GetProfileUseCase(this.repository);
   final ProfileRepository repository;
 
@@ -16,7 +15,6 @@ class GetProfileUseCase {
 
 /// Use case for getting profile by ID
 class GetProfileByIdUseCase {
-
   const GetProfileByIdUseCase(this.repository);
   final ProfileRepository repository;
 

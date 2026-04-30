@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 
-import 'package:quran_tutor_app/core/constants/app_constants.dart' show GradingCategory;
+import 'package:quran_tutor_app/core/constants/app_constants.dart'
+    show GradingCategory;
 
 /// Progress grade entity for tracking student progress
 class ProgressGrade extends Equatable {
-
   const ProgressGrade({
     required this.id,
     required this.sessionId,
@@ -12,7 +12,8 @@ class ProgressGrade extends Equatable {
     required this.teacherId,
     required this.category,
     required this.grade,
-    required this.createdAt, this.notes,
+    required this.createdAt,
+    this.notes,
     this.audioFeedbackUrl,
     this.updatedAt,
     this.surahs,
@@ -47,7 +48,8 @@ class ProgressGrade extends Equatable {
   final Map<String, dynamic>? metadata;
 
   /// Check if has audio feedback
-  bool get hasAudioFeedback => audioFeedbackUrl != null && audioFeedbackUrl!.isNotEmpty;
+  bool get hasAudioFeedback =>
+      audioFeedbackUrl != null && audioFeedbackUrl!.isNotEmpty;
 
   /// Get grade as percentage (0-100)
   int get gradePercentage => ((grade / 5) * 100).round();

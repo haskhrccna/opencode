@@ -12,7 +12,6 @@ class AppStarted extends AuthEvent {
 }
 
 class SignInRequested extends AuthEvent {
-
   const SignInRequested({required this.email, required this.password});
   final String email;
   final String password;
@@ -22,7 +21,6 @@ class SignInRequested extends AuthEvent {
 }
 
 class SignUpStudentRequested extends AuthEvent {
-
   const SignUpStudentRequested({
     required this.email,
     required this.password,
@@ -53,7 +51,6 @@ class SignUpStudentRequested extends AuthEvent {
 }
 
 class SignUpTeacherRequested extends AuthEvent {
-
   const SignUpTeacherRequested({
     required this.email,
     required this.password,
@@ -92,7 +89,6 @@ class RefreshUserRequested extends AuthEvent {
 }
 
 class ResetPasswordRequested extends AuthEvent {
-
   const ResetPasswordRequested({required this.email});
   final String email;
 
@@ -101,7 +97,6 @@ class ResetPasswordRequested extends AuthEvent {
 }
 
 class UpdatePasswordRequested extends AuthEvent {
-
   const UpdatePasswordRequested({
     required this.currentPassword,
     required this.newPassword,

@@ -4,7 +4,6 @@ import 'package:quran_tutor_app/features/auth/domain/repositories/auth_repositor
 
 /// Use case for teacher registration
 class SignUpTeacherUseCase {
-
   const SignUpTeacherUseCase(this.repository);
   final AuthRepository repository;
 
@@ -26,7 +25,6 @@ class SignUpTeacherUseCase {
 
 /// Parameters for teacher sign up
 class SignUpTeacherParams {
-
   const SignUpTeacherParams({
     required this.email,
     required this.password,

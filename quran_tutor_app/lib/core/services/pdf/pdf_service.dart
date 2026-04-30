@@ -152,7 +152,7 @@ class PdfService {
   }
 
   /// Build a chart as a text summary table
-  /// 
+  ///
   /// Note: Full graphical chart rendering requires complex custom PDF painting.
   /// For now, charts are rendered as data tables.
   Widget _buildChartAsTable(Context context, ReportChart chart) {
@@ -194,7 +194,6 @@ class PdfService {
 
 /// Report section model
 class ReportSection {
-
   ReportSection({
     required this.title,
     required this.content,
@@ -205,7 +204,6 @@ class ReportSection {
 
 /// Report table model
 class ReportTable {
-
   ReportTable({
     required this.title,
     required this.headers,
@@ -218,7 +216,6 @@ class ReportTable {
 
 /// Report chart model
 class ReportChart {
-
   ReportChart({
     required this.title,
     required this.type,
